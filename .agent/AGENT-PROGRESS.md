@@ -71,3 +71,18 @@
 - Files updated: src/core/panchangam.ts, src/pages/DailyView.tsx, src/styles/DailyView.css, src/App.tsx, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk: Karana model cycles only the 8 movable karanas; 4 fixed karanas not yet modelled
 - Next best step: date navigation (prev/next day) or improve Karana accuracy
+
+### Session 005
+
+- Date: 2026-05-04
+- Goal: Implement `update-header` task — apply updated spec from src/components/ARCHITECTURE.md
+- Completed:
+  - Header.css: padding 8rem → 1rem
+  - Header.css: font-size 2rem → 2.5rem
+  - Header.css: letter-spacing 0.05em → 0em
+  - @font-face kept in index.css (user had already moved it there; no duplicate in Header.css)
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml status set to passing
+- Files updated: src/styles/Header.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: date navigation or Karana accuracy improvement

@@ -15,8 +15,17 @@ status_legend:
 tasks:
   - id: update-header
     priority: 1
-    title: Update header based on specificaiton in `src/components/ARCHITECTURE.md`
-    status: not_started
+    title: Update header based on specification in `src/components/ARCHITECTURE.md`
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - Updated Header.css padding 8rem → 1rem (2026-05-04)
+      - Updated Header.css font-size 2rem → 2.5rem (2026-05-04)
+      - Updated Header.css letter-spacing 0.05em → 0em (2026-05-04)
+      - Moved @font-face to index.css (user); Header.css no longer duplicates it (2026-05-04)
+      - npm run check passed with no errors (2026-05-04)
+    notes: spec source is src/components/ARCHITECTURE.md (updated by user before this session)
   - id: add-header
     priority: 1
     title: Add header as specified in `src/components/ARCHITECTURE.md`
