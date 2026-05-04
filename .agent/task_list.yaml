@@ -17,7 +17,14 @@ tasks:
     priority: 1
     title: Refactor type Theme defined in App.tsx
     description: Move the type to a dedicated `constants.ts` file in `src` and refactor the code accordingly
-    status: not_started
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - Created src/constants.ts with exported Theme type (2026-05-04)
+      - App.tsx updated to import Theme from ./constants (2026-05-04)
+      - Header.tsx updated to import Theme from ../constants (2026-05-04)
+      - npm run check passed with no errors (2026-05-04)
   - id: add-dark-theme
     priority: 1
     title: Update styling across the app and introduce a dark theme as defined in `.agent/UI-STYLE.md`

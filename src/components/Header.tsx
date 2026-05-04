@@ -1,4 +1,4 @@
-import type { Theme } from "../App";
+import type { Theme } from "../constants";
 import "../styles/Header.css";
 
 interface HeaderProps {
