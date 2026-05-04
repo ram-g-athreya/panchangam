@@ -28,3 +28,16 @@
 - Files or artifacts updated: package.json, tsconfig.json, vite.config.ts, index.html, src/App.tsx, src/main.tsx, src/vite-env.d.ts, styles/index.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: add more features to the Panchangam app (calendar data, date display, etc.)
+
+### Session 002
+
+- Date: 2026-05-03
+- Goal: Implement `basic-styling` task — apply sepia color palette from UI-STYLE.md
+- Completed:
+  - Updated src/styles/index.css with CSS custom properties for all five sepia colors
+  - Applied bg-main and text-primary to body; accent color to headings
+- Verification run: `npm run check` exits 0
+- Evidence captured: task_list.yaml status set to passing
+- Files updated: src/styles/index.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: add Panchangam calendar data features (Tithi, Nakshatra, date display)
