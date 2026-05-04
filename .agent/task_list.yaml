@@ -1,5 +1,5 @@
 project: Panchangam App
-last_updated: "2026-05-01"
+last_updated: "2026-05-03"
 
 rules:
   single_active_feature: true
@@ -17,11 +17,17 @@ tasks:
     priority: 1
     title: Build a minimal single page react app shell that has the title Panchangam
     description:
-      -
-    user_visible_behavior:
-    status:
+      - Vite + React + TypeScript project scaffold
+      - index.html with <title>Panchangam</title>
+      - src/App.tsx renders <h1>Panchangam</h1>
+      - src/main.tsx mounts App into #root
+      - styles/index.css with reset styles
+    user_visible_behavior: Browser shows a page with heading "Panchangam"
+    status: passing
     verification:
-      -
+      - npm run check (tsc --noEmit) exits 0
+      - ./init.sh exits 0
     evidence:
-      -
-    notes:
+      - npm run check passed with no errors (2026-05-03)
+      - ./init.sh completed successfully (2026-05-03)
+    notes: Used @vitejs/plugin-react v6 to support Vite v8
