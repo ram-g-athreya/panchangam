@@ -16,7 +16,15 @@ tasks:
   - id: add-dark-theme
     priority: 1
     title: Update styling across the app and introduce a dark theme as defined in `.agent/UI-STYLE.md`
-    status: not_started
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - Added [data-theme="dark"] block to index.css with all five dark palette variables from UI-STYLE.md (2026-05-04)
+      - App.tsx manages Theme state, applies data-theme on document.documentElement via useEffect (2026-05-04)
+      - Header.tsx accepts theme + onToggleTheme props, renders ☽/☀ toggle button (2026-05-04)
+      - Header.css styled .header__theme-toggle button (2026-05-04)
+      - npm run check passed with no errors (2026-05-04)
   - id: update-header
     priority: 1
     title: Update header based on specification in `src/components/ARCHITECTURE.md`
