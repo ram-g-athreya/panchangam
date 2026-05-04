@@ -21,3 +21,4 @@ The header component has a padding of `1rem`
 - the light icon should use the solid sun icon
 - the dark icon should use the solid moon icon
 - the background of the toggle should change to the appropriate light or dark background depending on the current state
+- store the current toggle value in `localStorage` and re-hydrate it from storage when the app is reloaded. If there is no value present in `localStorage` then set the value as `light` by default

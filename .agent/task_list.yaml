@@ -13,6 +13,10 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: store-light-dark-toggle
+    priority: 1
+    title: Store the light-dark toggle value in `localStorage` as specified in `src/components/ARCHITECTURE.md`
+    status: not_started
   - id: update-light-dark-toggle-interaction
     priority: 1
     title: Further update the light dark toggle interaction in the header based on the spec in `src/components/ARCHITECTURE.md`
