@@ -54,6 +54,7 @@ The `task_list.yaml` file is the source of truth for project progress:
 - When implementing a task, update its status to `"pass"` with evidence.
 - If a task is blocked, set status to `"fail"` with a reason.
 - Never delete tasks from the list.
+- Never add new tasks or work on anything not specified in the list.
 
 ## End Of Session
 

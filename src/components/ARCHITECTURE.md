@@ -10,7 +10,7 @@ Specification for reusable components are defined here
 
 ### Styling
 
-The component has a padding of `1rem`
+The header component has a padding of `1rem`
 
 The word `Panchangam` has the following styling
 
