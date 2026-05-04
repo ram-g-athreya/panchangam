@@ -13,6 +13,10 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: add-header
+    priority: 1
+    title: Add header as specified in `src/components/ARCHITECTURE.md`
+    status: not_started
   - id: basic-styling
     priority: 1
     title: Base styling for the app
