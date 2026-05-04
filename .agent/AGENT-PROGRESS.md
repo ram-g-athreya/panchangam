@@ -100,3 +100,16 @@
 - Files updated: src/styles/index.css, src/App.tsx, src/components/Header.tsx, src/styles/Header.css, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: Karana model still uses only 8 movable karanas
 - Next best step: date navigation (prev/next day)
+
+### Session 007
+
+- Date: 2026-05-04
+- Goal: Implement `update-light-dark-toggle` — replace text toggle with FontAwesome icons per ARCHITECTURE.md spec
+- Completed:
+  - Installed @fortawesome/react-fontawesome, @fortawesome/fontawesome-svg-core, @fortawesome/free-solid-svg-icons
+  - Header.tsx: library.add(faSun, faMoon), findIconDefinition for fas/sun and fas/moon, FontAwesomeIcon component
+  - Header.css: toggle is a circular button with --color-bg-main background (changes automatically with theme)
+- Verification run: npm run check exits 0
+- Files updated: src/components/Header.tsx, src/styles/Header.css, package.json, package-lock.json, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk: byPrefixAndName is not a public FA export; findIconDefinition is the equivalent public API
+- Next best step: date navigation (prev/next day)

@@ -16,7 +16,14 @@ tasks:
   - id: update-light-dark-toggle
     priority: 1
     title: Update the light dark toggle in the header based on the spec in `src/components/ARCHITECTURE.md`
-    status: not_started
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - Installed @fortawesome/react-fontawesome, @fortawesome/fontawesome-svg-core, @fortawesome/free-solid-svg-icons (2026-05-04)
+      - Header.tsx uses FontAwesomeIcon with findIconDefinition for fas/sun and fas/moon (2026-05-04)
+      - Toggle button background uses --color-bg-main, changes automatically with theme (2026-05-04)
+      - npm run check passed with no errors (2026-05-04)
   - id: refactor-type-theme
     priority: 1
     title: Refactor type Theme defined in App.tsx
