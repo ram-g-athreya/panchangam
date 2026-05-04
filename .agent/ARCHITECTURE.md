@@ -16,3 +16,4 @@ The app should be built using Typescript, React and Vite. The entry point is the
 
 - TypeScript strict mode is enabled. No `any` types without a comment explaining why.
 - Use named exports (no default exports).
+- For all functions ensure that the function parameters have proper types and the return type is explicitly defined.
