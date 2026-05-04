@@ -1,6 +1,7 @@
 import { library, findIconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 import type { Theme } from "../constants";
 import "../styles/Header.css";
 
@@ -17,7 +18,7 @@ interface HeaderProps {
 export function Header({ theme, onToggleTheme }: HeaderProps) {
   return (
     <header className="header">
-      <span className="header__title">Panchangam</span>
+      <Link to="/" className="header__title">Panchangam</Link>
       <button
         className={`theme-toggle theme-toggle--${theme}`}
         onClick={onToggleTheme}

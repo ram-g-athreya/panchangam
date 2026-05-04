@@ -13,6 +13,19 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: add-homepage-route
+    priority: 1
+    title: Add routes as specified in `src/ARCHITECTURE.md`
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - Installed react-router-dom (2026-05-04)
+      - App.tsx: wrapped app in BrowserRouter, added Route path="/" for DailyView (2026-05-04)
+      - Header.tsx: Panchangam title is now a Link to "/" (2026-05-04)
+      - Header.css: text-decoration none to suppress underline (2026-05-04)
+      - npm run check passed with no errors (2026-05-04)
+    notes: src/ARCHITECTURE.md did not exist; implemented based on component spec in src/components/ARCHITECTURE.md
   - id: add-text-to-light-dark-toggle
     priority: 1
     title: Add text to light-dark toggle as specified in `src/components/ARCHITECTURE.md`

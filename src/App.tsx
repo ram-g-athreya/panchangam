@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header } from "./components/Header";
 import { DailyView } from "./pages/DailyView";
 import type { Theme } from "./constants";
@@ -25,9 +26,11 @@ export function App() {
   }
 
   return (
-    <div>
+    <BrowserRouter>
       <Header theme={theme} onToggleTheme={toggleTheme} />
-      <DailyView />
-    </div>
+      <Routes>
+        <Route path="/" element={<DailyView />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
