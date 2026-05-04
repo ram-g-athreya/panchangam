@@ -6,6 +6,14 @@
   --color-accent: #b68d40;
 }
 
+[data-theme="dark"] {
+  --color-bg-main: #1a120b;
+  --color-bg-secondary: #2e1e14;
+  --color-text-primary: #d5c4a1;
+  --color-text-secondary: #a88d70;
+  --color-accent: #d4a373;
+}
+
 *,
 *::before,
 *::after {

@@ -86,3 +86,17 @@
 - Files updated: src/styles/Header.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: date navigation or Karana accuracy improvement
+
+### Session 006
+
+- Date: 2026-05-04
+- Goal: Implement `dark-theme` task — add dark theme and toggle
+- Completed:
+  - src/styles/index.css: added `[data-theme="dark"]` block with all five dark palette variables from UI-STYLE.md
+  - src/App.tsx: added `useState<Theme>` + `useEffect` to set `data-theme` on `document.documentElement`; passes `theme` and `onToggleTheme` to Header
+  - src/components/Header.tsx: accepts `HeaderProps` (`theme`, `onToggleTheme`); renders ☽/☀ toggle button
+  - src/styles/Header.css: added `.header__theme-toggle` styles
+- Verification run: npm run check exits 0
+- Files updated: src/styles/index.css, src/App.tsx, src/components/Header.tsx, src/styles/Header.css, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: Karana model still uses only 8 movable karanas
+- Next best step: date navigation (prev/next day)
