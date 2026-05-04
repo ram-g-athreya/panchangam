@@ -8,7 +8,7 @@ cd "$ROOT_DIR"
 # Replace these commands with the correct commands for your repository.
 INSTALL_CMD=(npm install)
 VERIFY_CMD=(npm test)
-START_CMD=(npm run dev)
+START_CMD=(npm run dev-agent)
 
 echo "==> Working directory: $PWD"
 echo "==> Syncing dependencies"
