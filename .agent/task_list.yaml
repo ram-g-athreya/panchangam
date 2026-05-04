@@ -13,6 +13,10 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: update-light-dark-toggle-interaction
+    priority: 1
+    title: Further update the light dark toggle interaction in the header based on the spec in `src/components/ARCHITECTURE.md`
+    status: not_started
   - id: update-light-dark-toggle
     priority: 1
     title: Update the light dark toggle in the header based on the spec in `src/components/ARCHITECTURE.md`
