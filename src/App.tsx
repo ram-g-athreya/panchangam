@@ -4,7 +4,7 @@ import { DailyView } from "./pages/DailyView";
 import type { Theme } from "./constants";
 
 export function App() {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
