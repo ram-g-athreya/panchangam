@@ -41,3 +41,33 @@
 - Files updated: src/styles/index.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: add Panchangam calendar data features (Tithi, Nakshatra, date display)
+
+### Session 003
+
+- Date: 2026-05-04
+- Goal: Implement `add-header` task — Header component with Samarkan font
+- Completed:
+  - Created src/components/Header.tsx — named export Header, renders "Panchangam" in Samarkan font
+  - Created src/styles/Header.css — @font-face for samarkan woff/ttf, padding: 8rem, secondary bg, accent text
+  - Updated src/App.tsx to import and render <Header />
+- Verification run: `npm run check` exits 0
+- Evidence captured: task_list.yaml status set to passing
+- Files updated: src/components/Header.tsx, src/styles/Header.css, src/App.tsx, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: add Panchangam calendar data features (Tithi, Nakshatra, date display)
+
+### Session 004
+
+- Date: 2026-05-04
+- Goal: Implement `daily-panchangam-display` — show all five angas for today
+- Completed:
+  - Created src/core/panchangam.ts — Julian Day, Meeus sun/moon longitude, computes Tithi, Vara, Nakshatra, Yoga, Karana
+  - Created src/pages/DailyView.tsx — card grid with anga values and Sanskrit names
+  - Created src/styles/DailyView.css — responsive card layout using sepia palette variables
+  - Updated src/App.tsx to render <DailyView /> below <Header />
+  - Marked add-header task passing
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml status set to passing
+- Files updated: src/core/panchangam.ts, src/pages/DailyView.tsx, src/styles/DailyView.css, src/App.tsx, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk: Karana model cycles only the 8 movable karanas; 4 fixed karanas not yet modelled
+- Next best step: date navigation (prev/next day) or improve Karana accuracy

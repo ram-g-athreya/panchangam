@@ -2,6 +2,10 @@
 
 Specifies the overall UI CSS Styling for the app
 
+## Font Conventions
+
+- Load the `samarkan` font globally in `src/styles/index.css` to be used app wide
+
 ## Color Conventions
 
 ### Sepia Mode

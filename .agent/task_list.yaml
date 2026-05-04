@@ -16,7 +16,38 @@ tasks:
   - id: add-header
     priority: 1
     title: Add header as specified in `src/components/ARCHITECTURE.md`
-    status: not_started
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - Created src/components/Header.tsx — renders "Panchangam" using Samarkan font (2026-05-04)
+      - Created src/styles/Header.css — @font-face for samarkan, padding 8rem, accent color (2026-05-04)
+      - Updated src/App.tsx to import and render Header (2026-05-04)
+      - npm run check passed with no errors (2026-05-04)
+    notes: >
+      Font files were already present at src/assets/fonts/samarkan/.
+      Header renders word left-aligned in Samarkan font with sepia accent color.
+      Padding spec "8rem" applied literally as per src/components/UI-STYLE.md.
+  - id: daily-panchangam-display
+    priority: 1
+    title: Display the five angas (Tithi, Vara, Nakshatra, Yoga, Karana) for today
+    description:
+      - src/core/panchangam.ts — solar/lunar position calculations, return all five angas
+      - src/pages/DailyView.tsx — renders the five angas in a card layout
+      - App.tsx wires in DailyView below the Header
+    user_visible_behavior: Page shows today's Tithi, Vara, Nakshatra, Yoga and Karana with Sanskrit names
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - Created src/core/panchangam.ts — Meeus-based sun/moon longitude, computes all five angas (2026-05-04)
+      - Created src/pages/DailyView.tsx — card grid displaying each anga (2026-05-04)
+      - Created src/styles/DailyView.css — card layout with sepia palette (2026-05-04)
+      - Updated src/App.tsx to render DailyView below Header (2026-05-04)
+      - npm run check passed with no errors (2026-05-04)
+    notes: >
+      Calculations use simplified Meeus Ch.25/47 formulas accurate to ~1°.
+      Karana cycles through the 8 movable karanas; fixed karanas (Shakuni, Chatushpada, Naga, Kimstughna) not yet modelled.
   - id: basic-styling
     priority: 1
     title: Base styling for the app

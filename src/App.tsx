@@ -1,7 +1,11 @@
+import { Header } from "./components/Header";
+import { DailyView } from "./pages/DailyView";
+
 export function App() {
   return (
     <div>
-      <h1>Panchangam</h1>
+      <Header />
+      <DailyView />
     </div>
   );
 }
