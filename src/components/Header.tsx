@@ -29,6 +29,9 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
             className="theme-toggle__icon"
           />
         </span>
+        <span className="theme-toggle__label">
+          {theme === "light" ? "Light" : "Dark"}
+        </span>
       </button>
     </header>
   );

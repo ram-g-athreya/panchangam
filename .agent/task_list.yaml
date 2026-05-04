@@ -13,6 +13,17 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: add-text-to-light-dark-toggle
+    priority: 1
+    title: Add text to light-dark toggle as specified in `src/components/ARCHITECTURE.md`
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - Header.tsx: added theme-toggle__label span showing "Light" or "Dark" (2026-05-04)
+      - Header.css: label positioned on opposite side from thumb; light → right, dark → left (2026-05-04)
+      - Track widened from 4rem to 5.5rem; dark translateX updated to 3.5rem (2026-05-04)
+      - npm run check passed with no errors (2026-05-04)
   - id: store-light-dark-toggle
     priority: 1
     title: Store the light-dark toggle value in `localStorage` as specified in `src/components/ARCHITECTURE.md`

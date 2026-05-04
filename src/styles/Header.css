@@ -16,7 +16,7 @@
 .theme-toggle {
   margin-left: auto;
   position: relative;
-  width: 4rem;
+  width: 5.5rem;
   height: 2rem;
   border-radius: 1rem;
   border: none;
@@ -39,14 +39,35 @@
   justify-content: center;
   transition: transform 0.25s ease;
   pointer-events: none;
+  z-index: 1;
 }
 
-/* track(4) - thumb(1.6) - left(0.2) - right(0.2) = 2rem */
+/* track(5.5) - thumb(1.6) - left(0.2) - right(0.2) = 3.5rem */
 .theme-toggle--dark .theme-toggle__thumb {
-  transform: translateX(2rem);
+  transform: translateX(3.5rem);
 }
 
 .theme-toggle__icon {
   font-size: 1rem;
   color: var(--color-bg-secondary);
+}
+
+.theme-toggle__label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+.theme-toggle--light .theme-toggle__label {
+  right: 0.75rem;
+}
+
+.theme-toggle--dark .theme-toggle__label {
+  left: 0.75rem;
 }
