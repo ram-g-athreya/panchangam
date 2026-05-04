@@ -1,12 +1,14 @@
 :root {
-  --color-bg-main:       #F4EBD0;
-  --color-bg-secondary:  #E6D5B8;
-  --color-text-primary:  #3C2A21;
-  --color-text-secondary:#634832;
-  --color-accent:        #B68D40;
+  --color-bg-main: #f4ebd0;
+  --color-bg-secondary: #e6d5b8;
+  --color-text-primary: #3c2a21;
+  --color-text-secondary: #634832;
+  --color-accent: #b68d40;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -19,6 +21,11 @@ body {
   min-height: 100vh;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--color-accent);
 }
