@@ -12,6 +12,12 @@ The app should be built using Typescript, React and Vite. The entry point is the
 - The `pages` directory specifies individual pages
 - Stylesheets are placed inside the `styles` directory
 
+## Routes
+
+Following URL paths are supported in the application
+
+- `/` which should map to `src/pages/DailyView.tsx`
+
 ## Coding Conventions
 
 - TypeScript strict mode is enabled. No `any` types without a comment explaining why.

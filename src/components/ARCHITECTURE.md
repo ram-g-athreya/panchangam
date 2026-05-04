@@ -12,6 +12,7 @@ The header component has a padding of `1rem`
 - uses the `accent` color
 - has `font-size` of `2.5rem`
 - `letter-spacing` of `0em`
+- clicking on the text should re-direct the user to the homepage `/`
 
 ### Theme Toggle Switch
 
