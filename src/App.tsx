@@ -2,16 +2,26 @@ import { useState, useEffect } from "react";
 import { Header } from "./components/Header";
 import { DailyView } from "./pages/DailyView";
 import type { Theme } from "./constants";
+import { THEME_KEY } from "./constants";
+
+function getInitialTheme(): Theme {
+  const stored = localStorage.getItem(THEME_KEY);
+  return stored === "dark" ? "dark" : "light";
+}
 
 export function App() {
-  const [theme, setTheme] = useState<Theme>("light");
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
   function toggleTheme() {
-    setTheme((t) => (t === "light" ? "dark" : "light"));
+    setTheme((t) => {
+      const next = t === "light" ? "dark" : "light";
+      localStorage.setItem(THEME_KEY, next);
+      return next;
+    });
   }
 
   return (
