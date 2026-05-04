@@ -113,3 +113,15 @@
 - Files updated: src/components/Header.tsx, src/styles/Header.css, package.json, package-lock.json, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk: byPrefixAndName is not a public FA export; findIconDefinition is the equivalent public API
 - Next best step: date navigation (prev/next day)
+
+### Session 008
+
+- Date: 2026-05-04
+- Goal: Implement `update-light-dark-toggle-interaction` — slider toggle per updated ARCHITECTURE.md spec
+- Completed:
+  - Header.tsx: track contains sun icon (left), sliding thumb, moon icon (right)
+  - Header.css: pill-shaped .theme-toggle with --color-bg-main background; .theme-toggle__thumb slides via translateX(2.1rem) in dark mode; 0.25s ease transition
+- Verification run: npm run check exits 0
+- Files updated: src/components/Header.tsx, src/styles/Header.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: date navigation (prev/next day)

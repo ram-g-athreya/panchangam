@@ -19,11 +19,16 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
     <header className="header">
       <span className="header__title">Panchangam</span>
       <button
-        className={`header__theme-toggle header__theme-toggle--${theme}`}
+        className={`theme-toggle theme-toggle--${theme}`}
         onClick={onToggleTheme}
         aria-label="Toggle theme"
       >
-        <FontAwesomeIcon icon={theme === "light" ? sunIcon : moonIcon} />
+        <span className="theme-toggle__thumb">
+          <FontAwesomeIcon
+            icon={theme === "light" ? sunIcon : moonIcon}
+            className="theme-toggle__icon"
+          />
+        </span>
       </button>
     </header>
   );

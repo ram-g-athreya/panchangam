@@ -16,7 +16,14 @@ tasks:
   - id: update-light-dark-toggle-interaction
     priority: 1
     title: Further update the light dark toggle interaction in the header based on the spec in `src/components/ARCHITECTURE.md`
-    status: not_started
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - Header.tsx: pill-shaped track with sun icon left, moon icon right, sliding thumb (2026-05-04)
+      - Header.css: theme-toggle track uses --color-bg-main; thumb slides via translateX on --dark modifier (2026-05-04)
+      - Thumb animates with 0.25s ease transition (2026-05-04)
+      - npm run check passed with no errors (2026-05-04)
   - id: update-light-dark-toggle
     priority: 1
     title: Update the light dark toggle in the header based on the spec in `src/components/ARCHITECTURE.md`
