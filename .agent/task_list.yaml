@@ -13,6 +13,10 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: add-dark-theme
+    priority: 1
+    title: Update styling across the app and introduce a dark theme as defined in `.agent/UI-STYLE.md`
+    status: not_started
   - id: update-header
     priority: 1
     title: Update header based on specification in `src/components/ARCHITECTURE.md`
