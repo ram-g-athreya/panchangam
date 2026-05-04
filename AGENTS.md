@@ -64,3 +64,4 @@ Before ending a session:
 2. Update `.agent/task_list.yaml`.
 3. Record any unresolved risk or blocker.
 4. Leave the repo clean enough for the next session to run `./init.sh` immediately.
+5. Prompt to commit the changes with a suitable commit message
