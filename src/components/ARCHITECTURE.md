@@ -22,6 +22,6 @@ The word `Panchangam` has the following styling
 The toggle switch to change theme has the following styling
 Use `font-awesome` icons through the npm library to implement the icons.
 
-- the light icon should use <FontAwesomeIcon icon={byPrefixAndName.fas['sun']} />
-- the dark icon should use <FontAwesomeIcon icon={byPrefixAndName.fas['moon']} />
+- the light icon should use the solid sun icon
+- the dark icon should use the solid moon icon
 - the background of the toggle should change to the appropriate light or dark background
