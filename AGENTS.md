@@ -11,32 +11,33 @@ Before writing code:
 1. Confirm the working directory with `pwd`.
 2. Read `.agent/AGENT-PROGRESS.md` for the latest verified state and next step.
 3. Read `.agent/ARCHITECTURE.md` and ensure that the code is organized as specified.
-4. Read `.agent/task_list.yaml` and choose the highest-priority unfinished feature.
-5. Review recent commits with `git log --oneline -5`.
-6. Run `./init.sh`.
-7. Run the required smoke or end-to-end verification before starting new work.
+4. Read `.agent/UI-STYLE.md` and ensure that the CSS styles are applied as specified.
+5. Read `.agent/task_list.yaml` and choose the highest-priority unfinished task.
+6. Review recent commits with `git log --oneline -5`.
+7. Run `./init.sh`.
+8. Run the required smoke or end-to-end verification before starting new work.
 
 If baseline verification is already failing, fix that first. Do not stack new
-feature work on top of a broken starting state.
+task work on top of a broken starting state.
 
 ## Working Rules
 
-- Work on one feature at a time.
-- Do not mark a feature complete just because code was added.
-- Keep changes within the selected feature scope unless a blocker forces a narrow supporting fix.
+- Work on one task at a time.
+- Do not mark a task complete just because code was added.
+- Keep changes within the selected task scope unless a blocker forces a narrow supporting fix.
 - Do not silently change verification rules during implementation.
 - Prefer durable repo artifacts over chat summaries.
 
 ## Required Artifacts
 
-- `.agent/task_list.yaml`: source of truth for feature state
+- `.agent/task_list.yaml`: source of truth for task state
 - `.agent/AGENT-PROGRESS.md`: session log and current verified status
 - `init.sh`: standard startup and verification path
 - `session-handoff.md`: optional compact handoff for larger sessions
 
 ## Definition Of Done
 
-A feature is `done` only when all of the following are true:
+A task is `done` only when all of the following are true:
 
 - the target behavior is implemented
 - TypeScript compiles without errors (`npm run check`).
@@ -45,14 +46,14 @@ A feature is `done` only when all of the following are true:
 - no console errors during normal operation.
 - the repository remains restartable from the standard startup path
 
-## Working with the Feature List
+## Working with the task List
 
 The `task_list.yaml` file is the source of truth for project progress:
 
-- Each feature has a `status`: `"pass"`, `"fail"`, `"not-started"`.
-- When implementing a feature, update its status to `"pass"` with evidence.
-- If a feature is blocked, set status to `"fail"` with a reason.
-- Never delete features from the list.
+- Each task has a `status`: `"pass"`, `"fail"`, `"not-started"`.
+- When implementing a task, update its status to `"pass"` with evidence.
+- If a task is blocked, set status to `"fail"` with a reason.
+- Never delete tasks from the list.
 
 ## End Of Session
 

@@ -13,6 +13,12 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: basic-styling
+    priority: 1
+    title: Base styling for the app
+    description:
+      - Style the app as specified in UI-STYLE.md
+    status: not_started
   - id: create-application
     priority: 1
     title: Build a minimal single page react app shell that has the title Panchangam
