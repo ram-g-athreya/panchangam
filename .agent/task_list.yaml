@@ -13,10 +13,14 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: update-panchangam-calculations
+    priority: 1
+    title: Update panchangam calculations as per `src/core/ARCHITECTURE.md`
+    status: passing
   - id: add-card-icons
     priority: 1
     title: Add icons to daily view cards based on spec in `src/pages/ARCHITECTURE.md`
-    status: not_started
+    status: passing
   - id: resize-daily-view-cards
     priority: 1
     title: Resize the daily view cards based on spec in `src/pages/ARCHITECTURE.md`
