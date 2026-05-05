@@ -15,7 +15,16 @@ tasks:
   - id: implement-navigation-links
     priority: 1
     title: Implement navigation links as per `src/component/ARCHITECTURE.md`
-    status: passing    
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - Header.tsx: added NavLink for Home (/home) and Sankalpam (/sankalpam) in .header__nav panel (2026-05-05)
+      - Header.tsx: navClass helper applies header__nav-link--active when isActive (2026-05-05)
+      - Header.css: .header now flex-direction column; .header__top wraps title + toggle; .header__nav panel below (2026-05-05)
+      - Header.css: active link gets underline + primary text color (2026-05-05)
+      - App.tsx: added /home route rendering DailyView (2026-05-05)
+      - npm run check passed with no errors (2026-05-05)
   - id: implement-sankalpam-page
     priority: 1
     title: Implement the sankalpam page as per `src/pages/ARCHITECTURE.md`

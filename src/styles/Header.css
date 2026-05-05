@@ -1,8 +1,32 @@
 .header {
   display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg-secondary);
+}
+
+.header__top {
+  display: flex;
   align-items: center;
   padding: 1rem;
-  background-color: var(--color-bg-secondary);
+}
+
+.header__nav {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid var(--color-bg-main);
+}
+
+.header__nav-link {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+}
+
+.header__nav-link--active {
+  color: var(--color-text-primary);
+  text-decoration: underline;
 }
 
 .header__title {

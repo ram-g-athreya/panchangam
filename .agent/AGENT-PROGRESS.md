@@ -189,3 +189,19 @@
 - Files updated: src/pages/Sankalpam.tsx, src/styles/Sankalpam.css, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: add navigation link to Sankalpam from DailyView, or new task
+
+### Session 0013
+
+- Date: 2026-05-05
+- Goal: Implement `implement-navigation-links` — nav panel per `src/components/ARCHITECTURE.md`
+- Completed:
+  - Header.tsx: imported NavLink; added .header__nav panel with Home → /home and Sankalpam → /sankalpam links
+  - Header.tsx: navClass applies --active modifier when isActive
+  - Header.css: header restructured to flex column; .header__top flex row for title + toggle; .header__nav below with border-top
+  - Header.css: .header__nav-link--active gets underline + primary text color
+  - App.tsx: added /home route rendering DailyView
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml implement-navigation-links evidence updated
+- Files updated: src/components/Header.tsx, src/styles/Header.css, src/App.tsx, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: new task from task list or further UI refinements
