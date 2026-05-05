@@ -13,6 +13,10 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: implement-sankalpam-page
+    priority: 1
+    title: Implement the sankalpam page as per `src/pages/ARCHITECTURE.md`
+    status: not_started
   - id: update-panchangam-calculations
     priority: 1
     title: Update panchangam calculations as per `src/core/ARCHITECTURE.md`

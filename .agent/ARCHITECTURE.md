@@ -17,6 +17,7 @@ The app should be built using Typescript, React and Vite. The entry point is the
 Following URL paths are supported in the application
 
 - `/` which should map to `src/pages/DailyView.tsx`
+- `/sankalpam` which should map to `src/pages/Sankalpam.tsx`
 
 ## Coding Conventions
 

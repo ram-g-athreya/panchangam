@@ -48,11 +48,26 @@ Specification for the `DailyView` page. Derive the Panchangam by using the `comp
 
 ## Sankalpam
 
-Specification for the `DailyView` page. Derive the Panchangam by using the `computePanchangam` method for the current moment
+Specification for the `Sankalpam` page. Derive the Panchangam by using the `computePanchangam` method for the current moment
 
 ### Title
 
 - The title has the word `Sankalpam` and is centered
-- uses the `accent` color
+- `font-family` should be `Samarkan`
+- uses the `primary` color
 - has `font-size` of `2rem`
 - `letter-spacing` of `0em`
+
+### Sankalpam Text
+
+Based on the computed panchangam generate the Sankalpam based on the template below:
+
+- Replace the variables between {{ }} with the corresponding attribute from the Panchangam object.
+- `font-family` should be `Samarkan`
+- uses the `accent` color
+- has `font-size` of `1rem`
+- `letter-spacing` of `0em`
+
+```
+{{ namasamvatsare }} Namasamvatsare, {{ ayane }}, {{ ritau }} Ritau, {{ mase }} Mase, {{ pakshe }} Pakshe, {{ tithi }} Tithau, {{ vara }} Vasare, {{ nakshatra }} Nakshatre, {{ yoga }} Yoge, {{ karana }} Karane
+```
