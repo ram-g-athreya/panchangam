@@ -16,7 +16,14 @@ tasks:
   - id: resize-daily-view-cards
     priority: 1
     title: Resize the daily view cards based on spec in `src/pages/ARCHITECTURE.md`
-    status: not_started
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - DailyView.css: grid changed from repeat(6, 1fr) to repeat(auto-fit, minmax(150px, 1fr)) (2026-05-04)
+      - daily-view container: width 100% + overflow-x hidden to prevent page overflow (2026-05-04)
+      - Cards remain equal size per row and wrap responsively on narrow viewports (2026-05-04)
+      - npm run check passed with no errors (2026-05-04)
   - id: update-time-widget
     priority: 1
     title: Modify the time widget based on spec in `src/pages/ARCHITECTURE.md`

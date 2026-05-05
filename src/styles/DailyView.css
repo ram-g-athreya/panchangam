@@ -1,10 +1,13 @@
 .daily-view {
   padding: 2rem 3rem;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .anga-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1.25rem;
 }
 
