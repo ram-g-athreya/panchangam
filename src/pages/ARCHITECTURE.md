@@ -1,5 +1,7 @@
 # ARCHITECTURE.md
 
+All pages have the header component on top.
+
 ## DailyView
 
 Specification for the `DailyView` page. Derive the Panchangam by using the `computePanchangam` method for the current moment
@@ -43,3 +45,14 @@ Specification for the `DailyView` page. Derive the Panchangam by using the `comp
   subvalue: ""
   requirements: "based on Panchangam derived above"
 ```
+
+## Sankalpam
+
+Specification for the `DailyView` page. Derive the Panchangam by using the `computePanchangam` method for the current moment
+
+### Title
+
+- The title has the word `Sankalpam` and is centered
+- uses the `accent` color
+- has `font-size` of `2rem`
+- `letter-spacing` of `0em`

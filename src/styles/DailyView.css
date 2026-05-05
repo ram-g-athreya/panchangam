@@ -29,7 +29,7 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--color-text-secondary);
-  min-height: 1em;
+  min-height: 1.5em;
 }
 
 .anga-card__label svg {
