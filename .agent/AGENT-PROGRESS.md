@@ -221,3 +221,23 @@
 - Files updated: src/styles/index.css, src/styles/Header.css, src/components/Header.tsx, src/App.tsx, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: new task from task list
+
+### Session 0015
+
+- Date: 2026-05-05
+- Goal: Implement `update-panchangam-algorithm` — full Nirayana (sidereal) coordinate system with Lahiri Ayanamsha per `src/core/ARCHITECTURE.md`
+- Completed:
+  - lahiriAyanamsha(T): `23.85 + 1.396*T + 0.000308*T²` — Lahiri precession correction
+  - Renamed sunLongitude/moonLongitude to tropicalSunLongitude/tropicalMoonLongitude for clarity
+  - siderealLongitude(tropical, T): subtracts Lahiri ayanamsha from tropical longitude, mod360
+  - computePanchangam: derives sunSidereal and moonSidereal; all five angas (plus ayane/ritau/mase) now use sidereal coordinates
+  - Tithi: tithiIndex 14 → "Purnima", 29 → "Amavasya" (per spec; previously paksha-conditional)
+  - Nakshatra: floor(moonSidereal / 13.3333) per spec (was (moonLong/360)*27)
+  - Yoga: floor(yogaSum / 13.3333) per spec (was (sum/360)*27)
+  - Karana: computeKarana() implements full 60-karana model — index 0 = Kimstughna (fixed), 57 = Shakuni, 58 = Chatushpada, 59 = Naga; indices 1–56 cycle through 7 repeating karanas
+  - KARANAS constant replaced with REPEATING_KARANAS (7 names: Bava…Vishti; removed Bhadra)
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml update-panchangam-algorithm set to passing
+- Files updated: src/core/panchangam.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: namasamvatsare still uses Gregorian Mar 22 approximation for Chaitra start
+- Next best step: all tasks now passing; check task_list.yaml for any new additions

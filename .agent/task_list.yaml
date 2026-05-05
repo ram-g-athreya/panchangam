@@ -15,7 +15,20 @@ tasks:
   - id: update-panchangam-algorithm
     priority: 1
     title: Update Panchangam calculation based on `src/core/ARCHITECTURE.md`
-    status: not_started
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - panchangam.ts: added lahiriAyanamsha(T) — A = 23.85 + 1.396*T + 0.000308*T^2 (2026-05-05)
+      - panchangam.ts: renamed sunLongitude/moonLongitude to tropicalSunLongitude/tropicalMoonLongitude (2026-05-05)
+      - panchangam.ts: added siderealLongitude() — subtracts Lahiri ayanamsha from tropical (2026-05-05)
+      - panchangam.ts: computePanchangam uses sunSidereal/moonSidereal for all anga calculations (2026-05-05)
+      - panchangam.ts: Tithi naming — tithiIndex 14 → "Purnima", 29 → "Amavasya" per spec (2026-05-05)
+      - panchangam.ts: Nakshatra index uses floor(moonSidereal / 13.3333) per spec (2026-05-05)
+      - panchangam.ts: Yoga index uses floor(yogaSum / 13.3333) per spec (2026-05-05)
+      - panchangam.ts: Karana — computeKarana() with fixed (Kimstughna/Shakuni/Chatushpada/Naga) and 7 repeating karanas (2026-05-05)
+      - panchangam.ts: KARANAS constant replaced with REPEATING_KARANAS (7 names, no Bhadra) (2026-05-05)
+      - npm run check passed with no errors (2026-05-05)
   - id: update-navigation-links-styling
     priority: 1
     title: Update style guide based on `src/.agent/UI-STYLE.md`. Implement styling for navigation links as per `src/component/ARCHITECTURE.md`
