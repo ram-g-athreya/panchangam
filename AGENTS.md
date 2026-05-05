@@ -59,7 +59,7 @@ The `task_list.yaml` file is the source of truth for project progress:
 
 Before ending a session:
 
-1. Update `.agent/AGENT-PROGRESS.md`. Include a line on the number of tokens spent in the current task.
+1. Append your progress log to the end of `.agent/AGENT-PROGRESS.md`.
 2. Update `.agent/task_list.yaml`.
 3. Record any unresolved risk or blocker.
 4. Leave the repo clean enough for the next session to run `./init.sh` immediately.
