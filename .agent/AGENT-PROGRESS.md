@@ -9,7 +9,7 @@
 
 ## Session Log
 
-### Session 001
+### Session 0001
 
 - Date: 2026-05-03
 - Goal: Build minimal single-page React/Vite/TypeScript app shell titled "Panchangam"
@@ -29,7 +29,7 @@
 - Known risk or unresolved issue: none
 - Next best step: add more features to the Panchangam app (calendar data, date display, etc.)
 
-### Session 002
+### Session 0002
 
 - Date: 2026-05-03
 - Goal: Implement `basic-styling` task — apply sepia color palette from UI-STYLE.md
@@ -42,7 +42,7 @@
 - Known risk or unresolved issue: none
 - Next best step: add Panchangam calendar data features (Tithi, Nakshatra, date display)
 
-### Session 003
+### Session 0003
 
 - Date: 2026-05-04
 - Goal: Implement `add-header` task — Header component with Samarkan font
@@ -56,7 +56,7 @@
 - Known risk or unresolved issue: none
 - Next best step: add Panchangam calendar data features (Tithi, Nakshatra, date display)
 
-### Session 004
+### Session 0004
 
 - Date: 2026-05-04
 - Goal: Implement `daily-panchangam-display` — show all five angas for today
@@ -72,7 +72,7 @@
 - Known risk: Karana model cycles only the 8 movable karanas; 4 fixed karanas not yet modelled
 - Next best step: date navigation (prev/next day) or improve Karana accuracy
 
-### Session 005
+### Session 0005
 
 - Date: 2026-05-04
 - Goal: Implement `update-header` task — apply updated spec from src/components/ARCHITECTURE.md
@@ -87,7 +87,7 @@
 - Known risk or unresolved issue: none
 - Next best step: date navigation or Karana accuracy improvement
 
-### Session 006
+### Session 0006
 
 - Date: 2026-05-04
 - Goal: Implement `dark-theme` task — add dark theme and toggle
@@ -101,7 +101,7 @@
 - Known risk or unresolved issue: Karana model still uses only 8 movable karanas
 - Next best step: date navigation (prev/next day)
 
-### Session 007
+### Session 0007
 
 - Date: 2026-05-04
 - Goal: Implement `update-light-dark-toggle` — replace text toggle with FontAwesome icons per ARCHITECTURE.md spec
@@ -114,7 +114,7 @@
 - Known risk: byPrefixAndName is not a public FA export; findIconDefinition is the equivalent public API
 - Next best step: date navigation (prev/next day)
 
-### Session 008
+### Session 0008
 
 - Date: 2026-05-04
 - Goal: Implement `update-light-dark-toggle-interaction` — slider toggle per updated ARCHITECTURE.md spec
@@ -126,7 +126,7 @@
 - Known risk or unresolved issue: none
 - Next best step: date navigation (prev/next day)
 
-### Session 009
+### Session 0009
 
 - Date: 2026-05-04
 - Goal: Update `add-card-icons` task — add FA icons to all card labels and apply updated label styling from `src/pages/ARCHITECTURE.md`
@@ -141,3 +141,21 @@
 - Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: date navigation (prev/next day) or new feature from task list
+
+### Session 0010
+
+- Date: 2026-05-04
+- Goal: Implement `update-panchangam-calculations` — extend Panchangam with namasamvatsare, ayane, ritau, mase per `src/core/ARCHITECTURE.md`
+- Completed:
+  - Added SAMVATSARAS (60 Jovian year names), MASAS (12 solar months), RITUS (6 seasons) constant arrays
+  - computeNamasamvatsare: approximates VS year from Gregorian date, indexes into 60-name samvatsara cycle
+  - computeAyane: Uttarayana when sun < 90° or >= 270°, Dakshinayana otherwise
+  - computeRitau: 6 ritus by 60° solar longitude bands starting from Mesha
+  - computeMase: saura masa by 30° solar longitude bands starting from Mesha (Chaitra)
+  - Panchangam interface extended with namasamvatsare, ayane, ritau, mase
+  - computePanchangam returns all new fields
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml update-panchangam-calculations set to passing
+- Files updated: src/core/panchangam.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk: namasamvatsare uses Mar 22 as Chaitra approximation; true start varies by ~3 weeks year to year
+- Next best step: surface new fields in DailyView UI, or date navigation

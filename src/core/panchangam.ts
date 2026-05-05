@@ -100,6 +100,31 @@ const KARANAS = [
   "Bhadra",
 ] as const;
 
+const SAMVATSARAS = [
+  "Prabhava", "Vibhava", "Shukla", "Pramoda", "Prajapati",
+  "Angiras", "Shrimukha", "Bhava", "Yuva", "Dhata",
+  "Ishvara", "Bahudhanya", "Pramathi", "Vikrama", "Vrisha",
+  "Chitrabhanu", "Subhanu", "Tarana", "Parthiva", "Vyaya",
+  "Sarvajit", "Sarvadhari", "Virodhi", "Vikrita", "Khara",
+  "Nandana", "Vijaya", "Jaya", "Manmatha", "Durmukhi",
+  "Hevilambi", "Vilambi", "Vikari", "Sharvari", "Plava",
+  "Shubhakruta", "Shobhakruta", "Krodhi", "Vishvavasu", "Parabhava",
+  "Plavanga", "Kilaka", "Saumya", "Sadharana", "Virodhikruta",
+  "Paridhavi", "Pramadicha", "Ananda", "Rakshasa", "Nala",
+  "Pingala", "Kalayukti", "Siddharthi", "Raudra", "Durmathi",
+  "Dundubhi", "Rudhirodgari", "Raktakshi", "Krodhana", "Kshaya",
+] as const;
+
+const MASAS = [
+  "Chaitra", "Vaishakha", "Jyeshtha", "Ashadha",
+  "Shravana", "Bhadrapada", "Ashvina", "Kartika",
+  "Margashirsha", "Pausha", "Magha", "Phalguna",
+] as const;
+
+const RITUS = [
+  "Vasanta", "Grishma", "Varsha", "Sharada", "Hemanta", "Shishira",
+] as const;
+
 function toJulianDay(date: Date): number {
   const y = date.getUTCFullYear();
   const m = date.getUTCMonth() + 1;
@@ -179,6 +204,39 @@ export interface Panchangam {
   nakshatra: string;
   yoga: string;
   karana: string;
+  namasamvatsare: string;
+  ayane: "Uttarayana" | "Dakshinayana";
+  ritau: string;
+  mase: string;
+}
+
+function computeNamasamvatsare(date: Date): string {
+  // Vikram Samvat year starts on Chaitra Shukla Pratipada (~Mar 22–Apr 15).
+  // Approximate: VS year = Gregorian year + 57 on/after Mar 22, else + 56.
+  const gregYear = date.getFullYear();
+  const isAfterChaitraStart =
+    date.getMonth() > 2 || (date.getMonth() === 2 && date.getDate() >= 22);
+  const vsYear = isAfterChaitraStart ? gregYear + 57 : gregYear + 56;
+  const index = (vsYear - 1) % 60;
+  return SAMVATSARAS[index];
+}
+
+function computeAyane(sunLong: number): "Uttarayana" | "Dakshinayana" {
+  // Uttarayana: Sun in [270°, 360°) or [0°, 90°) — moving northward
+  // Dakshinayana: Sun in [90°, 270°) — moving southward
+  return sunLong < 90 || sunLong >= 270 ? "Uttarayana" : "Dakshinayana";
+}
+
+function computeRitau(sunLong: number): string {
+  // Six seasons, each spanning 60° of solar longitude starting from Mesha (0°)
+  const index = Math.floor(sunLong / 60) % 6;
+  return RITUS[index];
+}
+
+function computeMase(sunLong: number): string {
+  // Saura masa: solar month determined by sun's rashi (30° segments from Mesha)
+  const index = Math.floor(sunLong / 30) % 12;
+  return MASAS[index];
 }
 
 export function computePanchangam(date: Date): Panchangam {
@@ -219,5 +277,9 @@ export function computePanchangam(date: Date): Panchangam {
     nakshatra,
     yoga,
     karana,
+    namasamvatsare: computeNamasamvatsare(date),
+    ayane: computeAyane(sunLong),
+    ritau: computeRitau(sunLong),
+    mase: computeMase(sunLong),
   };
 }
