@@ -179,6 +179,11 @@ const MASAS = [
 
 const RITUS = ["Vasanta", "Grishma", "Varsha", "Sharada", "Hemanta", "Shishira"] as const;
 
+function dayOfYear(date: Date): number {
+  const startOfYear = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+  return Math.floor((date.getTime() - startOfYear.getTime()) / 86400000) + 1;
+}
+
 function toJulianDay(date: Date): number {
   const y = date.getUTCFullYear();
   const m = date.getUTCMonth() + 1;
@@ -256,6 +261,51 @@ function siderealLongitude(tropical: number, T: number): number {
   return mod360(tropical - lahiriAyanamsha(T));
 }
 
+// Returns the Julian Day of local sunrise (in UTC) using the NOAA zenith-based algorithm.
+// Falls back to solar noon on the given date if the sun never rises/sets.
+function computeSunriseJD(date: Date, latitude: number, longitude: number): number {
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+  const toDeg = (rad: number) => (rad * 180) / Math.PI;
+
+  const N = dayOfYear(date);
+  const t = N + (6 - longitude / 15) / 24;
+
+  const M = mod360(0.9856 * t - 3.289);
+  const Mrad = toRad(M);
+  const L = mod360(M + 1.916 * Math.sin(Mrad) + 0.02 * Math.sin(2 * Mrad) + 282.634);
+  const Lrad = toRad(L);
+
+  // Right Ascension — atan result adjusted to same 90° quadrant as L, then converted to hours
+  let RA = toDeg(Math.atan(0.91764 * Math.tan(Lrad)));
+  const Lquad = Math.floor(L / 90) * 90;
+  const RAquad = Math.floor(RA / 90) * 90;
+  RA = (RA + (Lquad - RAquad)) / 15;
+
+  const sinDec = 0.39782 * Math.sin(Lrad);
+  const cosDec = Math.sqrt(1 - sinDec * sinDec);
+
+  const cosH =
+    (Math.cos(toRad(90.833)) - sinDec * Math.sin(toRad(latitude))) /
+    (cosDec * Math.cos(toRad(latitude)));
+
+  // H in hours for sunrise (west side of meridian)
+  const H = cosH >= 1 || cosH <= -1 ? 12 : mod360(360 - toDeg(Math.acos(cosH))) / 15;
+
+  const utcHours = (((H + RA - 0.06571 * t - 6.622 - longitude / 15) % 24) + 24) % 24;
+
+  const sunriseDate = new Date(
+    Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      Math.floor(utcHours),
+      Math.floor((utcHours % 1) * 60),
+      Math.floor(((utcHours * 60) % 1) * 60),
+    ),
+  );
+  return toJulianDay(sunriseDate);
+}
+
 export interface Panchangam {
   tithi: { number: number; name: string; paksha: "Shukla" | "Krishna" };
   vara: string;
@@ -305,8 +355,16 @@ function computeKarana(karanaIndex: number): string {
   return REPEATING_KARANAS[(karanaIndex - 1) % 7];
 }
 
-export function computePanchangam(date: Date): Panchangam {
-  const jd = toJulianDay(date);
+// Default coordinates: Bangalore, India (a common Panchangam reference city)
+const DEFAULT_LATITUDE = 12.9716;
+const DEFAULT_LONGITUDE = 77.5946;
+
+export function computePanchangam(
+  date: Date,
+  latitude: number = DEFAULT_LATITUDE,
+  longitude: number = DEFAULT_LONGITUDE,
+): Panchangam {
+  const jd = computeSunriseJD(date, latitude, longitude);
   const T = (jd - 2451545.0) / 36525;
 
   const sunSidereal = siderealLongitude(tropicalSunLongitude(jd), T);

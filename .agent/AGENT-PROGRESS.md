@@ -241,3 +241,20 @@
 - Files updated: src/core/panchangam.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: namasamvatsare still uses Gregorian Mar 22 approximation for Chaitra start
 - Next best step: all tasks now passing; check task_list.yaml for any new additions
+
+### Session 0016
+
+- Date: 2026-05-05
+- Goal: Implement `update-panchangam-algorithm-consider-local-time` — compute planetary positions at local sunrise rather than the current moment
+- Completed:
+  - panchangam.ts: added dayOfYear(date) — 1-based UTC day of year, used in sunrise algorithm
+  - panchangam.ts: added computeSunriseJD(date, lat, lon) — NOAA zenith-based algorithm; returns JD of sunrise in UTC; falls back to solar noon if sun never rises/sets
+  - panchangam.ts: added DEFAULT_LATITUDE (12.9716) and DEFAULT_LONGITUDE (77.5946) — Bangalore as reference city
+  - panchangam.ts: computePanchangam signature extended to (date, latitude?, longitude?) with Bangalore defaults
+  - panchangam.ts: all planetary position JD now derives from computeSunriseJD, not toJulianDay(date)
+  - Existing callers (DailyView.tsx, Sankalpam.tsx) require no change — default params apply
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml update-panchangam-algorithm-consider-local-time set to passing
+- Files updated: src/core/panchangam.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk: sunrise algorithm uses simplified NOAA formula (±1–2 min accuracy); good enough for panchangam anga determination
+- Next best step: all tasks now passing; check task_list.yaml for any new additions

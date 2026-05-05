@@ -15,7 +15,17 @@ tasks:
   - id: update-panchangam-algorithm-consider-local-time
     priority: 1
     title: Update Panchangam calculation based on `src/core/ARCHITECTURE.md`
-    status: not_started
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - panchangam.ts: added dayOfYear() helper returning 1-based day-of-year from UTC date (2026-05-05)
+      - panchangam.ts: added computeSunriseJD(date, lat, lon) using NOAA zenith-based algorithm — returns JD of sunrise in UTC (2026-05-05)
+      - panchangam.ts: added DEFAULT_LATITUDE (12.9716) and DEFAULT_LONGITUDE (77.5946) for Bangalore (2026-05-05)
+      - panchangam.ts: computePanchangam now accepts optional latitude/longitude params (default Bangalore) (2026-05-05)
+      - panchangam.ts: all planetary position calculations now use sunrise JD instead of the raw date's JD (2026-05-05)
+      - Existing callers (DailyView.tsx, Sankalpam.tsx) unchanged — default params cover them (2026-05-05)
+      - npm run check passed with no errors (2026-05-05)
   - id: update-panchangam-algorithm
     priority: 1
     title: Update Panchangam calculation based on `src/core/ARCHITECTURE.md`
