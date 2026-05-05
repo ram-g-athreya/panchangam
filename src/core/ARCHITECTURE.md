@@ -17,7 +17,19 @@
 
 ### Algorithm
 
-#### 1. Core Astronomical Principles
+#### 1. Technical Implementation Requirements (Read First)
+
+- **Precision:** Use double-precision floating-point numbers for all astronomical coordinates.
+- **Trigonometry:** All math functions (Sine, Cosine, Tangent) must receive input in **Radians**. Convert all degree-based formulas using `radians = degrees * (pi / 180)`.
+- **Normalization:** All angular results must be normalized to the range `[0, 360)`. Use a floating-point modulo function: `((angle % 360) + 360) % 360`.
+- **Time Standard:** Use **Julian Day (JD)** derived from UTC for all planetary positions.
+- **Logic Flow:**
+  1. Calculate the **Local Sunrise** (in UTC) for the given Latitude, Longitude, and Date.
+  2. Convert this **Sunrise UTC Time** into a precise **Julian Day (JD)**.
+  3. Calculate all planetary positions (Sun/Moon longitudes) for that specific **Sunrise Julian Day**.
+  4. Determine the "ruling" Panchangam elements based on these sunrise positions.
+
+#### 2. Core Astronomical Principles
 
 - **Coordinate System:** All calculations must be performed using **Nirayana (Sidereal)** longitudes.
 - **Ayanamsha (Precession Adjustment):** To convert Tropical (Sayana) longitudes to Sidereal, the **Lahiri Ayanamsha** must be subtracted.
@@ -26,7 +38,23 @@
 - **Nirayana Longitude Formula:** `L_sidereal = (L_tropical - A) % 360`
 - **Time Standard:** Calculations should utilize **Julian Day (JD)** derived from UTC to maintain astronomical precision and avoid time-zone offsets during calculation.
 
-#### 2. Element Definitions & Algorithms
+#### 3. Sunrise Algorithm (Zenith-based)
+
+To find the Sunrise time (UTC) for a given `date`, `latitude`, and `longitude`:
+
+1. **Calculate the Day of the Year:** `N`
+2. **Approximate Time:** `t = N + ((6 - (longitude / 15)) / 24)`
+3. **Mean Anomaly:** `M = (0.9856 * t) - 3.289`
+4. **True Longitude:** `L = M + (1.916 * sin(M)) + (0.020 * sin(2 * M)) + 282.634` (Normalize `L` to `[0, 360)`)
+5. **Right Ascension:** `RA = atan(0.91764 * tan(L))` (Adjust `RA` to be in the same quadrant as `L`)
+6. **Declination:** `sin(dec) = 0.39782 * sin(L)`, `cos(dec) = sqrt(1 - sin(dec)^2)`
+7. **Local Hour Angle:** `cos(H) = (cos(90.833) - (sin(dec) * sin(latitude))) / (cos(dec) * cos(latitude))`
+   - If `cos(H) > 1` or `cos(H) < -1`, the sun never rises/sets at this location on this day.
+8. **Sunrise Time:** `H = 360 - acos(cos(H))`
+   - `T = H / 15 + RA / 15 - (0.06571 * t) - 6.622`
+   - `UTCTime = T - (longitude / 15)`
+
+#### 4. Element Definitions & Algorithms
 
 ##### A. Tithi (Lunar Day)
 
@@ -95,9 +123,3 @@ The name of the year in the 60-year Jovian cycle.
 
 - **Logic:** Calculated by adding an offset to the current Shaka or Vikram Samvat year.
 - **Formula:** `(Year_current + Offset) % 60` mapped to the Samvatsara list.
-
-#### 3. Mathematical Constraints
-
-1.  **Normalization:** All angular results must be constrained to `[0, 360)` using a floating-point modulo.
-2.  **Trigonometry:** All astronomical functions (Sine, Cosine) must receive input in Radians (`degrees * pi / 180`).
-3.  **Precision:** Calculations for Sun and Moon longitudes must use the full perturbation terms provided by the Jean Meeus algorithms for accuracy.
