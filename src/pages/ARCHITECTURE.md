@@ -10,7 +10,7 @@ Displays 6 information cards of the same size with a label, value and sub. The c
 
 ```yaml
 - label:
-    - Display a toggle switch with the text saying 12-hour or 24-hour in the background and being 12-hour by default.
+    - Clock icon followed by a toggle switch with the text saying 12-hour or 24-hour in the background and being 12-hour by default.
     - Based on the value chosen the value below needs to change to 12-hour or 24-hour format
     - Store the value in localStorage and rehydrate on startup
     - Ensure that the storage key is in the constants file and imported
