@@ -6,11 +6,17 @@ Specification for the `DailyView` page. Derive the Panchangam by using the `comp
 
 ### Information Cards
 
-Displays 6 information cards of the same size in a single row in desktop resolution with a label, value and sub:
+Displays 6 information cards of the same size with a label, value and sub. The cards must be responsive and together the panel should not exceed the width of the page
 
 ```yaml
-- label: ""
-  value: "current time in the format of `hh:mm:ss`"
+- label:
+    - Display a toggle switch with the text saying 12-hour or 24-hour in the background and being 12-hour by default.
+    - Based on the value chosen the value below needs to change to 12-hour or 24-hour format
+    - Store the value in localStorage and rehydrate on startup
+    - Ensure that the storage key is in the constants file and imported
+  value:
+    - current time in 12-hour format of `hh:mm:ss AM / PM` if 12 hour format is set
+    - current time in 24-hour format of `hh:mm:ss` if 24 hour format is set
   subvalue: "current date in the format"
   requirements: "the date and time should update every second"
 - label: TITHI
