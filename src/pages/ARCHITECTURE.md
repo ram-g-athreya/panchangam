@@ -65,7 +65,7 @@ Based on the computed panchangam generate the Sankalpam based on the template be
 - Replace the variables between {{ }} with the corresponding attribute from the Panchangam object.
 - uses the `accent` color
 - has `font-size` of `1.5rem`
-- `letter-spacing` of `0em`
+- `letter-spacing` of `0.025em`
 - ensure that the interpolated variables `{{ }}` are bold with `font-size` of `1.75` rem
 - give the background a parchment like feel that envelopes the text and has a padding of `4rem`
 
