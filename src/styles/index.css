@@ -1,6 +1,7 @@
 :root {
   --color-bg-main: #f4ebd0;
   --color-bg-secondary: #e6d5b8;
+  --color-bg-tertiary: #dccab2;
   --color-text-primary: #3c2a21;
   --color-text-secondary: #634832;
   --color-accent: #8b5e00;
@@ -9,6 +10,7 @@
 [data-theme="dark"] {
   --color-bg-main: #1a120b;
   --color-bg-secondary: #2e1e14;
+  --color-bg-tertiary: #3d2b1f;
   --color-text-primary: #d5c4a1;
   --color-text-secondary: #a88d70;
   --color-accent: #d4a373;

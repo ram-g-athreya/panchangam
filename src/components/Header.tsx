@@ -40,7 +40,7 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
         </button>
       </div>
       <nav className="header__nav">
-        <NavLink to="/home" className={navClass}>Home</NavLink>
+        <NavLink to="/" className={navClass}>Home</NavLink>
         <NavLink to="/sankalpam" className={navClass}>Sankalpam</NavLink>
       </nav>
     </header>

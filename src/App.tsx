@@ -31,7 +31,6 @@ export function App() {
       <Header theme={theme} onToggleTheme={toggleTheme} />
       <Routes>
         <Route path="/" element={<DailyView />} />
-        <Route path="/home" element={<DailyView />} />
         <Route path="/sankalpam" element={<Sankalpam />} />
       </Routes>
     </BrowserRouter>

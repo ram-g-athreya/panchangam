@@ -205,3 +205,19 @@
 - Files updated: src/components/Header.tsx, src/styles/Header.css, src/App.tsx, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: new task from task list or further UI refinements
+
+### Session 0014
+
+- Date: 2026-05-05
+- Goal: Implement `update-navigation-links-styling` — tertiary background colour + nav link styling per UI-STYLE.md and components ARCHITECTURE.md
+- Completed:
+  - index.css: added --color-bg-tertiary to :root (#dccab2) and [data-theme="dark"] (#3d2b1f)
+  - Header.css: .header__nav uses var(--color-bg-tertiary) as background; removed border-top
+  - Header.css: .header__nav-link--active gains text-underline-offset: 0.3rem
+  - Header.tsx: Home NavLink target changed from /home to / per updated spec
+  - App.tsx: removed /home route (Home now maps to /)
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml update-navigation-links-styling set to passing
+- Files updated: src/styles/index.css, src/styles/Header.css, src/components/Header.tsx, src/App.tsx, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: new task from task list

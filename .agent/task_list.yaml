@@ -15,7 +15,17 @@ tasks:
   - id: update-navigation-links-styling
     priority: 1
     title: Update style guide based on `src/.agent/UI-STYLE.md`. Implement styling for navigation links as per `src/component/ARCHITECTURE.md`
-    status: not_started
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - index.css: added --color-bg-tertiary (#dccab2 light, #3d2b1f dark) to both themes (2026-05-05)
+      - Header.css: .header__nav background set to var(--color-bg-tertiary) (2026-05-05)
+      - Header.css: .header__nav-link--active: text-underline-offset 0.3rem (2026-05-05)
+      - Header.css: removed border-top in favour of tertiary background (2026-05-05)
+      - Header.tsx: Home NavLink changed from /home to / per updated spec (2026-05-05)
+      - App.tsx: removed /home route (no longer in spec) (2026-05-05)
+      - npm run check passed with no errors (2026-05-05)
   - id: implement-navigation-links
     priority: 1
     title: Implement navigation links as per `src/component/ARCHITECTURE.md`
