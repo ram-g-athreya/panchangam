@@ -13,6 +13,10 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: spec-out-daily-view
+    priority: 1
+    title: Modify DailyView based on spec in `src/pages/ARCHITECTURE.md`
+    status: not_started
   - id: add-homepage-route
     priority: 1
     title: Add routes as specified in `src/ARCHITECTURE.md`
