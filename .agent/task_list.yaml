@@ -13,6 +13,10 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: resize-daily-view-cards
+    priority: 1
+    title: Resize the daily view cards based on spec in `src/pages/ARCHITECTURE.md`
+    status: not_started
   - id: update-time-widget
     priority: 1
     title: Modify the time widget based on spec in `src/pages/ARCHITECTURE.md`
