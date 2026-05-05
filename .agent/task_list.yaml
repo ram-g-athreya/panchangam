@@ -12,6 +12,10 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: update-panchangam-algorithm
+    priority: 1
+    title: Update Panchangam calculation based on `src/core/ARCHITECTURE.md`
+    status: not_started
   - id: update-navigation-links-styling
     priority: 1
     title: Update style guide based on `src/.agent/UI-STYLE.md`. Implement styling for navigation links as per `src/component/ARCHITECTURE.md`
