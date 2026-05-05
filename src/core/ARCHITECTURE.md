@@ -8,5 +8,9 @@
   - **nakshatra**: associated star
   - **yoga**: represents the combined angular relationship between the Sun and the Moon
   - **karana**: half of the tithi
+  - **namasamvatsare**: year in the vedic calendar
+  - **ayane**: the solstice
+  - **ritau**: the season
+  - **mase**: the vedic month
 - Write corresponding functions to calculate each component
 - Expose a function called `computePanchangam` that takes a date as parameter and returns the Panchangam

@@ -33,7 +33,6 @@ task work on top of a broken starting state.
 - `.agent/task_list.yaml`: source of truth for task state
 - `.agent/AGENT-PROGRESS.md`: session log and current verified status
 - `init.sh`: standard startup and verification path
-- `session-handoff.md`: optional compact handoff for larger sessions
 
 ## Definition Of Done
 
