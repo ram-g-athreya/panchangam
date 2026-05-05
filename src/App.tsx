@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header } from "./components/Header";
 import { DailyView } from "./pages/DailyView";
+import { Sankalpam } from "./pages/Sankalpam";
 import type { Theme } from "./constants";
 import { THEME_KEY } from "./constants";
 
@@ -30,6 +31,7 @@ export function App() {
       <Header theme={theme} onToggleTheme={toggleTheme} />
       <Routes>
         <Route path="/" element={<DailyView />} />
+        <Route path="/sankalpam" element={<Sankalpam />} />
       </Routes>
     </BrowserRouter>
   );

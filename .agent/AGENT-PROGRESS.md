@@ -159,3 +159,33 @@
 - Files updated: src/core/panchangam.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk: namasamvatsare uses Mar 22 as Chaitra approximation; true start varies by ~3 weeks year to year
 - Next best step: surface new fields in DailyView UI, or date navigation
+
+### Session 0011
+
+- Date: 2026-05-04
+- Goal: Implement `implement-sankalpam-page` — Sankalpam page per `src/pages/ARCHITECTURE.md`
+- Completed:
+  - Created src/pages/Sankalpam.tsx — computes Panchangam for current moment, renders title + sankalpam text
+  - Created src/styles/Sankalpam.css — title: Samarkan 2rem primary color centered; text: Samarkan 1rem accent color centered; both letter-spacing 0em
+  - App.tsx: added `/sankalpam` route mapping to Sankalpam component
+  - Sankalpam string follows template: namasamvatsare, ayane, ritau, mase, paksha, tithi, vara, nakshatra, yoga, karana
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml implement-sankalpam-page set to passing
+- Files updated: src/pages/Sankalpam.tsx, src/styles/Sankalpam.css, src/App.tsx, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: surface new panchangam fields in DailyView, or add navigation link to Sankalpam page
+
+### Session 0012
+
+- Date: 2026-05-04
+- Goal: Iterative Sankalpam page updates per `src/pages/ARCHITECTURE.md`
+- Completed:
+  - Sankalpam.css: title font-size 2rem → 4rem
+  - Sankalpam.tsx: removed Samarkan font-family from text; switched plain string to JSX with bold variables via `<strong>`
+  - Sankalpam.css: text font-size 1rem → 1.5rem
+  - Sankalpam.css: added parchment background (--color-bg-secondary), padding 4rem, border-radius, box-shadow
+  - Sankalpam.css: added .sankalpam\_\_text strong { font-size: 1.75rem } for bold variable sizing
+- Verification run: npm run check exits 0
+- Files updated: src/pages/Sankalpam.tsx, src/styles/Sankalpam.css, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: add navigation link to Sankalpam from DailyView, or new task

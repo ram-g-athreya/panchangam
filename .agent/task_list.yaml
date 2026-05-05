@@ -16,7 +16,15 @@ tasks:
   - id: implement-sankalpam-page
     priority: 1
     title: Implement the sankalpam page as per `src/pages/ARCHITECTURE.md`
-    status: not_started
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - Created src/pages/Sankalpam.tsx — computePanchangam(new Date()), renders title + sankalpam text (2026-05-04)
+      - Created src/styles/Sankalpam.css — title: Samarkan 2rem primary color; text: Samarkan 1rem accent color; both letter-spacing 0em (2026-05-04)
+      - App.tsx: added Route path="/sankalpam" element={<Sankalpam />} (2026-05-04)
+      - Sankalpam text assembled from all Panchangam fields per template in ARCHITECTURE.md (2026-05-04)
+      - npm run check passed with no errors (2026-05-04)
   - id: update-panchangam-calculations
     priority: 1
     title: Update panchangam calculations as per `src/core/ARCHITECTURE.md`

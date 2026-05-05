@@ -55,7 +55,7 @@ Specification for the `Sankalpam` page. Derive the Panchangam by using the `comp
 - The title has the word `Sankalpam` and is centered
 - `font-family` should be `Samarkan`
 - uses the `primary` color
-- has `font-size` of `2rem`
+- has `font-size` of `4rem`
 - `letter-spacing` of `0em`
 
 ### Sankalpam Text
@@ -63,10 +63,11 @@ Specification for the `Sankalpam` page. Derive the Panchangam by using the `comp
 Based on the computed panchangam generate the Sankalpam based on the template below:
 
 - Replace the variables between {{ }} with the corresponding attribute from the Panchangam object.
-- `font-family` should be `Samarkan`
 - uses the `accent` color
-- has `font-size` of `1rem`
+- has `font-size` of `1.5rem`
 - `letter-spacing` of `0em`
+- ensure that the interpolated variables `{{ }}` are bold with `font-size` of `1.75` rem
+- give the background a parchment like feel that envelopes the text and has a padding of `4rem`
 
 ```
 {{ namasamvatsare }} Namasamvatsare, {{ ayane }}, {{ ritau }} Ritau, {{ mase }} Mase, {{ pakshe }} Pakshe, {{ tithi }} Tithau, {{ vara }} Vasare, {{ nakshatra }} Nakshatre, {{ yoga }} Yoge, {{ karana }} Karane
