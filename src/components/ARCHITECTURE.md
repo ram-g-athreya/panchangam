@@ -27,9 +27,14 @@ The header component has a padding of `1rem`
 
 ### Navigation Links
 
-Create a panel below the `Panchangam` text and theme toggle to display the navigation links of the website. The links are as follows:
+Create a panel below the `Panchangam` text and theme toggle to display the navigation links of the website.
+The links are as follows:
 
-- **Home**: maps to `/home`
+- **Home**: maps to `/`
 - **Sankalpam**: maps to `/sankalpam`
 
-Depending upon the current page, underline the corresponding navigation link.
+Styling should be as follows:
+
+- Set the background color as the tertiary background color
+- Depending upon the current page, underline the corresponding navigation link.
+- Set `text-underline-offset` for the text as `0.3rem`
