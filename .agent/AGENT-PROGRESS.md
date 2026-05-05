@@ -125,3 +125,19 @@
 - Files updated: src/components/Header.tsx, src/styles/Header.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: date navigation (prev/next day)
+
+### Session 009
+
+- Date: 2026-05-04
+- Goal: Update `add-card-icons` task — add FA icons to all card labels and apply updated label styling from `src/pages/ARCHITECTURE.md`
+- Completed:
+  - DailyView.tsx: imported FontAwesomeIcon + faClock, faMoon, faSun, faStar, faInfinity, faScaleBalanced
+  - Clock card: label div with faClock icon + time-format-toggle button
+  - Remaining 5 cards: label span with FA icon + uppercase card name (TITHI, VARA, NAKSHATRA, YOGA, KARANA)
+  - DailyView.css: .anga-card\_\_label updated to display:flex, align-items:center, gap:0.45rem, font-size:1rem, font-weight:bold
+  - .anga-card\_\_label svg: flex-shrink:0 (icons inherit 1rem font-size from label)
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml add-card-icons evidence updated
+- Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: date navigation (prev/next day) or new feature from task list
