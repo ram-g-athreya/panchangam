@@ -12,6 +12,10 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: implement-navigation-links
+    priority: 1
+    title: Implement navigation links as per `src/component/ARCHITECTURE.md`
+    status: passing    
   - id: implement-sankalpam-page
     priority: 1
     title: Implement the sankalpam page as per `src/pages/ARCHITECTURE.md`

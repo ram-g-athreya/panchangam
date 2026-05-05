@@ -24,3 +24,12 @@ The header component has a padding of `1rem`
 - the background of the toggle should change to the appropriate light or dark background depending on the current state
 - store the current toggle value in `localStorage` and re-hydrate it from storage when the app is reloaded. If there is no value present in `localStorage` then set the value as `light` by default
 - In the background display the text `Light` or `Dark` depending on the current theme. The text should be `0.75rem` and set the `left` or `right` offset to `0.75rem` depending on the case
+
+### Navigation Links
+
+Create a panel below the `Panchangam` text and theme toggle to display the navigation links of the website. The links are as follows:
+
+- **Home**: maps to `/home`
+- **Sankalpam**: maps to `/sankalpam`
+
+Depending upon the current page, underline the corresponding navigation link.
