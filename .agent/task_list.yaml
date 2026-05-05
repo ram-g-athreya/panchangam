@@ -17,6 +17,14 @@ tasks:
     priority: 1
     title: Modify the time widget based on spec in `src/pages/ARCHITECTURE.md`
     status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - constants.ts: added TimeFormat type and TIME_FORMAT_KEY (2026-05-04)
+      - DailyView.tsx: 12/24-hour toggle in clock card label, defaults to 12h, persists to localStorage (2026-05-04)
+      - formatTime updated to render hh:mm:ss AM/PM or hh:mm:ss based on format (2026-05-04)
+      - DailyView.css: time-format-toggle styles matching theme toggle pattern (2026-05-04)
+      - npm run check passed with no errors (2026-05-04)
   - id: spec-out-daily-view
     priority: 1
     title: Modify DailyView based on spec in `src/pages/ARCHITECTURE.md`
