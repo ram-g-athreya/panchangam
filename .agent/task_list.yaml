@@ -1,5 +1,4 @@
 project: Panchangam App
-last_updated: "2026-05-03 (session 002)"
 
 rules:
   single_active_feature: true

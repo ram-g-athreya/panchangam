@@ -41,7 +41,7 @@ A task is `done` only when all of the following are true:
 - the target behavior is implemented
 - TypeScript compiles without errors (`npm run check`).
 - the required verification actually ran
-- evidence is recorded in `.agent/task_list.yaml` with status `pass`. Also log progress in `.agent/AGENT-PROGRESS.md` at the **end of the file**
+- evidence is recorded in `.agent/task_list.yaml` with status `passing`. Also log progress in `.agent/AGENT-PROGRESS.md` at the **end of the file**
 - no console errors during normal operation.
 - the repository remains restartable from the standard startup path
 
@@ -49,9 +49,9 @@ A task is `done` only when all of the following are true:
 
 The `task_list.yaml` file is the source of truth for project progress:
 
-- Each task has a `status`: `"pass"`, `"fail"`, `"not-started"`.
-- When implementing a task, update its status to `"pass"` with evidence.
-- If a task is blocked, set status to `"fail"` with a reason.
+- Each task has a `status`: `"passing"`, `"failing"`, `"not-started"`.
+- When implementing a task, update its status to `"passing"` with evidence.
+- If a task is blocked, set status to `"blocked"` with a reason.
 - Never delete tasks from the list.
 - Never add new tasks or work on anything not specified in the list.
 
