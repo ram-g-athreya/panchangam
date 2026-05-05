@@ -217,11 +217,19 @@ function lahiriAyanamsha(T: number): number {
   return 23.85 + 1.396 * T + 0.000308 * T * T;
 }
 
+function toRad(degree: number): number {
+  return (degree * Math.PI) / 180;
+}
+
+function toDeg(rad: number): number {
+  return (rad * 180) / Math.PI;
+}
+
 function tropicalSunLongitude(jd: number): number {
   const T = (jd - 2451545.0) / 36525;
   const L0 = mod360(280.46646 + 36000.76983 * T);
   const M = mod360(357.52911 + 35999.05029 * T - 0.0001537 * T * T);
-  const Mrad = (M * Math.PI) / 180;
+  const Mrad = toRad(M);
   const C =
     (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(Mrad) +
     (0.019993 - 0.000101 * T) * Math.sin(2 * Mrad) +
@@ -236,8 +244,6 @@ function tropicalMoonLongitude(jd: number): number {
   const Ms = mod360(357.5291 + 35999.0503 * T);
   const F = mod360(93.272 + 483202.0175 * T);
   const D = mod360(297.8502 + 445267.1115 * T);
-
-  const toRad = (deg: number) => (deg * Math.PI) / 180;
 
   const correction =
     6.288774 * Math.sin(toRad(M)) +
@@ -264,9 +270,6 @@ function siderealLongitude(tropical: number, T: number): number {
 // Returns the Julian Day of local sunrise (in UTC) using the NOAA zenith-based algorithm.
 // Falls back to solar noon on the given date if the sun never rises/sets.
 function computeSunriseJD(date: Date, latitude: number, longitude: number): number {
-  const toRad = (deg: number) => (deg * Math.PI) / 180;
-  const toDeg = (rad: number) => (rad * 180) / Math.PI;
-
   const N = dayOfYear(date);
   const t = N + (6 - longitude / 15) / 24;
 
