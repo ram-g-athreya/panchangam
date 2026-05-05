@@ -6,7 +6,10 @@ Specification for the `DailyView` page. Derive the Panchangam by using the `comp
 
 ### Information Cards
 
-Displays 6 information cards of the same size with a label, value and sub. The cards must be responsive and together the panel should not exceed the width of the page
+- Displays information cards of the same size with a label, value and sub
+- The cards must be responsive and the panel should not exceed the width of the page
+- All icons should be of font-size `1rem`.
+- Labels should be of font-size `1rem` and `bold`.
 
 ```yaml
 - label:

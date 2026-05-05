@@ -1,4 +1,13 @@
 import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faClock,
+  faMoon,
+  faSun,
+  faStar,
+  faInfinity,
+  faScaleBalanced,
+} from "@fortawesome/free-solid-svg-icons";
 import { computePanchangam } from "../core/panchangam";
 import type { TimeFormat } from "../constants";
 import { TIME_FORMAT_KEY } from "../constants";
@@ -54,40 +63,58 @@ export function DailyView() {
     <main className="daily-view">
       <div className="anga-grid">
         <div className="anga-card">
-          <button
-            className={`time-format-toggle time-format-toggle--${timeFormat}`}
-            onClick={toggleTimeFormat}
-            aria-label="Toggle time format"
-          >
-            <span className="time-format-toggle__thumb" />
-            <span className="time-format-toggle__label">
-              {timeFormat === "12h" ? "12-hour" : "24-hour"}
-            </span>
-          </button>
+          <div className="anga-card__label">
+            <FontAwesomeIcon icon={faClock} />
+            <button
+              className={`time-format-toggle time-format-toggle--${timeFormat}`}
+              onClick={toggleTimeFormat}
+              aria-label="Toggle time format"
+            >
+              <span className="time-format-toggle__thumb" />
+              <span className="time-format-toggle__label">
+                {timeFormat === "12h" ? "12-hour" : "24-hour"}
+              </span>
+            </button>
+          </div>
           <span className="anga-card__value">{formatTime(now, timeFormat)}</span>
           <span className="anga-card__sub">{formatDate(now)}</span>
         </div>
         <div className="anga-card">
-          <span className="anga-card__label">Tithi</span>
+          <span className="anga-card__label">
+            <FontAwesomeIcon icon={faMoon} />
+            TITHI
+          </span>
           <span className="anga-card__value">{p.tithi.name}</span>
           <span className="anga-card__sub">
             {p.tithi.paksha} Paksha · {p.tithi.number}
           </span>
         </div>
         <div className="anga-card">
-          <span className="anga-card__label">Vara</span>
+          <span className="anga-card__label">
+            <FontAwesomeIcon icon={faSun} />
+            VARA
+          </span>
           <span className="anga-card__value">{p.vara}</span>
         </div>
         <div className="anga-card">
-          <span className="anga-card__label">Nakshatra</span>
+          <span className="anga-card__label">
+            <FontAwesomeIcon icon={faStar} />
+            NAKSHATRA
+          </span>
           <span className="anga-card__value">{p.nakshatra}</span>
         </div>
         <div className="anga-card">
-          <span className="anga-card__label">Yoga</span>
+          <span className="anga-card__label">
+            <FontAwesomeIcon icon={faInfinity} />
+            YOGA
+          </span>
           <span className="anga-card__value">{p.yoga}</span>
         </div>
         <div className="anga-card">
-          <span className="anga-card__label">Karana</span>
+          <span className="anga-card__label">
+            <FontAwesomeIcon icon={faScaleBalanced} />
+            KARANA
+          </span>
           <span className="anga-card__value">{p.karana}</span>
         </div>
       </div>
