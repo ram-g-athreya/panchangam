@@ -100,29 +100,84 @@ const REPEATING_KARANAS = [
 ] as const;
 
 const SAMVATSARAS = [
-  "Prabhava", "Vibhava", "Shukla", "Pramoda", "Prajapati",
-  "Angiras", "Shrimukha", "Bhava", "Yuva", "Dhata",
-  "Ishvara", "Bahudhanya", "Pramathi", "Vikrama", "Vrisha",
-  "Chitrabhanu", "Subhanu", "Tarana", "Parthiva", "Vyaya",
-  "Sarvajit", "Sarvadhari", "Virodhi", "Vikrita", "Khara",
-  "Nandana", "Vijaya", "Jaya", "Manmatha", "Durmukhi",
-  "Hevilambi", "Vilambi", "Vikari", "Sharvari", "Plava",
-  "Shubhakruta", "Shobhakruta", "Krodhi", "Vishvavasu", "Parabhava",
-  "Plavanga", "Kilaka", "Saumya", "Sadharana", "Virodhikruta",
-  "Paridhavi", "Pramadicha", "Ananda", "Rakshasa", "Nala",
-  "Pingala", "Kalayukti", "Siddharthi", "Raudra", "Durmathi",
-  "Dundubhi", "Rudhirodgari", "Raktakshi", "Krodhana", "Kshaya",
+  "Prabhava",
+  "Vibhava",
+  "Shukla",
+  "Pramoda",
+  "Prajapati",
+  "Angiras",
+  "Shrimukha",
+  "Bhava",
+  "Yuva",
+  "Dhata",
+  "Ishvara",
+  "Bahudhanya",
+  "Pramathi",
+  "Vikrama",
+  "Vrisha",
+  "Chitrabhanu",
+  "Subhanu",
+  "Tarana",
+  "Parthiva",
+  "Vyaya",
+  "Sarvajit",
+  "Sarvadhari",
+  "Virodhi",
+  "Vikrita",
+  "Khara",
+  "Nandana",
+  "Vijaya",
+  "Jaya",
+  "Manmatha",
+  "Durmukhi",
+  "Hevilambi",
+  "Vilambi",
+  "Vikari",
+  "Sharvari",
+  "Plava",
+  "Shubhakruta",
+  "Shobhakruta",
+  "Krodhi",
+  "Vishvavasu",
+  "Parabhava",
+  "Plavanga",
+  "Kilaka",
+  "Saumya",
+  "Sadharana",
+  "Virodhikruta",
+  "Paridhavi",
+  "Pramadicha",
+  "Ananda",
+  "Rakshasa",
+  "Nala",
+  "Pingala",
+  "Kalayukti",
+  "Siddharthi",
+  "Raudra",
+  "Durmathi",
+  "Dundubhi",
+  "Rudhirodgari",
+  "Raktakshi",
+  "Krodhana",
+  "Kshaya",
 ] as const;
 
 const MASAS = [
-  "Chaitra", "Vaishakha", "Jyeshtha", "Ashadha",
-  "Shravana", "Bhadrapada", "Ashvina", "Kartika",
-  "Margashirsha", "Pausha", "Magha", "Phalguna",
+  "Chaitra",
+  "Vaishakha",
+  "Jyeshtha",
+  "Ashadha",
+  "Shravana",
+  "Bhadrapada",
+  "Ashvina",
+  "Kartika",
+  "Margashirsha",
+  "Pausha",
+  "Magha",
+  "Phalguna",
 ] as const;
 
-const RITUS = [
-  "Vasanta", "Grishma", "Varsha", "Sharada", "Hemanta", "Shishira",
-] as const;
+const RITUS = ["Vasanta", "Grishma", "Varsha", "Sharada", "Hemanta", "Shishira"] as const;
 
 function toJulianDay(date: Date): number {
   const y = date.getUTCFullYear();
@@ -263,11 +318,7 @@ export function computePanchangam(date: Date): Panchangam {
   const paksha: "Shukla" | "Krishna" = tithiIndex < 15 ? "Shukla" : "Krishna";
   const tithiNumber = (tithiIndex % 15) + 1;
   const tithiName =
-    tithiIndex === 14
-      ? "Purnima"
-      : tithiIndex === 29
-      ? "Amavasya"
-      : TITHIS[tithiNumber - 1];
+    tithiIndex === 14 ? "Purnima" : tithiIndex === 29 ? "Amavasya" : TITHIS[tithiNumber - 1];
 
   // Vara: JS getDay() 0=Sun matches Ravivara
   const vara = VARAS[date.getDay()];

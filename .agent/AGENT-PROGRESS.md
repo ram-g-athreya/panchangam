@@ -195,10 +195,10 @@
 - Date: 2026-05-05
 - Goal: Implement `implement-navigation-links` — nav panel per `src/components/ARCHITECTURE.md`
 - Completed:
-  - Header.tsx: imported NavLink; added .header__nav panel with Home → /home and Sankalpam → /sankalpam links
+  - Header.tsx: imported NavLink; added .header\_\_nav panel with Home → /home and Sankalpam → /sankalpam links
   - Header.tsx: navClass applies --active modifier when isActive
-  - Header.css: header restructured to flex column; .header__top flex row for title + toggle; .header__nav below with border-top
-  - Header.css: .header__nav-link--active gets underline + primary text color
+  - Header.css: header restructured to flex column; .header**top flex row for title + toggle; .header**nav below with border-top
+  - Header.css: .header\_\_nav-link--active gets underline + primary text color
   - App.tsx: added /home route rendering DailyView
 - Verification run: npm run check exits 0
 - Evidence captured: task_list.yaml implement-navigation-links evidence updated
@@ -212,8 +212,8 @@
 - Goal: Implement `update-navigation-links-styling` — tertiary background colour + nav link styling per UI-STYLE.md and components ARCHITECTURE.md
 - Completed:
   - index.css: added --color-bg-tertiary to :root (#dccab2) and [data-theme="dark"] (#3d2b1f)
-  - Header.css: .header__nav uses var(--color-bg-tertiary) as background; removed border-top
-  - Header.css: .header__nav-link--active gains text-underline-offset: 0.3rem
+  - Header.css: .header\_\_nav uses var(--color-bg-tertiary) as background; removed border-top
+  - Header.css: .header\_\_nav-link--active gains text-underline-offset: 0.3rem
   - Header.tsx: Home NavLink target changed from /home to / per updated spec
   - App.tsx: removed /home route (Home now maps to /)
 - Verification run: npm run check exits 0
@@ -232,8 +232,8 @@
   - siderealLongitude(tropical, T): subtracts Lahiri ayanamsha from tropical longitude, mod360
   - computePanchangam: derives sunSidereal and moonSidereal; all five angas (plus ayane/ritau/mase) now use sidereal coordinates
   - Tithi: tithiIndex 14 → "Purnima", 29 → "Amavasya" (per spec; previously paksha-conditional)
-  - Nakshatra: floor(moonSidereal / 13.3333) per spec (was (moonLong/360)*27)
-  - Yoga: floor(yogaSum / 13.3333) per spec (was (sum/360)*27)
+  - Nakshatra: floor(moonSidereal / 13.3333) per spec (was (moonLong/360)\*27)
+  - Yoga: floor(yogaSum / 13.3333) per spec (was (sum/360)\*27)
   - Karana: computeKarana() implements full 60-karana model — index 0 = Kimstughna (fixed), 57 = Shakuni, 58 = Chatushpada, 59 = Naga; indices 1–56 cycle through 7 repeating karanas
   - KARANAS constant replaced with REPEATING_KARANAS (7 names: Bava…Vishti; removed Bhadra)
 - Verification run: npm run check exits 0

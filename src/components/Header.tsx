@@ -22,7 +22,9 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
   return (
     <header className="header">
       <div className="header__top">
-        <Link to="/" className="header__title">Panchangam</Link>
+        <Link to="/" className="header__title">
+          Panchangam
+        </Link>
         <button
           className={`theme-toggle theme-toggle--${theme}`}
           onClick={onToggleTheme}
@@ -34,14 +36,16 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
               className="theme-toggle__icon"
             />
           </span>
-          <span className="theme-toggle__label">
-            {theme === "light" ? "Light" : "Dark"}
-          </span>
+          <span className="theme-toggle__label">{theme === "light" ? "Light" : "Dark"}</span>
         </button>
       </div>
       <nav className="header__nav">
-        <NavLink to="/" className={navClass}>Home</NavLink>
-        <NavLink to="/sankalpam" className={navClass}>Sankalpam</NavLink>
+        <NavLink to="/" className={navClass}>
+          Home
+        </NavLink>
+        <NavLink to="/sankalpam" className={navClass}>
+          Sankalpam
+        </NavLink>
       </nav>
     </header>
   );
