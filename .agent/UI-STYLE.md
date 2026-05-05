@@ -16,12 +16,12 @@ The app broadly has two themes, a sepia based light theme and a dark theme. The 
 - Secondary Background: #E6D5B8
 - Primary Text: #3C2A21
 - Secondary Text: #634832
-- Accent: #B68D40
+- Accent: #8B5E00
 
 # Dark Theme
 
 - Main Background: #1A120B
 - Secondary Background: #2E1E14
-- Primary Text: #D5C4a1
-- Secondary Text: #A88d70
+- Primary Text: #D5C4A1
+- Secondary Text: #A88D70
 - Accent: #D4A373

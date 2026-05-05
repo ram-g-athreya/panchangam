@@ -19,23 +19,23 @@ Displays 6 information cards of the same size with a label, value and sub. The c
     - current time in 24-hour format of `hh:mm:ss` if 24 hour format is set
   subvalue: "current date in the format"
   requirements: "the date and time should update every second"
-- label: TITHI
+- label: moon icon followed by the word TITHI
   value: "current tithi"
   subvalue: "current paksha along with number"
   requirements: "based on Panchangam derived above"
-- label: VARA
+- label: sun icon followed by the word VARA
   value: "current vara"
   subvalue: ""
   requirements: "based on Panchangam derived above"
-- label: NAKSHATRA
+- label: star icon followed by the word NAKSHATRA
   value: "current nakshatra"
   subvalue: ""
   requirements: "based on Panchangam derived above"
-- label: YOGA
+- label: infinity icon followed by the word YOGA
   value: "current yoga"
   subvalue: ""
   requirements: "based on Panchangam derived above"
-- label: KARANA
+- label: scale-balanced icon followed by the word KARANA
   value: "current karana"
   subvalue: ""
   requirements: "based on Panchangam derived above"
