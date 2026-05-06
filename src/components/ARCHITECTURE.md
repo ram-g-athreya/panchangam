@@ -13,12 +13,15 @@ Create a city search text box with the following spec as a separate standalone c
   - latitude
   - longitude
 - When the app is reloaded pre-populate the location and display the city if the data exists or else it should be blank
+- have no gap between the location pin and the text
+- set `height` as `2rem`
+- set `font-size` as `1rem`
 
 ## Header
 
 - The top panel has a padding of `1rem 0.5rem`
 - Has a button with the hamburger bars navigation icon followed by the `Panchangam` text.
-- The right side has the `City Search Text Box` towards the end
+- The right side has the `City Search Text Box` on larger screens and in smaller screens push the text box below the `Panchangam` text and have it span the entire row
 
 ### Panchangam Text
 
