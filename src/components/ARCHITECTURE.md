@@ -8,10 +8,13 @@ Create a city search text box with the following spec as a separate standalone c
 
 - Placeholder is `Enter City Name`
 - Has the `location-dot` icon to the left
-- Upon losing focus the location value is stored in localStorage as an object:
+- When focused clear the textbox so user can type a city of their choice
+- When the user types more than two characters call `OpenStreetMap` and show a list of options from which the user can choose their city
+- When user selects a city from the autocomplete list, close the list and store the following information in localStorage as an object:
   - city
   - latitude
   - longitude
+- If the user didn't select any option and the textbox gets blurred because the user clicked outside for example then populate any stored value for city or leave it blank
 - When the app is reloaded pre-populate the location and display the city if the data exists or else it should be blank
 - have no gap between the location pin and the text
 - set `height` as `2rem`

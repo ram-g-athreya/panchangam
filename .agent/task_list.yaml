@@ -12,6 +12,10 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: search-bar-interaction
+    priority: 1
+    title: Implement search bar interaction based on `src/components/ARCHITECTURE.md`
+    status: not_started
   - id: update-styling-city-search-ui
     priority: 1
     title: Update city search bar styling based on `src/components/ARCHITECTURE.md`
