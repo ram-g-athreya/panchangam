@@ -4,7 +4,9 @@ All pages have the header component on top and the navigation sidebar initially 
 
 ## DailyView
 
-Specification for the `DailyView` page. Derive the Panchangam by using the `computePanchangam` method for the current moment
+Specification for the `DailyView` page.
+
+- Derive the Panchangam by using the `computePanchangam` method for the current moment with the `latitude` and `longitude` if stored in localstorage.
 
 ### Information Cards
 
@@ -48,7 +50,9 @@ Specification for the `DailyView` page. Derive the Panchangam by using the `comp
 
 ## Sankalpam
 
-Specification for the `Sankalpam` page. Derive the Panchangam by using the `computePanchangam` method for the current moment
+Specification for the `Sankalpam` page.
+
+- Derive the Panchangam by using the `computePanchangam` method for the current moment with the `latitude` and `longitude` if stored in localstorage.
 
 ### Title
 

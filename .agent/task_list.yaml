@@ -12,6 +12,19 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: use-location-to-compute-panchangam
+    priority: 1
+    title: Use location to compute panchangam
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - panchangam.ts: computePanchangam(date, latitude?, longitude?) — optional params; uses computeSunriseJD when both provided, toJulianDay(date) otherwise (2026-05-05)
+      - panchangam.ts: no DEFAULT_LATITUDE/DEFAULT_LONGITUDE — no hardcoded fallback location (2026-05-05)
+      - DailyView.tsx: getLocation() returns {latitude, longitude} from localStorage LOCATION_KEY or null (2026-05-05)
+      - DailyView.tsx: computePanchangam(now, location?.latitude, location?.longitude) — passes undefined when no location stored (2026-05-05)
+      - Sankalpam.tsx: same getLocation() pattern and call (2026-05-05)
+      - npm run check passed with no errors (2026-05-05)
   - id: search-bar-interaction
     priority: 1
     title: Implement search bar interaction based on `src/components/ARCHITECTURE.md`
