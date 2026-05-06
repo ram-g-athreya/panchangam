@@ -9,9 +9,18 @@ import {
   faScaleBalanced,
 } from "@fortawesome/free-solid-svg-icons";
 import { computePanchangam } from "../core/panchangam";
-import type { TimeFormat } from "../constants";
-import { TIME_FORMAT_KEY } from "../constants";
+import type { TimeFormat, LocationData } from "../constants";
+import { TIME_FORMAT_KEY, LOCATION_KEY } from "../constants";
 import "../styles/DailyView.css";
+
+function getLocation(): { latitude: number; longitude: number } | null {
+  const stored = localStorage.getItem(LOCATION_KEY);
+  if (stored) {
+    const data = JSON.parse(stored) as LocationData;
+    return { latitude: data.latitude, longitude: data.longitude };
+  }
+  return null;
+}
 
 function getInitialTimeFormat(): TimeFormat {
   const stored = localStorage.getItem(TIME_FORMAT_KEY);
@@ -57,7 +66,8 @@ export function DailyView() {
     });
   }
 
-  const p = computePanchangam(now);
+  const location = getLocation();
+  const p = computePanchangam(now, location?.latitude, location?.longitude);
 
   return (
     <main className="daily-view">

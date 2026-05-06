@@ -24,7 +24,7 @@
 - **Normalization:** All angular results must be normalized to the range `[0, 360)`. Use a floating-point modulo function: `((angle % 360) + 360) % 360`.
 - **Time Standard:** Use **Julian Day (JD)** derived from UTC for all planetary positions.
 - **Logic Flow:**
-  1. Calculate the **Local Sunrise** (in UTC) for the given Latitude, Longitude, and Date.
+  1. Calculate the **Local Sunrise** (in UTC) for the given Date. Use Latitude and Longitude if valid values are provided. Do NOT use a `DEFAULT_LATITUDE` and `DEFAULT_LONGITUDE`.
   2. Convert this **Sunrise UTC Time** into a precise **Julian Day (JD)**.
   3. Calculate all planetary positions (Sun/Moon longitudes) for that specific **Sunrise Julian Day**.
   4. Determine the "ruling" Panchangam elements based on these sunrise positions.

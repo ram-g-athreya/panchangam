@@ -1,8 +1,20 @@
 import { computePanchangam } from "../core/panchangam";
+import type { LocationData } from "../constants";
+import { LOCATION_KEY } from "../constants";
 import "../styles/Sankalpam.css";
 
+function getLocation(): { latitude: number; longitude: number } | null {
+  const stored = localStorage.getItem(LOCATION_KEY);
+  if (stored) {
+    const data = JSON.parse(stored) as LocationData;
+    return { latitude: data.latitude, longitude: data.longitude };
+  }
+  return null;
+}
+
 export function Sankalpam() {
-  const p = computePanchangam(new Date());
+  const location = getLocation();
+  const p = computePanchangam(new Date(), location?.latitude, location?.longitude);
   const v = (s: string) => <strong>{s}</strong>;
 
   return (

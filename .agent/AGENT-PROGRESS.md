@@ -410,3 +410,17 @@
 - Files updated: src/components/CitySearch.tsx, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: all tasks now passing; await new tasks
+
+### Session 0027
+
+- Date: 2026-05-05
+- Goal: Implement `use-location-to-compute-panchangam` — pass stored lat/lon to computePanchangam in both pages
+- Completed:
+  - panchangam.ts: computePanchangam(date, latitude?, longitude?) — optional params; uses computeSunriseJD when both provided, toJulianDay(date) otherwise; no hardcoded fallback location
+  - DailyView.tsx: getLocation() returns {latitude, longitude} from localStorage LOCATION_KEY or null; passes location?.latitude, location?.longitude to computePanchangam
+  - Sankalpam.tsx: same getLocation() pattern and call
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml use-location-to-compute-panchangam set to passing
+- Files updated: src/core/panchangam.ts, src/pages/DailyView.tsx, src/pages/Sankalpam.tsx, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks now passing; await new tasks

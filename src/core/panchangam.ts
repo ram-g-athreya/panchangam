@@ -358,16 +358,11 @@ function computeKarana(karanaIndex: number): string {
   return REPEATING_KARANAS[(karanaIndex - 1) % 7];
 }
 
-// Default coordinates: Bangalore, India (a common Panchangam reference city)
-const DEFAULT_LATITUDE = 12.9716;
-const DEFAULT_LONGITUDE = 77.5946;
-
-export function computePanchangam(
-  date: Date,
-  latitude: number = DEFAULT_LATITUDE,
-  longitude: number = DEFAULT_LONGITUDE,
-): Panchangam {
-  const jd = computeSunriseJD(date, latitude, longitude);
+export function computePanchangam(date: Date, latitude?: number, longitude?: number): Panchangam {
+  const jd =
+    latitude !== undefined && longitude !== undefined
+      ? computeSunriseJD(date, latitude, longitude)
+      : toJulianDay(date);
   const T = (jd - 2451545.0) / 36525;
 
   const sunSidereal = siderealLongitude(tropicalSunLongitude(jd), T);
