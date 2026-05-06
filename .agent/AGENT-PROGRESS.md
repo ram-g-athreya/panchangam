@@ -320,3 +320,19 @@
 - Files updated: src/constants.ts, src/components/CitySearch.tsx, src/styles/CitySearch.css, src/components/Header.tsx, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk: geocoding silently fails if city is ambiguous or API is unavailable; stored value is unchanged in that case
 - Next best step: all tasks now passing; await new tasks
+
+### Session 0021
+
+- Date: 2026-05-05
+- Goal: Implement `update-styling-city-search-ui` — fix CitySearch sizing and add responsive behaviour
+- Completed:
+  - CitySearch.css: gap 0.5rem → 0 (no gap between icon and input per spec)
+  - CitySearch.css: height:2rem on .city-search; padding adjusted to 0 0.6rem
+  - CitySearch.css: font-size 0.9rem → 1rem on icon and input
+  - CitySearch.css: added @media (max-width:640px) — CitySearch takes full row width, margin-left reset to 0
+  - Header.css: added flex-wrap:wrap to .header__top so CitySearch can flow to next line on small screens
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml update-styling-city-search-ui set to passing
+- Files updated: src/styles/CitySearch.css, src/styles/Header.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks now passing; await new tasks

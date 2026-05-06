@@ -15,7 +15,16 @@ tasks:
   - id: update-styling-city-search-ui
     priority: 1
     title: Update city search bar styling based on `src/components/ARCHITECTURE.md`
-    status: not_started
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - CitySearch.css: gap 0.5rem → 0 (no gap between icon and input per spec) (2026-05-05)
+      - CitySearch.css: added height:2rem and padding:0 0.6rem to .city-search (2026-05-05)
+      - CitySearch.css: font-size 0.9rem → 1rem on both icon and input (2026-05-05)
+      - CitySearch.css: @media (max-width:640px) — margin-left:0, width:100%, input width:100% (spans full row on small screens) (2026-05-05)
+      - Header.css: added flex-wrap:wrap to .header__top so CitySearch wraps below on small screens (2026-05-05)
+      - npm run check passed with no errors (2026-05-05)
   - id: city-search-ui
     priority: 1
     title: Add city search based on `src/components/ARCHITECTURE.md`
