@@ -1,6 +1,6 @@
 # ARCHITECTURE.md
 
-All pages have the header component on top.
+All pages have the header component on top and the navigation sidebar initially hidden.
 
 ## DailyView
 

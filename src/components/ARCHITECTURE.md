@@ -4,13 +4,9 @@ Specification for reusable components are defined here
 
 ## Header
 
-It has a panel with the logo followed by a second panel that has the navigation links and the theme toggle switch at the right side.
+The top panel has a padding of `1rem 0.5rem`. Has a button with the hamburger bars navigation icon followed by the `Panchangam` text.
 
-### Top Panel
-
-The top panel has a padding of `1rem`.
-
-#### Panchangam Text
+### Panchangam Text
 
 - The header has the word `Panchangam` on the left corner
 - uses the `accent` color
@@ -18,23 +14,25 @@ The top panel has a padding of `1rem`.
 - `letter-spacing` of `0em`
 - clicking on the text should re-direct the user to the homepage `/`
 
-### Bottom Panel
+## Navigation Sidebar
 
-The bottom panel has navigation links and the theme toggle switch on the right side.
+- The navigation sidebar is closed by default
+- opens out as an overlay when the hamburger icon is clicked
+- contains navigation links at the top
+- theme toggle switch at the bottom
+- When open, clicking anywhere outside should close the sidebar
 
-#### Navigation Links
+### Navigation Links
 
-Create a panel below the `Panchangam` text and theme toggle to display the navigation links of the website.
 The links are as follows:
 
-- **Home**: maps to `/`
-- **Sankalpam**: maps to `/sankalpam`
+- **Home**: maps to `/` and has the home icon
+- **Sankalpam**: maps to `/sankalpam` and has the person meditating icon
 
 Styling should be as follows:
 
 - Set the background color as the tertiary background color
-- Depending upon the current page, underline the corresponding navigation link.
-- Set `text-underline-offset` for the text as `0.3rem`
+- Depending upon the current page, change the background of the corresponding link to secondary background so that user knows which page they are currently in.
 
 #### Theme Toggle Switch
 

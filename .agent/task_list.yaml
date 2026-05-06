@@ -12,6 +12,14 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: restructure-header-add-navigation-sidebar
+    priority: 1
+    title: Restructure header and add navigation sidebar based on `src/components/ARCHITECTURE.md`
+    description:
+      - move navigation links from header to a dedicated component
+      - remove any unncessary CSS related to navigation links from the header component
+      - ensure that the navigation sidebar is included in every page
+    status: passing
   - id: restructure-header
     priority: 1
     title: Restructure header based on `src/components/ARCHITECTURE.md`
