@@ -258,3 +258,18 @@
 - Files updated: src/core/panchangam.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk: sunrise algorithm uses simplified NOAA formula (±1–2 min accuracy); good enough for panchangam anga determination
 - Next best step: all tasks now passing; check task_list.yaml for any new additions
+
+### Session 0017
+
+- Date: 2026-05-05
+- Goal: Implement `restructure-header` — move theme toggle to bottom panel per `src/components/ARCHITECTURE.md`
+- Completed:
+  - Header.tsx: removed theme-toggle button from header__top; placed it inside header__nav after the NavLinks
+  - Header.css: added align-items:center to .header__nav so toggle and nav links sit on the same baseline
+  - Header.css: .header__title font-size 2.5rem → 2rem per spec
+  - theme-toggle already had margin-left:auto, pushing it flush right in the nav panel
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml restructure-header set to passing
+- Files updated: src/components/Header.tsx, src/styles/Header.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks now passing; await new tasks

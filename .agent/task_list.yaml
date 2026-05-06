@@ -15,7 +15,15 @@ tasks:
   - id: restructure-header
     priority: 1
     title: Restructure header based on `src/components/ARCHITECTURE.md`
-    status: not_started
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - Header.tsx: moved theme-toggle button from header__top into header__nav (bottom panel) (2026-05-05)
+      - Header.css: .header__nav adds align-items:center so toggle aligns vertically with nav links (2026-05-05)
+      - Header.css: .header__title font-size 2.5rem → 2rem per spec (2026-05-05)
+      - theme-toggle margin-left:auto already present, pushing it to the right of the nav (2026-05-05)
+      - npm run check passed with no errors (2026-05-05)
   - id: update-panchangam-algorithm-consider-local-time
     priority: 1
     title: Update Panchangam calculation based on `src/core/ARCHITECTURE.md`

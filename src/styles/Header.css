@@ -12,6 +12,7 @@
 
 .header__nav {
   display: flex;
+  align-items: center;
   gap: 1.5rem;
   padding: 0.5rem 1rem;
   background-color: var(--color-bg-tertiary);
@@ -33,7 +34,7 @@
 .header__title {
   font-family: "Samarkan", serif;
   color: var(--color-accent);
-  font-size: 2.5rem;
+  font-size: 2rem;
   letter-spacing: 0em;
   text-decoration: none;
 }
