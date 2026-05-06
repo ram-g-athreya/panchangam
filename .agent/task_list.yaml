@@ -12,6 +12,10 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: city-search-ui
+    priority: 1
+    title: Add city search based on `src/components/ARCHITECTURE.md`
+    status: not_started
   - id: update-sidebar
     priority: 1
     title: update navigation sidebar based on `src/components/ARCHITECTURE.md`

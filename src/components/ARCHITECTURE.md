@@ -2,9 +2,23 @@
 
 Specification for reusable components are defined here
 
+## City Search Text Box
+
+Create a city search text box with the following spec as a separate standalone comoponent:
+
+- Placeholder is `Enter City Name`
+- Has the `location-dot` icon to the left
+- Upon losing focus the location value is stored in localStorage as an object:
+  - city
+  - latitude
+  - longitude
+- When the app is reloaded pre-populate the location and display the city if the data exists or else it should be blank
+
 ## Header
 
-The top panel has a padding of `1rem 0.5rem`. Has a button with the hamburger bars navigation icon followed by the `Panchangam` text.
+- The top panel has a padding of `1rem 0.5rem`
+- Has a button with the hamburger bars navigation icon followed by the `Panchangam` text.
+- The right side has the `City Search Text Box` towards the end
 
 ### Panchangam Text
 
