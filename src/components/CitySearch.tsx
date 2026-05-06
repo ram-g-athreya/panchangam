@@ -25,11 +25,13 @@ interface PhotonResponse {
   features: PhotonFeature[];
 }
 
-function getStoredCity(): string {
+function getStoredDisplay(): string {
   try {
     const stored = localStorage.getItem(LOCATION_KEY);
     if (!stored) return "";
-    return (JSON.parse(stored) as { city?: string }).city ?? "";
+    const { city, country } = JSON.parse(stored) as { city?: string; country?: string };
+    if (!city) return "";
+    return country ? `${city}, ${country}` : city;
   } catch {
     return "";
   }
@@ -40,7 +42,7 @@ function formatSuggestion(props: PhotonProperties): string {
 }
 
 export function CitySearch() {
-  const [inputValue, setInputValue] = useState<string>(getStoredCity);
+  const [inputValue, setInputValue] = useState<string>(getStoredDisplay);
   const [suggestions, setSuggestions] = useState<PhotonFeature[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -92,14 +94,16 @@ export function CitySearch() {
 
   function handleSelect(feature: PhotonFeature) {
     const cityName = feature.properties.name;
+    const country = feature.properties.country ?? "";
     selectedRef.current = true;
-    setInputValue(cityName);
+    setInputValue(country ? `${cityName}, ${country}` : cityName);
     setSuggestions([]);
     setShowSuggestions(false);
     localStorage.setItem(
       LOCATION_KEY,
       JSON.stringify({
         city: cityName,
+        country,
         latitude: feature.geometry.coordinates[1],
         longitude: feature.geometry.coordinates[0],
       }),
@@ -109,7 +113,7 @@ export function CitySearch() {
   function handleBlur() {
     setTimeout(() => {
       if (!selectedRef.current) {
-        setInputValue(getStoredCity());
+        setInputValue(getStoredDisplay());
       }
       setShowSuggestions(false);
       setIsLoading(false);
@@ -123,7 +127,7 @@ export function CitySearch() {
         <input
           className="city-search__input"
           type="text"
-          placeholder="Enter City Name"
+          placeholder="Enter city for accuracy"
           value={inputValue}
           onChange={handleChange}
           onFocus={handleFocus}

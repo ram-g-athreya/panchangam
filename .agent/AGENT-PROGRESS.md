@@ -385,3 +385,28 @@
 - Files updated: src/components/CitySearch.tsx, src/styles/CitySearch.css, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: all tasks now passing; await new tasks
+
+### Session 0025
+
+- Date: 2026-05-05
+- Goal: Apply spec update — store country in localStorage and display "city, country" in search box
+- Completed:
+  - constants.ts: added country field to LocationData interface
+  - CitySearch.tsx: renamed getStoredCity → getStoredDisplay; returns "city, country" format when both fields present
+  - CitySearch.tsx: handleSelect now stores country from feature.properties.country and sets inputValue to "city, country"
+  - CitySearch.tsx: handleBlur restore uses getStoredDisplay() for "city, country" format
+- Verification run: npm run check exits 0
+- Files updated: src/constants.ts, src/components/CitySearch.tsx, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks now passing; await new tasks
+
+### Session 0026
+
+- Date: 2026-05-05
+- Goal: Apply spec update — placeholder changed to "Enter city for accuracy"
+- Completed:
+  - CitySearch.tsx: placeholder "Enter City Name" → "Enter city for accuracy"
+- Verification run: npm run check exits 0
+- Files updated: src/components/CitySearch.tsx, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks now passing; await new tasks

@@ -6,6 +6,7 @@ export const TIME_FORMAT_KEY = "timeFormat";
 
 export interface LocationData {
   city: string;
+  country: string;
   latitude: number;
   longitude: number;
 }
