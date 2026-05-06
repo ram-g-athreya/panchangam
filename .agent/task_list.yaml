@@ -12,6 +12,35 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: search-bar-interaction
+    priority: 1
+    title: Implement search bar interaction based on `src/components/ARCHITECTURE.md`
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - CitySearch.tsx: onFocus clears input so user can type freely (2026-05-05)
+      - CitySearch.tsx: onChange debounces 300ms; fetches Nominatim /search after >2 chars; shows suggestion list (2026-05-05)
+      - CitySearch.tsx: onMouseDown on suggestion sets city name, stores {city, lat, lon} to localStorage, hides list (2026-05-05)
+      - CitySearch.tsx: onBlur (150ms delay) restores stored city if no suggestion was selected (2026-05-05)
+      - CitySearch.tsx: useEffect clears debounce timer on unmount (2026-05-05)
+      - CitySearch.css: .city-search__wrapper relative container for absolute-positioned dropdown (2026-05-05)
+      - CitySearch.css: .city-search__suggestions — absolute, secondary bg, max-height 12rem, box-shadow (2026-05-05)
+      - CitySearch.css: .city-search__suggestion — ellipsis overflow, hover tertiary bg (2026-05-05)
+      - npm run check passed with no errors (2026-05-05)
+  - id: update-styling-city-search-ui
+    priority: 1
+    title: Update city search bar styling based on `src/components/ARCHITECTURE.md`
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - CitySearch.css: gap 0.5rem → 0 (no gap between icon and input per spec) (2026-05-05)
+      - CitySearch.css: added height:2rem and padding:0 0.6rem to .city-search (2026-05-05)
+      - CitySearch.css: font-size 0.9rem → 1rem on both icon and input (2026-05-05)
+      - CitySearch.css: @media (max-width:640px) — margin-left:0, width:100%, input width:100% (spans full row on small screens) (2026-05-05)
+      - Header.css: added flex-wrap:wrap to .header__top so CitySearch wraps below on small screens (2026-05-05)
+      - npm run check passed with no errors (2026-05-05)
   - id: city-search-ui
     priority: 1
     title: Add city search based on `src/components/ARCHITECTURE.md`

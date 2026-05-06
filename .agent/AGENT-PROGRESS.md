@@ -320,3 +320,93 @@
 - Files updated: src/constants.ts, src/components/CitySearch.tsx, src/styles/CitySearch.css, src/components/Header.tsx, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk: geocoding silently fails if city is ambiguous or API is unavailable; stored value is unchanged in that case
 - Next best step: all tasks now passing; await new tasks
+
+### Session 0021
+
+- Date: 2026-05-05
+- Goal: Implement `update-styling-city-search-ui` — fix CitySearch sizing and add responsive behaviour
+- Completed:
+  - CitySearch.css: gap 0.5rem → 0 (no gap between icon and input per spec)
+  - CitySearch.css: height:2rem on .city-search; padding adjusted to 0 0.6rem
+  - CitySearch.css: font-size 0.9rem → 1rem on icon and input
+  - CitySearch.css: added @media (max-width:640px) — CitySearch takes full row width, margin-left reset to 0
+  - Header.css: added flex-wrap:wrap to .header__top so CitySearch can flow to next line on small screens
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml update-styling-city-search-ui set to passing
+- Files updated: src/styles/CitySearch.css, src/styles/Header.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks now passing; await new tasks
+
+### Session 0022
+
+- Date: 2026-05-05
+- Goal: Implement `search-bar-interaction` — full autocomplete with Nominatim, focus-clear, blur-restore
+- Completed:
+  - CitySearch.tsx: onFocus clears input value; selectedRef tracks whether user chose a suggestion
+  - CitySearch.tsx: onChange debounces 300ms; calls Nominatim after >2 chars; shows dropdown list
+  - CitySearch.tsx: onMouseDown on suggestion (fires before blur) stores {city, lat, lon} to localStorage, clears list
+  - CitySearch.tsx: onBlur (150ms delay) restores stored city name if no selection was made
+  - CitySearch.tsx: useEffect cleans up debounce timer on unmount
+  - CitySearch.css: added .city-search__wrapper (relative) to anchor absolute dropdown; .city-search__suggestions and .city-search__suggestion styles
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml search-bar-interaction set to passing
+- Files updated: src/components/CitySearch.tsx, src/styles/CitySearch.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk: Nominatim has a 1 req/s fair-use policy; debounce at 300ms is acceptable for normal typing
+- Next best step: all tasks now passing; await new tasks
+
+### Session 0023
+
+- Date: 2026-05-05
+- Goal: Apply two spec updates from src/components/ARCHITECTURE.md to city search (no new task added)
+- Completed:
+  - CitySearch.tsx: added NominatimAddress interface; Nominatim request now includes addressdetails=1
+  - CitySearch.tsx: added formatSuggestion() — builds "city, state, country" from address fields (falling back through city→town→village→hamlet and state→county)
+  - CitySearch.tsx: handleSelect uses address fields for the stored city name (not display_name split)
+  - CitySearch.tsx: dropdown items render formatSuggestion(s.address) instead of s.display_name
+  - CitySearch.css: added min-width:25rem to .city-search per spec
+- Verification run: npm run check exits 0
+- Files updated: src/components/CitySearch.tsx, src/styles/CitySearch.css, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks now passing; await new tasks
+
+### Session 0024
+
+- Date: 2026-05-05
+- Goal: Apply updated spec to CitySearch — Photon Komoot API, loading spinner, suggestions same width as search bar
+- Completed:
+  - CitySearch.tsx: switched from Nominatim to Photon Komoot API (https://photon.komoot.io/api/); limit=7; GeoJSON FeatureCollection response
+  - CitySearch.tsx: added isLoading state; set true before fetch, false in finally block; cleared on blur
+  - CitySearch.tsx: moved suggestions list outside .city-search__wrapper into .city-search so it anchors to the full container width
+  - CitySearch.tsx: formatSuggestion uses PhotonProperties (name, state, country); handleSelect uses geometry.coordinates[1/0] for lat/lon
+  - CitySearch.css: .city-search now position:relative; suggestions positioned left:0 right:0 top:100% — exactly same width as search bar
+  - CitySearch.css: added .city-search__spinner with CSS @keyframes spin animation; shown on right of input while loading
+  - CitySearch.css: .city-search__input uses flex:1 min-width:0 to fill available space
+- Verification run: npm run check exits 0
+- Files updated: src/components/CitySearch.tsx, src/styles/CitySearch.css, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks now passing; await new tasks
+
+### Session 0025
+
+- Date: 2026-05-05
+- Goal: Apply spec update — store country in localStorage and display "city, country" in search box
+- Completed:
+  - constants.ts: added country field to LocationData interface
+  - CitySearch.tsx: renamed getStoredCity → getStoredDisplay; returns "city, country" format when both fields present
+  - CitySearch.tsx: handleSelect now stores country from feature.properties.country and sets inputValue to "city, country"
+  - CitySearch.tsx: handleBlur restore uses getStoredDisplay() for "city, country" format
+- Verification run: npm run check exits 0
+- Files updated: src/constants.ts, src/components/CitySearch.tsx, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks now passing; await new tasks
+
+### Session 0026
+
+- Date: 2026-05-05
+- Goal: Apply spec update — placeholder changed to "Enter city for accuracy"
+- Completed:
+  - CitySearch.tsx: placeholder "Enter City Name" → "Enter city for accuracy"
+- Verification run: npm run check exits 0
+- Files updated: src/components/CitySearch.tsx, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks now passing; await new tasks
