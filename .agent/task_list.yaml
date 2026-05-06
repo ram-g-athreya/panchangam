@@ -12,6 +12,10 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: restructure-header
+    priority: 1
+    title: Restructure header based on `src/components/ARCHITECTURE.md`
+    status: not_started
   - id: update-panchangam-algorithm-consider-local-time
     priority: 1
     title: Update Panchangam calculation based on `src/core/ARCHITECTURE.md`
