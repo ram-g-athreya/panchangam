@@ -15,7 +15,15 @@ tasks:
   - id: city-search-ui
     priority: 1
     title: Add city search based on `src/components/ARCHITECTURE.md`
-    status: not_started
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - constants.ts: added LocationData interface and LOCATION_KEY constant (2026-05-05)
+      - Created src/components/CitySearch.tsx: input with faLocationDot icon; lazy-init from localStorage; geocodes on blur via Open-Meteo API; stores {city, latitude, longitude} (2026-05-05)
+      - Created src/styles/CitySearch.css: flex row, bg-main background, accent icon, margin-left auto pushes it to the right (2026-05-05)
+      - Header.tsx: imported and rendered <CitySearch /> on the right side of header__top (2026-05-05)
+      - npm run check passed with no errors (2026-05-05)
   - id: update-sidebar
     priority: 1
     title: update navigation sidebar based on `src/components/ARCHITECTURE.md`

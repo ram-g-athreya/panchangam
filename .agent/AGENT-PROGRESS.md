@@ -305,3 +305,18 @@
 - Files updated: src/components/Sidebar.tsx, src/styles/Sidebar.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: all tasks now passing; await new tasks
+
+### Session 0020
+
+- Date: 2026-05-05
+- Goal: Implement `city-search-ui` — city search text box in header with geocoding and localStorage persistence
+- Completed:
+  - constants.ts: added LocationData interface {city, latitude, longitude} and LOCATION_KEY
+  - Created src/components/CitySearch.tsx: input with faLocationDot icon; reads city name from localStorage on init; on blur geocodes via Open-Meteo API (no API key needed) and stores full LocationData to localStorage
+  - Created src/styles/CitySearch.css: flex row with bg-main background, accent icon, margin-left:auto positions it flush right
+  - Header.tsx: imported and rendered <CitySearch /> inside header__top so it appears on the right side
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml city-search-ui set to passing
+- Files updated: src/constants.ts, src/components/CitySearch.tsx, src/styles/CitySearch.css, src/components/Header.tsx, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk: geocoding silently fails if city is ambiguous or API is unavailable; stored value is unchanged in that case
+- Next best step: all tasks now passing; await new tasks
