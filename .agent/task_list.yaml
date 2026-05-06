@@ -12,6 +12,10 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: update-sidebar
+    priority: 1
+    title: update navigation sidebar based on `src/components/ARCHITECTURE.md`
+    status: not_started
   - id: restructure-header-add-navigation-sidebar
     priority: 1
     title: Restructure header and add navigation sidebar based on `src/components/ARCHITECTURE.md`

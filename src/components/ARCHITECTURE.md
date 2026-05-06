@@ -21,13 +21,14 @@ The top panel has a padding of `1rem 0.5rem`. Has a button with the hamburger ba
 - contains navigation links at the top
 - theme toggle switch at the bottom
 - When open, clicking anywhere outside should close the sidebar
+- Implement a smooth sliding transition of `0.5s` for opening and closing the sidebar
 
 ### Navigation Links
 
 The links are as follows:
 
 - **Home**: maps to `/` and has the home icon
-- **Sankalpam**: maps to `/sankalpam` and has the person meditating icon
+- **Sankalpam**: maps to `/sankalpam` and has the hands praying NOT person praying
 
 Styling should be as follows:
 
