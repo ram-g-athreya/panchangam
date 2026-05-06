@@ -20,6 +20,16 @@ tasks:
       - remove any unncessary CSS related to navigation links from the header component
       - ensure that the navigation sidebar is included in every page
     status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - Header.tsx: replaced nav+toggle with hamburger button (faBars); accepts onOpenSidebar prop (2026-05-05)
+      - Header.css: removed all nav/toggle styles; padding updated to 1rem 0.5rem; added .header__hamburger (2026-05-05)
+      - Created src/components/Sidebar.tsx: overlay sidebar with NavLinks (faHouse/faPersonPraying) + theme toggle at bottom (2026-05-05)
+      - Created src/styles/Sidebar.css: fixed overlay, tertiary bg, active link gets secondary bg, theme-toggle styles moved here (2026-05-05)
+      - App.tsx: added sidebarOpen state; renders <Sidebar> alongside <Header> so it appears on every page (2026-05-05)
+      - Sidebar closes on outside click or on NavLink click (2026-05-05)
+      - npm run check passed with no errors (2026-05-05)
   - id: restructure-header
     priority: 1
     title: Restructure header based on `src/components/ARCHITECTURE.md`

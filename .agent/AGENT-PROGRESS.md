@@ -273,3 +273,19 @@
 - Files updated: src/components/Header.tsx, src/styles/Header.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: all tasks now passing; await new tasks
+
+### Session 0018
+
+- Date: 2026-05-05
+- Goal: Implement `restructure-header-add-navigation-sidebar` — move nav links + toggle to a dedicated Sidebar overlay per updated `src/components/ARCHITECTURE.md`
+- Completed:
+  - Header.tsx: stripped to hamburger button (faBars) + Panchangam title; accepts onOpenSidebar prop; padding 1rem 0.5rem
+  - Header.css: removed all .header__nav, .header__nav-link, theme-toggle styles; added .header__hamburger
+  - Created src/components/Sidebar.tsx: overlay sidebar; nav links Home (faHouse) and Sankalpam (faPersonPraying); theme toggle at bottom; closes on overlay click or nav click
+  - Created src/styles/Sidebar.css: fixed overlay with 40% black bg; sidebar panel 16rem wide, tertiary bg; active link gets secondary bg; theme-toggle styles live here
+  - App.tsx: added sidebarOpen state; passes onOpenSidebar to Header; renders Sidebar at root level so it covers all pages
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml restructure-header-add-navigation-sidebar evidence added
+- Files updated: src/components/Header.tsx, src/styles/Header.css, src/components/Sidebar.tsx, src/styles/Sidebar.css, src/App.tsx, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks now passing; await new tasks

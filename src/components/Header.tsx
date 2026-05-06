@@ -1,52 +1,28 @@
 import { library, findIconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, NavLink } from "react-router-dom";
-import type { Theme } from "../constants";
+import { Link } from "react-router-dom";
 import "../styles/Header.css";
 
-library.add(faSun, faMoon);
+library.add(faBars);
 
-const sunIcon = findIconDefinition({ prefix: "fas", iconName: "sun" });
-const moonIcon = findIconDefinition({ prefix: "fas", iconName: "moon" });
+const barsIcon = findIconDefinition({ prefix: "fas", iconName: "bars" });
 
 interface HeaderProps {
-  theme: Theme;
-  onToggleTheme: () => void;
+  onOpenSidebar: () => void;
 }
 
-export function Header({ theme, onToggleTheme }: HeaderProps) {
-  const navClass = ({ isActive }: { isActive: boolean }): string =>
-    `header__nav-link${isActive ? " header__nav-link--active" : ""}`;
-
+export function Header({ onOpenSidebar }: HeaderProps) {
   return (
     <header className="header">
       <div className="header__top">
+        <button className="header__hamburger" onClick={onOpenSidebar} aria-label="Open navigation">
+          <FontAwesomeIcon icon={barsIcon} />
+        </button>
         <Link to="/" className="header__title">
           Panchangam
         </Link>
       </div>
-      <nav className="header__nav">
-        <NavLink to="/" className={navClass}>
-          Home
-        </NavLink>
-        <NavLink to="/sankalpam" className={navClass}>
-          Sankalpam
-        </NavLink>
-        <button
-          className={`theme-toggle theme-toggle--${theme}`}
-          onClick={onToggleTheme}
-          aria-label="Toggle theme"
-        >
-          <span className="theme-toggle__thumb">
-            <FontAwesomeIcon
-              icon={theme === "light" ? sunIcon : moonIcon}
-              className="theme-toggle__icon"
-            />
-          </span>
-          <span className="theme-toggle__label">{theme === "light" ? "Light" : "Dark"}</span>
-        </button>
-      </nav>
     </header>
   );
 }
