@@ -6,19 +6,27 @@ Specification for reusable components are defined here
 
 Create a city search text box with the following spec as a separate standalone comoponent:
 
-- Placeholder is `Enter City Name`
+- Placeholder is `Enter city for accuracy`
 - Has the `location-dot` icon to the left
 - When focused clear the textbox so user can type a city of their choice
-- When the user types more than two characters call `OpenStreetMap` and show a list of options from which the user can choose their city
+- When the user types more than two characters
+  - call `photon koomot API` with the query and additional parameters `osm_tag=place:city&osm_tag=place:town&osm_tag=place:village&limit=7`,
+  - show a list of options from which the user can choose their city.
+- the options should only have `name,state,country`
+- Display a loading indicator towards the right of the search bar when suggestions are being fetched and hide it when results are recieved
+- The suggestions list should be the same width as the search bar
 - When user selects a city from the autocomplete list, close the list and store the following information in localStorage as an object:
   - city
+  - country
   - latitude
   - longitude
-- If the user didn't select any option and the textbox gets blurred because the user clicked outside for example then populate any stored value for city or leave it blank
+- The text displayed in the text box should be `city, country`
+- If the user didn't select any option and the textbox gets blurred because the user clicked outside, for example, then populate the stored value if it exists or leave it blank
 - When the app is reloaded pre-populate the location and display the city if the data exists or else it should be blank
 - have no gap between the location pin and the text
 - set `height` as `2rem`
 - set `font-size` as `1rem`
+- set `minimum-width` as `25rem`
 
 ## Header
 
