@@ -15,7 +15,16 @@ tasks:
   - id: update-sidebar
     priority: 1
     title: update navigation sidebar based on `src/components/ARCHITECTURE.md`
-    status: not_started
+    status: passing
+    verification:
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - Sidebar.tsx: replaced faPersonPraying with faHandsPraying per spec ("hands praying NOT person praying") (2026-05-05)
+      - Sidebar.tsx: removed early return when !isOpen; sidebar always in DOM for CSS transition (2026-05-05)
+      - Sidebar.tsx: applies sidebar-overlay--open and sidebar--open classes based on isOpen prop (2026-05-05)
+      - Sidebar.css: overlay transitions opacity 0→1 over 0.5s; pointer-events none when closed (2026-05-05)
+      - Sidebar.css: sidebar panel transitions translateX(-100%)→translateX(0) over 0.5s ease (2026-05-05)
+      - npm run check passed with no errors (2026-05-05)
   - id: restructure-header-add-navigation-sidebar
     priority: 1
     title: Restructure header and add navigation sidebar based on `src/components/ARCHITECTURE.md`
