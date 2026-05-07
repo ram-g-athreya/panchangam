@@ -455,3 +455,16 @@
 - Files updated: src/core/panchangam.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: all tasks now passing; await new tasks
+
+### Session 0030
+
+- Date: 2026-05-07
+- Goal: Review updated `src/core/ARCHITECTURE.md` (spec reformatted sun longitude section) against current implementation
+- Completed:
+  - Verified tropicalSunLongitude already matches new spec exactly: L0 280.46646+36000.76983*T, M 357.5291092+35999.0502909*T, C (1.914602-0.004817*T)*sin(M)+0.019993*sin(2M)+0.000101*sin(3M)
+  - No code changes required — spec was a clarification rewrite, not a formula change
+  - Consolidated duplicate task_list.yaml entry; updated evidence with 2026-05-07 verification
+- Verification run: npm run check exits 0
+- Files updated: .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks now passing; await new tasks

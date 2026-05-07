@@ -227,7 +227,7 @@ function toDeg(rad: number): number {
   return (rad * 180) / Math.PI;
 }
 
-function tropicalSunLongitude(jd: number): number {
+function siderealSunLongitude(jd: number): number {
   const T = (jd - 2451545.0) / 36525;
   const L0 = mod360(280.46646 + 36000.76983 * T);
   const M = mod360(357.5291092 + 35999.0502909 * T);
@@ -236,33 +236,44 @@ function tropicalSunLongitude(jd: number): number {
     (1.914602 - 0.004817 * T) * Math.sin(Mrad) +
     0.019993 * Math.sin(2 * Mrad) +
     0.000101 * Math.sin(3 * Mrad);
-  return mod360(L0 + C);
+  const A = lahiriAyanamsha(T);
+  return mod360(L0 + C - A);
 }
 
-function tropicalMoonLongitude(jd: number): number {
+function siderealMoonLongitude(jd: number): number {
   const T = (jd - 2451545.0) / 36525;
-  const Lprime = mod360(218.3164477 + 481267.8812307 * T); // Mean Longitude
-  const D = mod360(297.8501921 + 445267.1114034 * T); // Mean Elongation
-  const Mprime = mod360(357.5291092 + 35999.0502909 * T); // Sun's Mean Anomaly
-  const M = mod360(134.9633964 + 477198.8675055 * T); // Moon's Mean Anomaly
-  const F = mod360(93.272095 + 483202.0175233 * T); // Moon's Argument of Latitude
+  const A = lahiriAyanamsha(T);
 
-  const correction =
-    6.288774 * Math.sin(toRad(M)) +
-    1.274027 * Math.sin(toRad(2 * D - M)) +
-    0.658314 * Math.sin(toRad(2 * D)) +
-    0.213618 * Math.sin(toRad(2 * M)) -
-    0.185116 * Math.sin(toRad(Mprime)) -
-    0.114332 * Math.sin(toRad(2 * F)) +
-    0.058793 * Math.sin(toRad(2 * D - 2 * M)) +
-    0.057066 * Math.sin(toRad(2 * D - Mprime - M)) +
-    0.053322 * Math.sin(toRad(2 * D + M));
+  // 1. Calculate Fundamental Arguments in Degrees (as per spec)
+  const LP_deg = 218.3164477 + 481267.8812307 * T; // Mean Longitude
+  const D_deg = 297.8501921 + 445267.1114034 * T; // Mean Elongation
+  const MP_deg = 357.5291092 + 35999.0502909 * T; // Sun's Mean Anomaly
+  const M_deg = 134.9633964 + 477198.8675055 * T; // Moon's Mean Anomaly
+  const F_deg = 93.272095 + 483202.0175233 * T; // Moon's Argument of Latitude
 
-  return mod360(Lprime + correction);
-}
+  // 2. Convert to Radians for Trigonometric input (Strict Spec Adherence)
+  const D = toRad(mod360(D_deg));
+  const MP = toRad(mod360(MP_deg));
+  const M = toRad(mod360(M_deg));
+  const F = toRad(mod360(F_deg));
 
-function siderealLongitude(tropical: number, T: number): number {
-  return mod360(tropical - lahiriAyanamsha(T));
+  // 3. Periodic Correction (L_corr)
+  // All inputs to Math.sin are now pre-calculated Radians
+  const L_corr =
+    6.288774 * Math.sin(M) +
+    1.274027 * Math.sin(2 * D - M) +
+    0.658314 * Math.sin(2 * D) +
+    0.213618 * Math.sin(2 * M) -
+    0.185116 * Math.sin(MP) -
+    0.114332 * Math.sin(2 * F) +
+    0.058793 * Math.sin(2 * D - 2 * M) +
+    0.057066 * Math.sin(2 * D - MP - M) +
+    0.053322 * Math.sin(2 * D + M);
+
+  // 4. Final Sidereal Calculation
+  // Formula: L_moon_sidereal = (L' + L_corr - A) % 360
+  const siderealMoon = mod360(LP_deg + L_corr - A);
+  return siderealMoon;
 }
 
 // Returns the Date of local sunrise for a given UTC calendar day using the NOAA zenith algorithm.
@@ -374,10 +385,9 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
       ? computeGoverningsunrise(date, latitude, longitude)
       : date;
   const jd = toJulianDay(sunriseDate);
-  const T = (jd - 2451545.0) / 36525;
 
-  const sunSidereal = siderealLongitude(tropicalSunLongitude(jd), T);
-  const moonSidereal = siderealLongitude(tropicalMoonLongitude(jd), T);
+  const sunSidereal = siderealSunLongitude(jd);
+  const moonSidereal = siderealMoonLongitude(jd);
 
   // Tithi: every 12° of elongation between sidereal moon and sun
   const elongation = mod360(moonSidereal - sunSidereal);

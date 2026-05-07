@@ -49,7 +49,7 @@ Planetary longitudes must be calculated for the Julian Century (T) from the J200
 #### A. Ayanamsha (Chitrapaksha/Lahiri)
 
 To convert Tropical longitudes to Sidereal, apply the high-precision Lahiri formula:
-**A = 23.85944 + (1.396333 \* T) + (0.0003088 \* T \* T)**
+`A = 23.85944 + (1.396333 * T) + (0.0003088 * T * T)`
 
 #### B. Moon Longitude (Luni-Solar Perturbations)
 
@@ -62,7 +62,7 @@ Calculate the Fundamental Arguments in degrees:
 - **Moon's Argument of Latitude (F)**: 93.2720950 + (483202.0175233 \* T)
 
 **Periodic Correction (L_corr)**:
-L_corr = (6.288774 \* sin(M)) + (1.274027 \* sin(2 \* D - M)) + (0.658314 \* sin(2 \* D)) + (0.213618 \* sin(2 \* M)) - (0.185116 \* sin(M')) - (0.114332 \* sin(2 \* F)) + (0.058793 \* sin(2 \* D - 2 \* M)) + (0.057066 \* sin(2 \* D - M' - M)) + (0.053322 \* sin(2 \* D + M))
+`L_corr = (6.288774 * sin(M)) + (1.274027 * sin(2 * D - M)) + (0.658314 * sin(2 * D)) + (0.213618 * sin(2 * M)) - (0.185116 * sin(M')) - (0.114332 * sin(2 * F)) + (0.058793 * sin(2 * D - 2 * M)) + (0.057066 * sin(2 * D - M' - M)) + (0.053322 * sin(2 * D + M))`
 
 **Final Sidereal Moon**:
 **L_moon_sidereal = (L' + L_corr - A) % 360**
@@ -72,7 +72,8 @@ L_corr = (6.288774 \* sin(M)) + (1.274027 \* sin(2 \* D - M)) + (0.658314 \* sin
 - **Mean Longitude (L0)**: `280.46646 + (36000.76983 * T)`
 - **Mean Anomaly (M)**: `357.5291092 + (35999.0502909 * T)`
 - **Equation of Center (C)**: `(1.914602 - 0.004817 * T) * sin(M) + (0.019993 * sin(2 * M)) + (0.000101 * sin(3 * M))`
-- **Final Sidereal Sun**: `L_sun_sidereal = (L0 + C - A) % 360` where `A` is the `Lahiri Ayanamsha`.
+- **Lahiri Ayanamsa (A)**: Use the `Lahiri Ayanamsa` function specified earlier.
+- **Final Sidereal Sun**: `L_sun_sidereal = (L0 + C - A) % 360`.
 
 #### 4. Element Definitions & Algorithms
 
