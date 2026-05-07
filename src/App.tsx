@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import { Header } from "./components/Header";
 import { Sidebar } from "./components/Sidebar";
 import { DailyView } from "./pages/DailyView";
@@ -41,6 +42,7 @@ export function App() {
         <Route path="/" element={<DailyView />} />
         <Route path="/sankalpam" element={<Sankalpam />} />
       </Routes>
+      <Analytics />
     </BrowserRouter>
   );
 }
