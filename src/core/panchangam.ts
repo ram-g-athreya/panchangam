@@ -182,7 +182,6 @@ const RITUS = ["Vasanta", "Grishma", "Varsha", "Sharada", "Hemanta", "Shishira"]
 const NAKSHATRA_WIDTH = 360 / 27;
 const ZENITH_UPPER_LIMB = 90.8333; // Drik Panchang Default (Refraction + Semi-diameter)
 const ZENITH_CENTER = 90.5833; // "Middle Limb" Sunrise
-const LIGHT_TIME_ADJUSTMENT = 0.0057;
 
 function dayOfYear(date: Date): number {
   const startOfYear = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
@@ -281,30 +280,29 @@ function siderealMoonLongitude(jd: number): number {
   const M = toRad(mod360(M_deg));
   const F = toRad(mod360(F_deg));
 
+  // Eccentricity of Earth's orbit (needed for solar-related terms)
+  const E = 1 - 0.002516 * T - 0.0000074 * T * T;
+
   // 3. Periodic Correction (L_corr)
   // All inputs to Math.sin are now pre-calculated Radians
   const L_corr =
-    6.288774 * Math.sin(M) +
-    1.274027 * Math.sin(2 * D - M) +
-    0.658314 * Math.sin(2 * D) +
-    0.213618 * Math.sin(2 * M) -
-    0.185116 * Math.sin(MP) -
-    0.114332 * Math.sin(2 * F) +
-    0.058793 * Math.sin(2 * D - 2 * M) +
-    0.057066 * Math.sin(2 * D - MP - M) +
-    0.053322 * Math.sin(2 * D + M) +
-    0.045758 * Math.sin(2 * D - MP) - // Additional Evection Term
-    0.041023 * Math.sin(M - MP) - // Annual Equation
-    0.030973 * Math.sin(2 * D - 2 * M) -
-    0.023735 * Math.sin(2 * D - M - MP) -
-    0.015364 * Math.sin(2 * D - 2 * F) +
-    0.01114 * Math.sin(M + MP) +
-    0.010149 * Math.sin(4 * D) +
-    0.009912 * Math.sin(M + 2 * D) +
-    0.006731 * Math.sin(2 * M + 2 * D);
+    6288774 * Math.sin(M) +
+    1274027 * Math.sin(2 * D - M) +
+    658314 * Math.sin(2 * D) +
+    213618 * Math.sin(2 * M) -
+    185116 * E * Math.sin(MP) - // Solar influence
+    114332 * Math.sin(2 * F) +
+    58793 * Math.sin(2 * D - 2 * M) +
+    57066 * E * Math.sin(2 * D - MP - M) +
+    53322 * Math.sin(2 * D + M) +
+    45758 * E * Math.sin(2 * D - MP) -
+    40923 * E * Math.sin(M - MP) -
+    34720 * Math.sin(D) -
+    30383 * E * Math.sin(MP + M) +
+    15327 * Math.sin(2 * D - 2 * F); // Added term for inclination/node
 
   // 3. Final Sidereal Calculation
-  const siderealMoon = mod360(LP_deg + L_corr - A);
+  const siderealMoon = mod360(LP_deg + L_corr / 1000000 - A);
   return siderealMoon;
 }
 
@@ -443,8 +441,7 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
 
   // Yoga: combined sidereal longitudes divided into 27 segments
   const yogaSum = mod360(sunSidereal + moonSidereal);
-  // Add a very small epsilon (1e-9) to handle floating point precision near the boundaries of the 13.33 degree marks.
-  const yogaIndex = Math.floor((yogaSum + 1e-9) / NAKSHATRA_WIDTH) % 27;
+  const yogaIndex = Math.floor(yogaSum / NAKSHATRA_WIDTH) % 27;
   const yoga = YOGAS[yogaIndex];
 
   // Karana: every 6° of elongation = one karana; 60 total per lunar month
