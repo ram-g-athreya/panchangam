@@ -261,7 +261,7 @@ function siderealSunLongitude(jd: number): number {
     0.019993 * Math.sin(2 * Mrad) +
     0.000101 * Math.sin(3 * Mrad);
 
-  return mod360(L0 + C - A);
+  return mod360(L0 + C - A - LIGHT_TIME_ADJUSTMENT);
 }
 
 function siderealMoonLongitude(jd: number): number {
