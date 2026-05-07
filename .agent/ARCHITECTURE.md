@@ -24,3 +24,4 @@ Following URL paths are supported in the application
 - TypeScript strict mode is enabled. No `any` types without a comment explaining why.
 - Use named exports (no default exports).
 - For all functions ensure that the function parameters have proper types and the return type is explicitly defined.
+- Define all `consts` at the top of a file after imports.

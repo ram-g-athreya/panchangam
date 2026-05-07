@@ -424,3 +424,34 @@
 - Files updated: src/core/panchangam.ts, src/pages/DailyView.tsx, src/pages/Sankalpam.tsx, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: all tasks now passing; await new tasks
+
+### Session 0028
+
+- Date: 2026-05-06
+- Goal: Implement `update-panchangam-calculation` — precision algorithm update per `src/core/ARCHITECTURE.md`
+- Completed:
+  - lahiriAyanamsha: updated coefficients 23.85 → 23.85944, 1.396 → 1.396333, 0.000308 → 0.0003088
+  - tropicalSunLongitude: M formula simplified (removed T² term); C — first coefficient drops T² term, second term is plain 0.019993, third term 0.000289 → 0.000101
+  - tropicalMoonLongitude: all 5 fundamental arguments updated to spec-exact coefficients; correction trimmed to exactly 9 spec terms (4 extra terms removed)
+  - computeSunriseJD: zenith 90.833 → 90.8333 (90°50') per spec
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml update-panchangam-calculation set to passing
+- Files updated: src/core/panchangam.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks now passing; await new tasks
+
+### Session 0029
+
+- Date: 2026-05-06
+- Goal: Apply Section 5 refined implementation rules from updated `src/core/ARCHITECTURE.md`
+- Completed:
+  - computeSunriseDateForDay: renamed from computeSunriseJD; now returns Date instead of JD
+  - computeGoverningsunrise: new helper — if input date is before today's sunrise, returns yesterday's sunrise (Temporal Anchoring rule)
+  - computePanchangam: uses sunriseDate for all calculations; vara uses sunriseDate.getUTCDay() (not input date.getDay())
+  - computeNamasamvatsare: switched to Shaka-based formula — Shaka = Gregorian - 78 (adj -1 before Chaitra), Index = (Shaka + 12) % 60; uses sunriseDate UTC fields
+  - NAKSHATRA_WIDTH constant = 360/27; Nakshatra and Yoga indices now use it instead of 13.3333
+- Verification run: npm run check exits 0
+- Evidence captured: task_list.yaml update-panchangam-calculation evidence updated
+- Files updated: src/core/panchangam.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks now passing; await new tasks
