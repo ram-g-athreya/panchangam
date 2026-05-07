@@ -179,6 +179,8 @@ const MASAS = [
 
 const RITUS = ["Vasanta", "Grishma", "Varsha", "Sharada", "Hemanta", "Shishira"] as const;
 
+const NAKSHATRA_WIDTH = 360 / 27;
+
 function dayOfYear(date: Date): number {
   const startOfYear = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
   return Math.floor((date.getTime() - startOfYear.getTime()) / 86400000) + 1;
@@ -212,9 +214,9 @@ function mod360(x: number): number {
   return ((x % 360) + 360) % 360;
 }
 
-// Lahiri Ayanamsha: degrees to subtract from tropical longitude to get sidereal
+// Lahiri (Chitrapaksha) Ayanamsha: degrees to subtract from tropical longitude to get sidereal
 function lahiriAyanamsha(T: number): number {
-  return 23.85 + 1.396 * T + 0.000308 * T * T;
+  return 23.85944 + 1.396333 * T + 0.0003088 * T * T;
 }
 
 function toRad(degree: number): number {
@@ -228,48 +230,44 @@ function toDeg(rad: number): number {
 function tropicalSunLongitude(jd: number): number {
   const T = (jd - 2451545.0) / 36525;
   const L0 = mod360(280.46646 + 36000.76983 * T);
-  const M = mod360(357.52911 + 35999.05029 * T - 0.0001537 * T * T);
+  const M = mod360(357.5291092 + 35999.0502909 * T);
   const Mrad = toRad(M);
   const C =
-    (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(Mrad) +
-    (0.019993 - 0.000101 * T) * Math.sin(2 * Mrad) +
-    0.000289 * Math.sin(3 * Mrad);
+    (1.914602 - 0.004817 * T) * Math.sin(Mrad) +
+    0.019993 * Math.sin(2 * Mrad) +
+    0.000101 * Math.sin(3 * Mrad);
   return mod360(L0 + C);
 }
 
 function tropicalMoonLongitude(jd: number): number {
   const T = (jd - 2451545.0) / 36525;
-  const L = mod360(218.3165 + 481267.8813 * T);
-  const M = mod360(134.9634 + 477198.8676 * T);
-  const Ms = mod360(357.5291 + 35999.0503 * T);
-  const F = mod360(93.272 + 483202.0175 * T);
-  const D = mod360(297.8502 + 445267.1115 * T);
+  const Lprime = mod360(218.3164477 + 481267.8812307 * T); // Mean Longitude
+  const D = mod360(297.8501921 + 445267.1114034 * T); // Mean Elongation
+  const Mprime = mod360(357.5291092 + 35999.0502909 * T); // Sun's Mean Anomaly
+  const M = mod360(134.9633964 + 477198.8675055 * T); // Moon's Mean Anomaly
+  const F = mod360(93.272095 + 483202.0175233 * T); // Moon's Argument of Latitude
 
   const correction =
     6.288774 * Math.sin(toRad(M)) +
     1.274027 * Math.sin(toRad(2 * D - M)) +
     0.658314 * Math.sin(toRad(2 * D)) +
     0.213618 * Math.sin(toRad(2 * M)) -
-    0.185116 * Math.sin(toRad(Ms)) -
+    0.185116 * Math.sin(toRad(Mprime)) -
     0.114332 * Math.sin(toRad(2 * F)) +
     0.058793 * Math.sin(toRad(2 * D - 2 * M)) +
-    0.057066 * Math.sin(toRad(2 * D - Ms - M)) +
-    0.053322 * Math.sin(toRad(2 * D + M)) +
-    0.045758 * Math.sin(toRad(2 * D - Ms)) -
-    0.040923 * Math.sin(toRad(Ms - M)) -
-    0.03472 * Math.sin(toRad(D)) -
-    0.030383 * Math.sin(toRad(Ms + M));
+    0.057066 * Math.sin(toRad(2 * D - Mprime - M)) +
+    0.053322 * Math.sin(toRad(2 * D + M));
 
-  return mod360(L + correction);
+  return mod360(Lprime + correction);
 }
 
 function siderealLongitude(tropical: number, T: number): number {
   return mod360(tropical - lahiriAyanamsha(T));
 }
 
-// Returns the Julian Day of local sunrise (in UTC) using the NOAA zenith-based algorithm.
-// Falls back to solar noon on the given date if the sun never rises/sets.
-function computeSunriseJD(date: Date, latitude: number, longitude: number): number {
+// Returns the Date of local sunrise for a given UTC calendar day using the NOAA zenith algorithm.
+// Falls back to solar noon if the sun never rises/sets (polar regions).
+function computeSunriseDateForDay(date: Date, latitude: number, longitude: number): Date {
   const N = dayOfYear(date);
   const t = N + (6 - longitude / 15) / 24;
 
@@ -288,7 +286,7 @@ function computeSunriseJD(date: Date, latitude: number, longitude: number): numb
   const cosDec = Math.sqrt(1 - sinDec * sinDec);
 
   const cosH =
-    (Math.cos(toRad(90.833)) - sinDec * Math.sin(toRad(latitude))) /
+    (Math.cos(toRad(90.8333)) - sinDec * Math.sin(toRad(latitude))) /
     (cosDec * Math.cos(toRad(latitude)));
 
   // H in hours for sunrise (west side of meridian)
@@ -296,7 +294,7 @@ function computeSunriseJD(date: Date, latitude: number, longitude: number): numb
 
   const utcHours = (((H + RA - 0.06571 * t - 6.622 - longitude / 15) % 24) + 24) % 24;
 
-  const sunriseDate = new Date(
+  return new Date(
     Date.UTC(
       date.getUTCFullYear(),
       date.getUTCMonth(),
@@ -306,7 +304,19 @@ function computeSunriseJD(date: Date, latitude: number, longitude: number): numb
       Math.floor(((utcHours * 60) % 1) * 60),
     ),
   );
-  return toJulianDay(sunriseDate);
+}
+
+// Returns the governing sunrise Date for a given moment.
+// If the moment is before today's sunrise, the previous day's sunrise governs.
+function computeGoverningsunrise(date: Date, latitude: number, longitude: number): Date {
+  const todaySunrise = computeSunriseDateForDay(date, latitude, longitude);
+  if (date.getTime() < todaySunrise.getTime()) {
+    const yesterday = new Date(
+      Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() - 1),
+    );
+    return computeSunriseDateForDay(yesterday, latitude, longitude);
+  }
+  return todaySunrise;
 }
 
 export interface Panchangam {
@@ -322,13 +332,13 @@ export interface Panchangam {
 }
 
 function computeNamasamvatsare(date: Date): string {
-  // Vikram Samvat year starts on Chaitra Shukla Pratipada (~Mar 22–Apr 15).
-  // Approximate: VS year = Gregorian year + 57 on/after Mar 22, else + 56.
-  const gregYear = date.getFullYear();
+  // North Indian / Shaka-based Jovian cycle. Shaka era starts 78 CE.
+  // New year begins at Chaitra Shukla Pratipada (~Mar 22); subtract 1 before that.
+  const gregYear = date.getUTCFullYear();
   const isAfterChaitraStart =
-    date.getMonth() > 2 || (date.getMonth() === 2 && date.getDate() >= 22);
-  const vsYear = isAfterChaitraStart ? gregYear + 57 : gregYear + 56;
-  const index = (vsYear - 1) % 60;
+    date.getUTCMonth() > 2 || (date.getUTCMonth() === 2 && date.getUTCDate() >= 22);
+  const shakaYear = isAfterChaitraStart ? gregYear - 78 : gregYear - 79;
+  const index = (((shakaYear + 12) % 60) + 60) % 60;
   return SAMVATSARAS[index];
 }
 
@@ -359,10 +369,11 @@ function computeKarana(karanaIndex: number): string {
 }
 
 export function computePanchangam(date: Date, latitude?: number, longitude?: number): Panchangam {
-  const jd =
+  const sunriseDate =
     latitude !== undefined && longitude !== undefined
-      ? computeSunriseJD(date, latitude, longitude)
-      : toJulianDay(date);
+      ? computeGoverningsunrise(date, latitude, longitude)
+      : date;
+  const jd = toJulianDay(sunriseDate);
   const T = (jd - 2451545.0) / 36525;
 
   const sunSidereal = siderealLongitude(tropicalSunLongitude(jd), T);
@@ -376,16 +387,16 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
   const tithiName =
     tithiIndex === 14 ? "Purnima" : tithiIndex === 29 ? "Amavasya" : TITHIS[tithiNumber - 1];
 
-  // Vara: JS getDay() 0=Sun matches Ravivara
-  const vara = VARAS[date.getDay()];
+  // Vara derived from sunrise date so pre-sunrise inputs resolve to the previous solar day
+  const vara = VARAS[sunriseDate.getUTCDay()];
 
-  // Nakshatra: 27 equal segments of 13.3333° based on sidereal moon longitude
-  const nakshatraIndex = Math.floor(moonSidereal / 13.3333) % 27;
+  // Nakshatra: 27 equal segments using exact 360/27 to avoid cumulative rounding errors
+  const nakshatraIndex = Math.floor(moonSidereal / NAKSHATRA_WIDTH) % 27;
   const nakshatra = NAKSHATRAS[nakshatraIndex];
 
   // Yoga: combined sidereal longitudes divided into 27 segments
   const yogaSum = mod360(sunSidereal + moonSidereal);
-  const yogaIndex = Math.floor(yogaSum / 13.3333) % 27;
+  const yogaIndex = Math.floor(yogaSum / NAKSHATRA_WIDTH) % 27;
   const yoga = YOGAS[yogaIndex];
 
   // Karana: every 6° of elongation = one karana; 60 total per lunar month
@@ -398,7 +409,7 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
     nakshatra,
     yoga,
     karana,
-    namasamvatsare: computeNamasamvatsare(date),
+    namasamvatsare: computeNamasamvatsare(sunriseDate),
     ayane: computeAyane(sunSidereal),
     ritau: computeRitau(sunSidereal),
     mase: computeMase(sunSidereal),
