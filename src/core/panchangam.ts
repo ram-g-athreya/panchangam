@@ -180,6 +180,9 @@ const MASAS = [
 const RITUS = ["Vasanta", "Grishma", "Varsha", "Sharada", "Hemanta", "Shishira"] as const;
 
 const NAKSHATRA_WIDTH = 360 / 27;
+const ZENITH_UPPER_LIMB = 90.8333; // Drik Panchang Default (Refraction + Semi-diameter)
+const ZENITH_CENTER = 90.5833; // "Middle Limb" Sunrise
+const LIGHT_TIME_ADJUSTMENT = 0.0057;
 
 function dayOfYear(date: Date): number {
   const startOfYear = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
@@ -210,13 +213,32 @@ function toJulianDay(date: Date): number {
   );
 }
 
+/**
+ * Converts a Julian Day to Julian Centuries since the J2000.0 epoch.
+ * Used as the time variable 'T' in astronomical polynomial series.
+ * @param jd The Julian Day number
+ */
+function toJulianCenturies(jd: number): number {
+  return (jd - 2451545.0) / 36525.0;
+}
+
 function mod360(x: number): number {
   return ((x % 360) + 360) % 360;
 }
 
 // Lahiri (Chitrapaksha) Ayanamsha: degrees to subtract from tropical longitude to get sidereal
-function lahiriAyanamsha(T: number): number {
-  return 23.85944 + 1.396333 * T + 0.0003088 * T * T;
+function getTrueAyanamsha(T: number): number {
+  // 1. Mean Ayanamsha
+  const A_m = 23.85944 + 1.396333 * T + 0.0003088 * T * T;
+
+  // 2. Nutation Correction
+  // This corrects the wobble that often pushes the Moon into the next Nakshatra
+  const omega = toRad(125.04452 - 1934.136261 * T); // Node of the Moon
+  const L = toRad(280.4665 + 36000.7698 * T); // Mean Longitude of Sun
+  const nutation = (-17.2 * Math.sin(omega) - 1.32 * Math.sin(2 * L)) / 3600;
+
+  const A = A_m + nutation;
+  return A;
 }
 
 function toRad(degree: number): number {
@@ -228,7 +250,9 @@ function toDeg(rad: number): number {
 }
 
 function siderealSunLongitude(jd: number): number {
-  const T = (jd - 2451545.0) / 36525;
+  const T = toJulianCenturies(jd);
+  const A = getTrueAyanamsha(T);
+
   const L0 = mod360(280.46646 + 36000.76983 * T);
   const M = mod360(357.5291092 + 35999.0502909 * T);
   const Mrad = toRad(M);
@@ -236,13 +260,13 @@ function siderealSunLongitude(jd: number): number {
     (1.914602 - 0.004817 * T) * Math.sin(Mrad) +
     0.019993 * Math.sin(2 * Mrad) +
     0.000101 * Math.sin(3 * Mrad);
-  const A = lahiriAyanamsha(T);
+
   return mod360(L0 + C - A);
 }
 
 function siderealMoonLongitude(jd: number): number {
-  const T = (jd - 2451545.0) / 36525;
-  const A = lahiriAyanamsha(T);
+  const T = toJulianCenturies(jd);
+  const A = getTrueAyanamsha(T);
 
   // 1. Calculate Fundamental Arguments in Degrees (as per spec)
   const LP_deg = 218.3164477 + 481267.8812307 * T; // Mean Longitude
@@ -268,17 +292,24 @@ function siderealMoonLongitude(jd: number): number {
     0.114332 * Math.sin(2 * F) +
     0.058793 * Math.sin(2 * D - 2 * M) +
     0.057066 * Math.sin(2 * D - MP - M) +
-    0.053322 * Math.sin(2 * D + M);
+    0.053322 * Math.sin(2 * D + M) +
+    0.045758 * Math.sin(2 * D - MP) - // Additional Evection Term
+    0.041023 * Math.sin(M - MP) - // Annual Equation
+    0.030973 * Math.sin(2 * D - 2 * M);
 
-  // 4. Final Sidereal Calculation
-  // Formula: L_moon_sidereal = (L' + L_corr - A) % 360
-  const siderealMoon = mod360(LP_deg + L_corr - A);
+  // 3. Final Sidereal Calculation
+  const siderealMoon = mod360(LP_deg + L_corr - A - LIGHT_TIME_ADJUSTMENT);
   return siderealMoon;
 }
 
 // Returns the Date of local sunrise for a given UTC calendar day using the NOAA zenith algorithm.
 // Falls back to solar noon if the sun never rises/sets (polar regions).
-function computeSunriseDateForDay(date: Date, latitude: number, longitude: number): Date {
+function computeSunriseDateForDay(
+  date: Date,
+  latitude: number,
+  longitude: number,
+  zenith: number = ZENITH_UPPER_LIMB,
+): Date {
   const N = dayOfYear(date);
   const t = N + (6 - longitude / 15) / 24;
 
@@ -297,7 +328,7 @@ function computeSunriseDateForDay(date: Date, latitude: number, longitude: numbe
   const cosDec = Math.sqrt(1 - sinDec * sinDec);
 
   const cosH =
-    (Math.cos(toRad(90.8333)) - sinDec * Math.sin(toRad(latitude))) /
+    (Math.cos(toRad(zenith)) - sinDec * Math.sin(toRad(latitude))) /
     (cosDec * Math.cos(toRad(latitude)));
 
   // H in hours for sunrise (west side of meridian)
@@ -319,7 +350,7 @@ function computeSunriseDateForDay(date: Date, latitude: number, longitude: numbe
 
 // Returns the governing sunrise Date for a given moment.
 // If the moment is before today's sunrise, the previous day's sunrise governs.
-function computeGoverningsunrise(date: Date, latitude: number, longitude: number): Date {
+function computeGoverningSunrise(date: Date, latitude: number, longitude: number): Date {
   const todaySunrise = computeSunriseDateForDay(date, latitude, longitude);
   if (date.getTime() < todaySunrise.getTime()) {
     const yesterday = new Date(
@@ -382,10 +413,10 @@ function computeKarana(karanaIndex: number): string {
 export function computePanchangam(date: Date, latitude?: number, longitude?: number): Panchangam {
   const sunriseDate =
     latitude !== undefined && longitude !== undefined
-      ? computeGoverningsunrise(date, latitude, longitude)
+      ? computeGoverningSunrise(date, latitude, longitude)
       : date;
-  const jd = toJulianDay(sunriseDate);
 
+  const jd = toJulianDay(sunriseDate);
   const sunSidereal = siderealSunLongitude(jd);
   const moonSidereal = siderealMoonLongitude(jd);
 
