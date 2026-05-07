@@ -15,6 +15,10 @@ tasks:
   - id: update-panchangam-calculation
     priority: 1
     title: Update panchangam calculation based on `src/core/ARCHITECTURE.md`
+    status: not_started
+  - id: update-panchangam-calculation
+    priority: 1
+    title: Update panchangam calculation based on `src/core/ARCHITECTURE.md`
     status: passing
     verification:
       - npm run check (tsc --noEmit) exits 0
