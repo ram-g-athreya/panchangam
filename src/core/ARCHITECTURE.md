@@ -91,8 +91,8 @@ L_corr =
 
 #### C. Sun Longitude
 
-- **Mean Longitude (L0)**: `280.46646 + (36000.76983 * T)`
-- **Mean Anomaly (M)**: `357.5291092 + (35999.0502909 * T)`
+- **Mean Longitude (L0)**: `280.46646 + (36000.76983 * T) + 0.0003032 * T * T`
+- **Mean Anomaly (M)**: `357.5291092 + (35999.0502909 * T) - 0.0001537 * T * T`
 - **Equation of Center (C)**: `(1.914602 - 0.004817 * T) * sin(M) + (0.019993 * sin(2 * M)) + (0.000101 * sin(3 * M))`
 - **Lahiri Ayanamsa (A)**: Use the `Lahiri Ayanamsa` function specified earlier.
 - **Final Sidereal Sun**: `L_sun_sidereal = (L0 + C - A) % 360`.

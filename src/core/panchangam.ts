@@ -252,8 +252,8 @@ function siderealSunLongitude(jd: number): number {
   const T = toJulianCenturies(jd);
   const A = getTrueAyanamsha(T);
 
-  const L0 = mod360(280.46646 + 36000.76983 * T);
-  const M = mod360(357.5291092 + 35999.0502909 * T);
+  const L0 = mod360(280.46646 + 36000.76983 * T) + 0.0003032 * T * T;
+  const M = mod360(357.5291092 + 35999.0502909 * T - 0.0001537 * T * T);
   const Mrad = toRad(M);
   const C =
     (1.914602 - 0.004817 * T) * Math.sin(Mrad) +
@@ -441,6 +441,7 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
 
   // Yoga: combined sidereal longitudes divided into 27 segments
   const yogaSum = mod360(sunSidereal + moonSidereal);
+  console.log({ yogaSum, sunSidereal, moonSidereal, date });
   const yogaIndex = Math.floor(yogaSum / NAKSHATRA_WIDTH) % 27;
   const yoga = YOGAS[yogaIndex];
 
