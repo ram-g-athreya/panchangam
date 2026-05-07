@@ -180,8 +180,7 @@ const MASAS = [
 const RITUS = ["Vasanta", "Grishma", "Varsha", "Sharada", "Hemanta", "Shishira"] as const;
 
 const NAKSHATRA_WIDTH = 360 / 27;
-const ZENITH_UPPER_LIMB = 90.8333; // Drik Panchang Default (Refraction + Semi-diameter)
-const ZENITH_CENTER = 90.5833; // "Middle Limb" Sunrise
+const ZENITH_UPPER_LIMB = 90.8333; // 90°50' — upper limb + atmospheric refraction
 
 function dayOfYear(date: Date): number {
   const startOfYear = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
@@ -228,7 +227,7 @@ function mod360(x: number): number {
 // Lahiri (Chitrapaksha) Ayanamsha: degrees to subtract from tropical longitude to get sidereal
 function getTrueAyanamsha(T: number): number {
   // 1. Mean Ayanamsha
-  const A_m = 23.85944 + 1.396333 * T + 0.0003088 * T * T;
+  const A_m = 23.857092 + 1.396971 * T + 0.0003086 * T * T;
 
   // 2. Nutation Correction
   // This corrects the wobble that often pushes the Moon into the next Nakshatra
@@ -259,6 +258,9 @@ function siderealSunLongitude(jd: number): number {
     (1.914602 - 0.004817 * T) * Math.sin(Mrad) +
     0.019993 * Math.sin(2 * Mrad) +
     0.000101 * Math.sin(3 * Mrad);
+
+  // Aberration correction (approximate)
+  // const aberration = -0.00569;
 
   return mod360(L0 + C - A);
 }
@@ -424,6 +426,8 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
   const sunSidereal = siderealSunLongitude(jd);
   const moonSidereal = siderealMoonLongitude(jd);
 
+  console.log({ ayanamhsa: getTrueAyanamsha(toJulianCenturies(jd)), sunSidereal, moonSidereal });
+
   // Tithi: every 12° of elongation between sidereal moon and sun
   const elongation = mod360(moonSidereal - sunSidereal);
   const tithiIndex = Math.floor(elongation / 12); // 0–29
@@ -439,8 +443,11 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
   const nakshatraIndex = Math.floor(moonSidereal / NAKSHATRA_WIDTH) % 27;
   const nakshatra = NAKSHATRAS[nakshatraIndex];
 
-  // Yoga: combined sidereal longitudes divided into 27 segments
-  const yogaSum = mod360(sunSidereal + moonSidereal);
+  // Yoga: (tropical sun + tropical moon - ayanamsha) / (360/27)
+  // sunSidereal and moonSidereal each already have ayanamsha subtracted, so adding it back
+  // once gives a single net subtraction from the combined sum, matching Drik's convention.
+  const yogaAyanamsha = getTrueAyanamsha(toJulianCenturies(jd));
+  const yogaSum = mod360(sunSidereal + moonSidereal + yogaAyanamsha);
   const yogaIndex = Math.floor(yogaSum / NAKSHATRA_WIDTH) % 27;
   const yoga = YOGAS[yogaIndex];
 

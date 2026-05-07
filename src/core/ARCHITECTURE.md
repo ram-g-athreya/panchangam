@@ -36,9 +36,7 @@
 #### 2. Core Astronomical Principles
 
 - **Coordinate System:** All calculations must be performed using **Nirayana (Sidereal)** longitudes.
-- **Ayanamsha (Chitrapaksha/Lahiri):** To convert Tropical (Sayana) longitudes to Sidereal, use the high-precision Lahiri formula:
-  - _Calculation:_ `A = 23.85944 + (1.396333 * T) + (0.0003088 * T * T)`
-  - _Where:_ `T` is the Julian centuries from the J2000.0 epoch.
+- **Ayanamsha (Chitrapaksha/Lahiri):** To convert Tropical (Sayana) longitudes to Sidereal, use the high-precision Lahiri formula
 - **Nirayana Longitude Formula:** `L_sidereal = (L_tropical - A) % 360`
 
 #### 3. High-Precision Planetary Positions
@@ -49,7 +47,7 @@ Planetary longitudes must be calculated for the Julian Century (T) from the J200
 
 **Ayanamsha (Chitrapaksha/Lahiri)**: To match high-precision calendars, use the True Ayanamsha.
 
-- **Mean Ayanamsha (A_m)**: `A = 23.85944 + (1.396333 * T) + (0.0003088 * T * T)`
+- **Mean Ayanamsha (A_m)**: `23.857092 + 1.396971 * T + 0.0003086 * T * T;`
 - **Omega (omega)**: `125.04452 - 1934.136261 * T`
 - **Longitude of Sun (L_sun)**: `280.4665 + 36000.7698 * T`
 - **Nutation (N)**: `(-17.20 * sin(omega) - 1.32 * sin(2 * L)) / 3600`
