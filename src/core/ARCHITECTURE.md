@@ -1,58 +1,78 @@
-# ARICHITECTURE.md
+# ARCHITECTURE.md
 
 ## Panchangam
 
-- Create a Panchangam interface that has the following attributes as per the Vedic calendar
-  - **tithi**: lunar day which is an object with the `name`, `paksha` of type `Shukla` or `Krishna` and `number` signifying the number of day of the paksha
-  - **vara**: solar weekday
-  - **nakshatra**: associated star
-  - **yoga**: represents the combined angular relationship between the Sun and the Moon
-  - **karana**: half of the tithi
-  - **namasamvatsare**: year in the vedic calendar
-  - **ayane**: the solstice
-  - **ritau**: the season
-  - **mase**: the vedic month
-- Write corresponding functions to calculate each component
-- Expose a function called `computePanchangam` that takes a date as parameter and returns the Panchangam
+- Create a Panchangam interface that has the following attributes as per the Vedic calendar:
+  - **tithi**: lunar day object with `name`, `paksha` (`Shukla` or `Krishna`), and `number` signifying the day of the paksha.
+  - **vara**: solar weekday (Calculated from Sunrise to Sunrise).
+  - **nakshatra**: associated lunar mansion (star).
+  - **yoga**: combined angular relationship between the Sun and the Moon.
+  - **karana**: half of the tithi.
+  - **namasamvatsare**: year name in the 60-year Jovian cycle.
+  - **ayane**: the solstice (Uttarayana or Dakshinayana).
+  - **ritau**: the season.
+  - **mase**: the vedic month.
+- Write corresponding functions to calculate each component.
+- Expose a function called `computePanchangam` that takes `date`, `latitude`, and `longitude` as parameters and returns the Panchangam calculated at the **exact moment of local sunrise**.
 
 ### Algorithm
 
-#### 1. Technical Implementation Requirements (Read First)
+#### 1. Technical Implementation Requirements
 
 - **Precision:** Use double-precision floating-point numbers for all astronomical coordinates.
-- **Trigonometry:** All math functions (Sine, Cosine, Tangent) must receive input in **Radians**. Convert all degree-based formulas using `radians = degrees * (pi / 180)`.
-- **Normalization:** All angular results must be normalized to the range `[0, 360)`. Use a floating-point modulo function: `((angle % 360) + 360) % 360`.
+- **Trigonometry:** All math functions (Sine, Cosine, Tangent) must receive input in **Radians**.
+  - _Formula:_ `radians = degrees * (pi / 180)`
+- **Normalization:** All angular results must be normalized to the range `[0, 360)`.
+  - _Formula:_ `((angle % 360) + 360) % 360`
 - **Time Standard:** Use **Julian Day (JD)** derived from UTC for all planetary positions.
+- **Sunrise Definition**: Use a **Zenith of 90.8333** degrees (90 degrees 50 minutes) to account for the Sun's upper limb and atmospheric refraction.
 - **Logic Flow:**
-  1. Calculate the **Local Sunrise** (in UTC) for the given Date. Use Latitude and Longitude if valid values are provided. Do NOT use a `DEFAULT_LATITUDE` and `DEFAULT_LONGITUDE`.
-  2. Convert this **Sunrise UTC Time** into a precise **Julian Day (JD)**.
-  3. Calculate all planetary positions (Sun/Moon longitudes) for that specific **Sunrise Julian Day**.
-  4. Determine the "ruling" Panchangam elements based on these sunrise positions.
+  1. Calculate the **Local Sunrise** (in UTC) for the given Date and coordinates. Use Latitude and Longitude if valid values are provided. Do NOT use a `DEFAULT_LATITUDE` and `DEFAULT_LONGITUDE`.
+  2. Use a **Zenith of 90.8333°** ($90^\circ 50'$) to account for the Sun's upper limb and atmospheric refraction.
+  3. Convert this **Sunrise UTC Time** into a precise **Julian Day (JD)**.
+  4. Calculate all planetary positions (Sun/Moon longitudes) for that specific **Sunrise Julian Day**.
+  5. Determine the "ruling" Panchangam elements based on these sunrise positions.
 
 #### 2. Core Astronomical Principles
 
 - **Coordinate System:** All calculations must be performed using **Nirayana (Sidereal)** longitudes.
-- **Ayanamsha (Precession Adjustment):** To convert Tropical (Sayana) longitudes to Sidereal, the **Lahiri Ayanamsha** must be subtracted.
-  - _Calculation:_ `A = 23.85 + 1.396 * T + 0.000308 * T^2`
+- **Ayanamsha (Chitrapaksha/Lahiri):** To convert Tropical (Sayana) longitudes to Sidereal, use the high-precision Lahiri formula:
+  - _Calculation:_ `A = 23.85944 + (1.396333 * T) + (0.0003088 * T * T)`
   - _Where:_ `T` is the Julian centuries from the J2000.0 epoch.
 - **Nirayana Longitude Formula:** `L_sidereal = (L_tropical - A) % 360`
-- **Time Standard:** Calculations should utilize **Julian Day (JD)** derived from UTC to maintain astronomical precision and avoid time-zone offsets during calculation.
 
-#### 3. Sunrise Algorithm (Zenith-based)
+#### 3. High-Precision Planetary Positions
 
-To find the Sunrise time (UTC) for a given `date`, `latitude`, and `longitude`:
+Planetary longitudes must be calculated for the Julian Century (T) from the J2000.0 epoch:
+**T = (JD - 2451545.0) / 36525**
 
-1. **Calculate the Day of the Year:** `N`
-2. **Approximate Time:** `t = N + ((6 - (longitude / 15)) / 24)`
-3. **Mean Anomaly:** `M = (0.9856 * t) - 3.289`
-4. **True Longitude:** `L = M + (1.916 * sin(M)) + (0.020 * sin(2 * M)) + 282.634` (Normalize `L` to `[0, 360)`)
-5. **Right Ascension:** `RA = atan(0.91764 * tan(L))` (Adjust `RA` to be in the same quadrant as `L`)
-6. **Declination:** `sin(dec) = 0.39782 * sin(L)`, `cos(dec) = sqrt(1 - sin(dec)^2)`
-7. **Local Hour Angle:** `cos(H) = (cos(90.833) - (sin(dec) * sin(latitude))) / (cos(dec) * cos(latitude))`
-   - If `cos(H) > 1` or `cos(H) < -1`, the sun never rises/sets at this location on this day.
-8. **Sunrise Time:** `H = 360 - acos(cos(H))`
-   - `T = H / 15 + RA / 15 - (0.06571 * t) - 6.622`
-   - `UTCTime = T - (longitude / 15)`
+#### A. Ayanamsha (Chitrapaksha/Lahiri)
+
+To convert Tropical longitudes to Sidereal, apply the high-precision Lahiri formula:
+**A = 23.85944 + (1.396333 \* T) + (0.0003088 \* T \* T)**
+
+#### B. Moon Longitude (Luni-Solar Perturbations)
+
+Calculate the Fundamental Arguments in degrees:
+
+- **Mean Longitude (L')**: 218.3164477 + (481267.8812307 \* T)
+- **Mean Elongation (D)**: 297.8501921 + (445267.1114034 \* T)
+- **Sun's Mean Anomaly (M')**: 357.5291092 + (35999.0502909 \* T)
+- **Moon's Mean Anomaly (M)**: 134.9633964 + (477198.8675055 \* T)
+- **Moon's Argument of Latitude (F)**: 93.2720950 + (483202.0175233 \* T)
+
+**Periodic Correction (L_corr)**:
+L_corr = (6.288774 \* sin(M)) + (1.274027 \* sin(2 \* D - M)) + (0.658314 \* sin(2 \* D)) + (0.213618 \* sin(2 \* M)) - (0.185116 \* sin(M')) - (0.114332 \* sin(2 \* F)) + (0.058793 \* sin(2 \* D - 2 \* M)) + (0.057066 \* sin(2 \* D - M' - M)) + (0.053322 \* sin(2 \* D + M))
+
+**Final Sidereal Moon**:
+**L_moon_sidereal = (L' + L_corr - A) % 360**
+
+#### C. Sun Longitude
+
+- **Mean Longitude (L0)**: 280.46646 + (36000.76983 \* T)
+- **Equation of Center (C)**: (1.914602 - 0.004817 \* T) \* sin(M') + (0.019993 \* sin(2 \* M')) + (0.000101 \* sin(3 \* M'))
+- **Final Sidereal Sun**:
+  **L_sun_sidereal = (L0 + C - A) % 360**
 
 #### 4. Element Definitions & Algorithms
 

@@ -12,6 +12,10 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: update-panchangam-calculation
+    priority: 1
+    title: Update panchangam calculation based on `src/core/ARCHITECTURE.md`
+    status: not_started
   - id: use-location-to-compute-panchangam
     priority: 1
     title: Use location to compute panchangam
