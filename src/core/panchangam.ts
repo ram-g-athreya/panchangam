@@ -441,7 +441,6 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
 
   // Yoga: combined sidereal longitudes divided into 27 segments
   const yogaSum = mod360(sunSidereal + moonSidereal);
-  console.log({ yogaSum, sunSidereal, moonSidereal, date });
   const yogaIndex = Math.floor(yogaSum / NAKSHATRA_WIDTH) % 27;
   const yoga = YOGAS[yogaIndex];
 
