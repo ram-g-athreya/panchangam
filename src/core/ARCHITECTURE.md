@@ -91,7 +91,7 @@ L_corr =
 - **Mean Anomaly (M)**: `357.5291092 + (35999.0502909 * T)`
 - **Equation of Center (C)**: `(1.914602 - 0.004817 * T) * sin(M) + (0.019993 * sin(2 * M)) + (0.000101 * sin(3 * M))`
 - **Lahiri Ayanamsa (A)**: Use the `Lahiri Ayanamsa` function specified earlier.
-- **Final Sidereal Sun**: `L_sun_sidereal = (L0 + C - A - light_adjustment) % 360`.
+- **Final Sidereal Sun**: `L_sun_sidereal = (L0 + C - A) % 360`.
 
 #### 4. Element Definitions & Algorithms
 

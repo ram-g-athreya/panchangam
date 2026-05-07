@@ -261,7 +261,7 @@ function siderealSunLongitude(jd: number): number {
     0.019993 * Math.sin(2 * Mrad) +
     0.000101 * Math.sin(3 * Mrad);
 
-  return mod360(L0 + C - A - LIGHT_TIME_ADJUSTMENT);
+  return mod360(L0 + C - A);
 }
 
 function siderealMoonLongitude(jd: number): number {
@@ -295,10 +295,16 @@ function siderealMoonLongitude(jd: number): number {
     0.053322 * Math.sin(2 * D + M) +
     0.045758 * Math.sin(2 * D - MP) - // Additional Evection Term
     0.041023 * Math.sin(M - MP) - // Annual Equation
-    0.030973 * Math.sin(2 * D - 2 * M);
+    0.030973 * Math.sin(2 * D - 2 * M) -
+    0.023735 * Math.sin(2 * D - M - MP) -
+    0.015364 * Math.sin(2 * D - 2 * F) +
+    0.01114 * Math.sin(M + MP) +
+    0.010149 * Math.sin(4 * D) +
+    0.009912 * Math.sin(M + 2 * D) +
+    0.006731 * Math.sin(2 * M + 2 * D);
 
   // 3. Final Sidereal Calculation
-  const siderealMoon = mod360(LP_deg + L_corr - A - LIGHT_TIME_ADJUSTMENT);
+  const siderealMoon = mod360(LP_deg + L_corr - A);
   return siderealMoon;
 }
 
@@ -437,7 +443,8 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
 
   // Yoga: combined sidereal longitudes divided into 27 segments
   const yogaSum = mod360(sunSidereal + moonSidereal);
-  const yogaIndex = Math.floor(yogaSum / NAKSHATRA_WIDTH) % 27;
+  // Add a very small epsilon (1e-9) to handle floating point precision near the boundaries of the 13.33 degree marks.
+  const yogaIndex = Math.floor((yogaSum + 1e-9) / NAKSHATRA_WIDTH) % 27;
   const yoga = YOGAS[yogaIndex];
 
   // Karana: every 6° of elongation = one karana; 60 total per lunar month
