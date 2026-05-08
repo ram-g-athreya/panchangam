@@ -187,29 +187,17 @@ function dayOfYear(date: Date): number {
   return Math.floor((date.getTime() - startOfYear.getTime()) / 86400000) + 1;
 }
 
-// function toJulianDay(date: Date): number {
-//   const y = date.getUTCFullYear();
-//   const m = date.getUTCMonth() + 1;
-//   const d =
-//     date.getUTCDate() +
-//     date.getUTCHours() / 24 +
-//     date.getUTCMinutes() / 1440 +
-//     date.getUTCSeconds() / 86400;
-
-//   const A = Math.floor((14 - m) / 12);
-//   const Y = y + 4800 - A;
-//   const M = m + 12 * A - 3;
-
-//   return (
-//     d +
-//     Math.floor((153 * M + 2) / 5) +
-//     365 * Y +
-//     Math.floor(Y / 4) -
-//     Math.floor(Y / 100) +
-//     Math.floor(Y / 400) -
-//     32045
-//   );
-// }
+/**
+ * Calculates Delta T (ΔT) in seconds for a given year.
+ * ΔT = TT - UT (Terrestrial Time minus Universal Time).
+ * Formula adapted from Espenak and Meeus for the current era.
+ */
+function getDeltaT(year: number): number {
+  const t = year - 2000;
+  // Polynomial approximation for 2005-2050
+  // As of 2024-2026, this is roughly 69-70 seconds.
+  return 62.92 + 0.32217 * t + 0.005589 * Math.pow(t, 2);
+}
 
 function toJulianDay(date: Date): number {
   let year = date.getUTCFullYear();
@@ -218,7 +206,19 @@ function toJulianDay(date: Date): number {
   const hours = date.getUTCHours();
   const minutes = date.getUTCMinutes();
   const seconds = date.getUTCSeconds();
+  const milliseconds = date.getUTCMilliseconds();
 
+  /**
+   * ASTRONOMICAL MONTH SHIFTING:
+   * We treat January and February as months 13 and 14 of the previous year.
+   * * Why?
+   * 1. Leap Year Logic: Leap days occur at the end of February. By shifting
+   * these months to the end of the "astronomical year," leap day
+   * calculations become a linear progression rather than a mid-year jump.
+   * 2. Polynomial Consistency: Astronomical formulas for Julian Days use
+   * integer division. Shifting the year ensures that the jump from
+   * Feb 28/29 to March 1 follows a consistent mathematical curve.
+   */
   if (month <= 2) {
     year -= 1;
     month += 12;
@@ -227,12 +227,23 @@ function toJulianDay(date: Date): number {
   const A = Math.floor(year / 100);
   const B = 2 - A + Math.floor(A / 4);
 
-  const jd =
+  /**
+   * The Julian Day formula (365.25 * years) and (30.6001 * months).
+   * 30.6001 is used because it is the average length of months from
+   * March through January when February is moved to the end.
+   */
+  const jd0h =
     Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + B - 1524.5;
 
-  // Add the time fraction
-  const timeFraction = (hours + minutes / 60 + seconds / 3600) / 24;
-  return jd + timeFraction;
+  // Time fraction of the day in UTC
+  const timeFraction = (hours + minutes / 60 + (seconds + milliseconds / 1000) / 3600) / 24;
+  const jdUTC = jd0h + timeFraction;
+
+  // Convert UTC to Terrestrial Time (TT)
+  const deltaTSeconds = getDeltaT(date.getUTCFullYear());
+  const jdeTT = jdUTC + deltaTSeconds / 86400.0;
+
+  return jdeTT;
 }
 
 /**
