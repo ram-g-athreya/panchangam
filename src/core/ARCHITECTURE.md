@@ -49,8 +49,17 @@ Planetary longitudes must be calculated for the Julian Century (T) from the J200
 
 - **Mean Ayanamsha (A_m)**: `23.857092 + 1.396971 * T + 0.0003086 * T * T;`
 - **Omega (omega)**: `125.04452 - 1934.136261 * T`
-- **Longitude of Sun (L_sun)**: `280.4665 + 36000.7698 * T`
-- **Nutation (N)**: `(-17.20 * sin(omega) - 1.32 * sin(2 * L)) / 3600`
+- **Mean Longitude of Sun (LP)**: `280.4665 + 36000.7698 * T`
+- **Mean Longitude of Moon (L)**: `218.3165 + 481267.8813 * T`
+- **Nutation (N)**:
+
+```
+(-17.1996 * sin(omega) -
+      1.3187 * sin(2 * L) -
+      0.2274 * sin(2 * LP) +
+      0.2062 * sin(2 * omega)) / 3600
+```
+
 - **Ayanamsha (A)**: `A_m + N`
 
 #### B. Moon Longitude (Luni-Solar Perturbations)

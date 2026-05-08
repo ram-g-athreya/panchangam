@@ -268,9 +268,15 @@ function getTrueAyanamsha(T: number): number {
   // This corrects the wobble that often pushes the Moon into the next Nakshatra
   const omega = toRad(125.04452 - 1934.136261 * T); // Node of the Moon
   const L = toRad(280.4665 + 36000.7698 * T); // Mean Longitude of Sun
-  const nutation = (-17.2 * Math.sin(omega) - 1.32 * Math.sin(2 * L)) / 3600;
+  const LP = toRad(218.3165 + 481267.8813 * T); // Moon's Mean Longitude
+  const N =
+    (-17.1996 * Math.sin(omega) -
+      1.3187 * Math.sin(2 * L) -
+      0.2274 * Math.sin(2 * LP) +
+      0.2062 * Math.sin(2 * omega)) /
+    3600;
 
-  const A = A_m + nutation;
+  const A = A_m + N;
   return A;
 }
 
