@@ -11,6 +11,7 @@ The app should be built using Typescript, React and Vite. The entry point is the
 - The `core` directory should contain the core Panchangam logic
 - The `pages` directory specifies individual pages
 - Stylesheets are placed inside the `styles` directory
+- The `tests` directory contains all the tests associated with the project
 
 ## Routes
 

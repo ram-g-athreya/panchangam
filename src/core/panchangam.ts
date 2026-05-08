@@ -467,8 +467,6 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
   const sunSidereal = siderealSunLongitude(toJulianDay(date));
   const moonSidereal = siderealMoonLongitude(toJulianDay(date));
 
-  console.log({ ayanamhsa: getTrueAyanamsha(toJulianCenturies(jd)), sunSidereal, moonSidereal });
-
   // Tithi: every 12° of elongation between sidereal moon and sun
   const elongation = mod360(moonSidereal - sunSidereal);
   const tithiIndex = Math.floor(elongation / 12); // 0–29

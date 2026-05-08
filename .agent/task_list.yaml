@@ -12,6 +12,10 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: add-test-cases
+    priority: 1
+    title: Add test cases as per the spec
+    status: not_started
   - id: update-panchangam-calculation
     priority: 1
     title: Update panchangam calculation based on `src/core/ARCHITECTURE.md`
