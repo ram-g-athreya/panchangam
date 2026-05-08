@@ -279,11 +279,14 @@ function siderealSunLongitude(jd: number): number {
   const M = mod360(357.5291092 + 35999.0502909 * T - 0.0001537 * T * T);
   const Mrad = toRad(M);
   const C =
-    (1.914602 - 0.004817 * T) * Math.sin(Mrad) +
-    0.019993 * Math.sin(2 * Mrad) +
-    0.000101 * Math.sin(3 * Mrad);
+    (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(Mrad) +
+    (0.019993 - 0.000101 * T) * Math.sin(2 * Mrad) +
+    0.000289 * Math.sin(3 * Mrad);
 
-  return mod360(L0 + C - A);
+  // Approximate correction for Aberration (in degrees)
+  const Ab = 0.00569;
+
+  return mod360(L0 + C - A - Ab);
 }
 
 function siderealMoonLongitude(jd: number): number {
