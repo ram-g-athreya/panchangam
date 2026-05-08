@@ -187,28 +187,52 @@ function dayOfYear(date: Date): number {
   return Math.floor((date.getTime() - startOfYear.getTime()) / 86400000) + 1;
 }
 
+// function toJulianDay(date: Date): number {
+//   const y = date.getUTCFullYear();
+//   const m = date.getUTCMonth() + 1;
+//   const d =
+//     date.getUTCDate() +
+//     date.getUTCHours() / 24 +
+//     date.getUTCMinutes() / 1440 +
+//     date.getUTCSeconds() / 86400;
+
+//   const A = Math.floor((14 - m) / 12);
+//   const Y = y + 4800 - A;
+//   const M = m + 12 * A - 3;
+
+//   return (
+//     d +
+//     Math.floor((153 * M + 2) / 5) +
+//     365 * Y +
+//     Math.floor(Y / 4) -
+//     Math.floor(Y / 100) +
+//     Math.floor(Y / 400) -
+//     32045
+//   );
+// }
+
 function toJulianDay(date: Date): number {
-  const y = date.getUTCFullYear();
-  const m = date.getUTCMonth() + 1;
-  const d =
-    date.getUTCDate() +
-    date.getUTCHours() / 24 +
-    date.getUTCMinutes() / 1440 +
-    date.getUTCSeconds() / 86400;
+  let year = date.getUTCFullYear();
+  let month = date.getUTCMonth() + 1;
+  const day = date.getUTCDate();
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+  const seconds = date.getUTCSeconds();
 
-  const A = Math.floor((14 - m) / 12);
-  const Y = y + 4800 - A;
-  const M = m + 12 * A - 3;
+  if (month <= 2) {
+    year -= 1;
+    month += 12;
+  }
 
-  return (
-    d +
-    Math.floor((153 * M + 2) / 5) +
-    365 * Y +
-    Math.floor(Y / 4) -
-    Math.floor(Y / 100) +
-    Math.floor(Y / 400) -
-    32045
-  );
+  const A = Math.floor(year / 100);
+  const B = 2 - A + Math.floor(A / 4);
+
+  const jd =
+    Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + B - 1524.5;
+
+  // Add the time fraction
+  const timeFraction = (hours + minutes / 60 + seconds / 3600) / 24;
+  return jd + timeFraction;
 }
 
 /**
@@ -251,16 +275,13 @@ function siderealSunLongitude(jd: number): number {
   const T = toJulianCenturies(jd);
   const A = getTrueAyanamsha(T);
 
-  const L0 = mod360(280.46646 + 36000.76983 * T) + 0.0003032 * T * T;
+  const L0 = mod360(280.46646 + 36000.76983 * T + 0.0003032 * T * T);
   const M = mod360(357.5291092 + 35999.0502909 * T - 0.0001537 * T * T);
   const Mrad = toRad(M);
   const C =
     (1.914602 - 0.004817 * T) * Math.sin(Mrad) +
     0.019993 * Math.sin(2 * Mrad) +
     0.000101 * Math.sin(3 * Mrad);
-
-  // Aberration correction (approximate)
-  // const aberration = -0.00569;
 
   return mod360(L0 + C - A);
 }
@@ -423,8 +444,8 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
       : date;
 
   const jd = toJulianDay(sunriseDate);
-  const sunSidereal = siderealSunLongitude(jd);
-  const moonSidereal = siderealMoonLongitude(jd);
+  const sunSidereal = siderealSunLongitude(toJulianDay(date));
+  const moonSidereal = siderealMoonLongitude(toJulianDay(date));
 
   console.log({ ayanamhsa: getTrueAyanamsha(toJulianCenturies(jd)), sunSidereal, moonSidereal });
 
