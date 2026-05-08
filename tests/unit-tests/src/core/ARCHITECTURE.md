@@ -18,6 +18,14 @@ test_cases:
       latitude: 39.0437192
       longitude: -77.4874899
     expected_output:
+      - tithi: Saptami
+      - vara: Shukravara
+      - nakshatra: Shravana
+      # - yoga: Shukla
+      - karana: Bava
+      - ayane: Uttarayana
+      - ritau: Vasanta
+      # - mase: Jyeshtha - Purnimanta, Vaishakha - Amanta
       - sunSidereal: 24.10
       - moonSidereal: 283.41
 ```
