@@ -418,6 +418,8 @@ export interface Panchangam {
   ayane: "Uttarayana" | "Dakshinayana";
   ritau: string;
   mase: string;
+  sunSidereal: number;
+  moonSidereal: number;
 }
 
 function computeNamasamvatsare(date: Date): string {
@@ -463,9 +465,9 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
       ? computeGoverningSunrise(date, latitude, longitude)
       : date;
 
-  const jd = toJulianDay(sunriseDate);
-  const sunSidereal = siderealSunLongitude(toJulianDay(date));
-  const moonSidereal = siderealMoonLongitude(toJulianDay(date));
+  const jd = toJulianDay(date);
+  const sunSidereal = siderealSunLongitude(jd);
+  const moonSidereal = siderealMoonLongitude(jd);
 
   // Tithi: every 12° of elongation between sidereal moon and sun
   const elongation = mod360(moonSidereal - sunSidereal);
@@ -504,5 +506,7 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
     ayane: computeAyane(sunSidereal),
     ritau: computeRitau(sunSidereal),
     mase: computeMase(sunSidereal),
+    sunSidereal,
+    moonSidereal,
   };
 }
