@@ -485,3 +485,16 @@
 - Files updated: vite.config.ts, tsconfig.json, package.json, src/core/panchangam.ts, tests/unit-tests/src/core/panchangam.test.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: all tasks now passing; await new tasks
+
+### Session 0032
+
+- Date: 2026-05-08
+- Goal: Update test to cover all spec-required fields in a single `it` block per `.agent/ARCHITECTURE.md` ("all expected output should be verified within the same test")
+- Completed:
+  - Consolidated 3 separate `it` blocks into one test case
+  - Test now asserts: tithi.name, vara, nakshatra, karana, ayane, ritau, sunSidereal (±0.02°), moonSidereal (±0.06°)
+  - yoga and mase remain commented out in spec — not asserted
+- Verification run: vitest run exits 0 (1 test passed)
+- Files updated: tests/unit-tests/src/core/panchangam.test.ts, .agent/ARCHITECTURE.md, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks passing; await new tasks

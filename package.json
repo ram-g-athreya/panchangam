@@ -10,7 +10,7 @@
     "dev-agent": "vite --port 5174",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "check": "tsc --noEmit && npm run lint",
+    "check": "tsc --noEmit && npm run lint && npm run test",
     "test": "vitest run",
     "lint": "prettier --write . && eslint ."
   },

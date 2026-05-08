@@ -20,6 +20,10 @@ Following URL paths are supported in the application
 - `/` which should map to `src/pages/DailyView.tsx`
 - `/sankalpam` which should map to `src/pages/Sankalpam.tsx`
 
+## Tests
+- The test files are located under the `tests` folder
+- Each test case describes the parameters that need to be passed in to the function under test and all expected output should be verified within the same test
+
 ## Coding Conventions
 
 - TypeScript strict mode is enabled. No `any` types without a comment explaining why.
