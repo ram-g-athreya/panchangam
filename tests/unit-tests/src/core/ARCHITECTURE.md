@@ -23,7 +23,7 @@ test_cases:
       - tithi: Saptami
       - vara: Shukravara
       - nakshatra: Shravana
-      # - yoga: Shukla
+      - yoga: Shubha
       - karana: Bava
       - ayane: Uttarayana
       - ritau: Vasanta
