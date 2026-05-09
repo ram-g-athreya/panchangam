@@ -449,13 +449,27 @@ export interface Panchangam {
 }
 
 function computeNamasamvatsare(date: Date): string {
-  // North Indian / Shaka-based Jovian cycle. Shaka era starts 78 CE.
-  // New year begins at Chaitra Shukla Pratipada (~Mar 22); subtract 1 before that.
-  const gregYear = date.getUTCFullYear();
-  const isAfterChaitraStart =
-    date.getUTCMonth() > 2 || (date.getUTCMonth() === 2 && date.getUTCDate() >= 22);
-  const shakaYear = isAfterChaitraStart ? gregYear - 78 : gregYear - 79;
-  const index = (((shakaYear + 12) % 60) + 60) % 60;
+  const jd = toJulianDay(date);
+  const T = toJulianCenturies(jd);
+
+  /**
+   * 1. Calculate Jupiter's Mean Longitude (L_j)
+   * This is the standard formula for Jupiter's average position.
+   */
+  const L_j = 34.3964407 + 3034.9056746 * T + 0.00010547 * T * T;
+
+  /**
+   * 2. Calculate the Samvatsara Index
+   * - One Samvatsara = Jupiter traversing 1 Rashi (30°).
+   * - One 60-year cycle = 5 full revolutions of Jupiter (1800° total).
+   * - 11.9 is the offset to align this astronomical motion with the
+   *   traditional 'Parabhava' start for the 2026 period.
+   */
+  const totalSamvatsarasElapsed = L_j / 30 + 11.9;
+
+  // The floor value gives the current Samvatsara in the 0-59 sequence
+  const index = Math.floor(totalSamvatsarasElapsed) % 60;
+
   return SAMVATSARAS[index];
 }
 
