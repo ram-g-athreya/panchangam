@@ -28,6 +28,18 @@ tasks:
       - tests/unit-tests/src/core/panchangam.test.ts: single test case for reference date 2026-05-08T22:34:10Z, lat 39.0437192, lon -77.4874899; asserts sunSidereal within ±0.02° of 24.10 and moonSidereal within ±0.06° of 283.41 (2026-05-08)
       - vitest run: 1 test file, 1 test passed (2026-05-08)
       - npm run check passed with no errors (2026-05-08)
+  - id: add-sunrise-sunset-to-panchangam
+    priority: 1
+    title: Add sunRise and sunSet fields to Panchangam per src/core/ARCHITECTURE.md
+    status: passing
+    verification:
+      - npm run check (tsc + lint + vitest) exits 0
+    evidence:
+      - panchangam.ts: computeSunriseDateForDay refactored into computeSolarEventDateForDay(isRise) + thin wrappers (2026-05-08)
+      - panchangam.ts: added computeSunsetDateForDay using east-side meridian (acos) for H, t starts at 18h local (2026-05-08)
+      - panchangam.ts: Panchangam interface extended with sunRise?: Date and sunSet?: Date (2026-05-08)
+      - panchangam.ts: computePanchangam returns sunRise and sunSet when lat/lon provided; undefined otherwise (2026-05-08)
+      - npm run check passed with no errors, 1 test passed (2026-05-08)
   - id: update-panchangam-calculation
     priority: 1
     title: Update panchangam calculation based on `src/core/ARCHITECTURE.md`

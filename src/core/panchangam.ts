@@ -349,16 +349,17 @@ function siderealMoonLongitude(jd: number): number {
   return siderealMoon;
 }
 
-// Returns the Date of local sunrise for a given UTC calendar day using the NOAA zenith algorithm.
-// Falls back to solar noon if the sun never rises/sets (polar regions).
-function computeSunriseDateForDay(
+// NOAA zenith algorithm for sunrise (isRise=true) or sunset (isRise=false).
+// Falls back to solar noon/midnight if the sun never rises/sets (polar regions).
+function computeSolarEventDateForDay(
   date: Date,
   latitude: number,
   longitude: number,
+  isRise: boolean,
   zenith: number = ZENITH_UPPER_LIMB,
 ): Date {
   const N = dayOfYear(date);
-  const t = N + (6 - longitude / 15) / 24;
+  const t = N + ((isRise ? 6 : 18) - longitude / 15) / 24;
 
   const M = mod360(0.9856 * t - 3.289);
   const Mrad = toRad(M);
@@ -378,8 +379,13 @@ function computeSunriseDateForDay(
     (Math.cos(toRad(zenith)) - sinDec * Math.sin(toRad(latitude))) /
     (cosDec * Math.cos(toRad(latitude)));
 
-  // H in hours for sunrise (west side of meridian)
-  const H = cosH >= 1 || cosH <= -1 ? 12 : mod360(360 - toDeg(Math.acos(cosH))) / 15;
+  // Sunrise: west side of meridian (360 - acos); sunset: east side (acos)
+  const H =
+    cosH >= 1 || cosH <= -1
+      ? 12
+      : isRise
+        ? mod360(360 - toDeg(Math.acos(cosH))) / 15
+        : toDeg(Math.acos(cosH)) / 15;
 
   const utcHours = (((H + RA - 0.06571 * t - 6.622 - longitude / 15) % 24) + 24) % 24;
 
@@ -393,6 +399,24 @@ function computeSunriseDateForDay(
       Math.floor(((utcHours * 60) % 1) * 60),
     ),
   );
+}
+
+function computeSunriseDateForDay(
+  date: Date,
+  latitude: number,
+  longitude: number,
+  zenith: number = ZENITH_UPPER_LIMB,
+): Date {
+  return computeSolarEventDateForDay(date, latitude, longitude, true, zenith);
+}
+
+function computeSunsetDateForDay(
+  date: Date,
+  latitude: number,
+  longitude: number,
+  zenith: number = ZENITH_UPPER_LIMB,
+): Date {
+  return computeSolarEventDateForDay(date, latitude, longitude, false, zenith);
 }
 
 // Returns the governing sunrise Date for a given moment.
@@ -420,6 +444,8 @@ export interface Panchangam {
   mase: string;
   sunSidereal: number;
   moonSidereal: number;
+  sunRise?: Date;
+  sunSet?: Date;
 }
 
 function computeNamasamvatsare(date: Date): string {
@@ -460,10 +486,9 @@ function computeKarana(karanaIndex: number): string {
 }
 
 export function computePanchangam(date: Date, latitude?: number, longitude?: number): Panchangam {
-  const sunriseDate =
-    latitude !== undefined && longitude !== undefined
-      ? computeGoverningSunrise(date, latitude, longitude)
-      : date;
+  const hasCoords = latitude !== undefined && longitude !== undefined;
+  const sunRise = hasCoords ? computeGoverningSunrise(date, latitude, longitude) : date;
+  const sunSet = hasCoords ? computeSunsetDateForDay(date, latitude!, longitude!) : undefined;
 
   const jd = toJulianDay(date);
   const sunSidereal = siderealSunLongitude(jd);
@@ -478,7 +503,7 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
     tithiIndex === 14 ? "Purnima" : tithiIndex === 29 ? "Amavasya" : TITHIS[tithiNumber - 1];
 
   // Vara derived from sunrise date so pre-sunrise inputs resolve to the previous solar day
-  const vara = VARAS[sunriseDate.getUTCDay()];
+  const vara = VARAS[sunRise.getUTCDay()];
 
   // Nakshatra: 27 equal segments using exact 360/27 to avoid cumulative rounding errors
   const nakshatraIndex = Math.floor(moonSidereal / NAKSHATRA_WIDTH) % 27;
@@ -502,11 +527,13 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
     nakshatra,
     yoga,
     karana,
-    namasamvatsare: computeNamasamvatsare(sunriseDate),
+    namasamvatsare: computeNamasamvatsare(sunRise),
     ayane: computeAyane(sunSidereal),
     ritau: computeRitau(sunSidereal),
     mase: computeMase(sunSidereal),
     sunSidereal,
     moonSidereal,
+    sunRise,
+    sunSet,
   };
 }

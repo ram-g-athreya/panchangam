@@ -14,6 +14,8 @@
   - **mase**: the vedic month.
   - **sunSidereal**: sidereal sun longitude
   - **moonSidereal**: sidereal moon longitude
+  - **sunRise**: Date and time of Sunrise
+  - **sunSet**: Date and time of Sunset
 - Write corresponding functions to calculate each component.
 - Expose a function called `computePanchangam` that takes `date`, `latitude`, and `longitude` as parameters and returns the Panchangam calculated at the **exact moment of local sunrise**.
 

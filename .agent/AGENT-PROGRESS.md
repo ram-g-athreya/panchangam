@@ -498,3 +498,18 @@
 - Files updated: tests/unit-tests/src/core/panchangam.test.ts, .agent/ARCHITECTURE.md, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: all tasks passing; await new tasks
+
+### Session 0033
+
+- Date: 2026-05-08
+- Goal: Add sunRise and sunSet fields to Panchangam per updated src/core/ARCHITECTURE.md
+- Completed:
+  - panchangam.ts: refactored computeSunriseDateForDay into computeSolarEventDateForDay(isRise) — shared NOAA algorithm; isRise controls t (6h vs 18h guess) and H (west vs east meridian side)
+  - panchangam.ts: added computeSunriseDateForDay and computeSunsetDateForDay as thin wrappers
+  - panchangam.ts: Panchangam interface extended with sunRise?: Date and sunSet?: Date
+  - panchangam.ts: computePanchangam computes and returns sunRise/sunSet when lat/lon are provided; undefined otherwise
+- Verification run: npm run check exits 0 (tsc + lint + vitest); 1 test passed
+- Evidence captured: task_list.yaml add-sunrise-sunset-to-panchangam set to passing
+- Files updated: src/core/panchangam.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks passing; await new tasks
