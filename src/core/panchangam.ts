@@ -509,11 +509,9 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
   const nakshatraIndex = Math.floor(moonSidereal / NAKSHATRA_WIDTH) % 27;
   const nakshatra = NAKSHATRAS[nakshatraIndex];
 
-  // Yoga: (tropical sun + tropical moon - ayanamsha) / (360/27)
-  // sunSidereal and moonSidereal each already have ayanamsha subtracted, so adding it back
-  // once gives a single net subtraction from the combined sum, matching Drik's convention.
-  const yogaAyanamsha = getTrueAyanamsha(toJulianCenturies(jd));
-  const yogaSum = mod360(sunSidereal + moonSidereal + yogaAyanamsha);
+  const yogaSum = mod360(
+    siderealSunLongitude(toJulianDay(sunRise)) + siderealMoonLongitude(toJulianDay(sunRise)),
+  );
   const yogaIndex = Math.floor(yogaSum / NAKSHATRA_WIDTH) % 27;
   const yoga = YOGAS[yogaIndex];
 
