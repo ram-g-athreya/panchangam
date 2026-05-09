@@ -483,9 +483,26 @@ function computeRitau(sunSidereal: number): string {
   return RITUS[index];
 }
 
-function computeMase(sunSidereal: number): string {
-  const index = Math.floor(sunSidereal / 30) % 12;
-  return MASAS[index];
+function computeMase(sunSidereal: number, elongation: number): string {
+  /**
+   * 1. Calculate Sun's position at the last New Moon.
+   * Elongation increases by ~12.19° per day, while the Sun moves ~0.98° per day.
+   * The ratio of Sun motion to Elongation motion is roughly 0.0808.
+   */
+  const S_nm = mod360(sunSidereal - elongation * 0.0808);
+
+  /**
+   * 2. Determine the Masa Index.
+   * In the standard mapping:
+   * Sun in Mesha (0°-30°) at New Moon = Vaishakha
+   * Sun in Meena (330°-360°) at New Moon = Chaitra
+   *
+   * Since the MASAS array starts with Chaitra (Index 0), we shift the index.
+   */
+  const R_nm = Math.floor(S_nm / 30); // 0 = Mesha, 11 = Meena
+  const masaIndex = (R_nm + 1) % 12;
+
+  return MASAS[masaIndex];
 }
 
 function computeKarana(karanaIndex: number): string {
@@ -542,7 +559,7 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
     samvatsare: computeSamvatsare(sunRise),
     ayane: computeAyane(sunSidereal),
     ritau: computeRitau(sunSidereal),
-    mase: computeMase(sunSidereal),
+    mase: computeMase(sunSidereal, elongation),
     sunSidereal,
     moonSidereal,
     sunRise,

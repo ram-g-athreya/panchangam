@@ -21,6 +21,7 @@ describe("computePanchangam", () => {
     expect(result.samvatsare).toBe("Parabhava");
     expect(result.ayane).toBe("Uttarayana");
     expect(result.ritau).toBe("Vasanta");
+    expect(result.mase).toBe("Vaishakha");
     expect(Math.abs(result.sunSidereal - 24.1)).toBeLessThanOrEqual(SUN_LONGITUDE_TOLERANCE);
     expect(Math.abs(result.moonSidereal - 283.41)).toBeLessThanOrEqual(MOON_LONGITUDE_TOLERANCE);
 

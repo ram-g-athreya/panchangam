@@ -160,10 +160,9 @@ A Karana is half of a Tithi, representing `6` degrees of elongation.
 
 ##### F. Mase (Vedic Month)
 
-Determined by the Sun's presence in a specific Sidereal Rashi (Zodiac sign).
-
-- **Logic:** Each month spans `30` degrees of solar sidereal longitude.
-- **Index:** `floor(L_sun_sidereal / 30)` (0=Chaitra, 1=Vaishakha, etc.).
+- **Sun's position at the last New Moon (S_nm)**: `sunSidereal - elongation * 0.0808`
+- **Rashi at New Moon (R_nm)**: `floor(S_nm / 30)`
+- **Mase Index**: `(R_nm + 1) % 12`
 
 ##### G. Ritau (Season)
 
@@ -190,34 +189,3 @@ The name of the year in the 60-year Jovian cycle.
   - 11.9 is the offset to align this astronomical motion with the J2000 epoch
   - **Formula**: `L_j / 30 + 11.9`
 - **Samvatsara Index**: `floor(S_elapsed % 60)`
-
-## 5. Refined Implementation Rules
-
-### A. Temporal Anchoring (The Sunrise Rule)
-
-- **Constraint:** All Panchangam elements (including `vara` and `namasamvatsare`) MUST be calculated based on the conditions at the `sunriseDate`.
-- **Logic:** If the input `date` is `2024-05-20T02:00:00Z` (2:00 AM) and local sunrise is at `05:45 AM`, the `computePanchangam` function must return the attributes for the _previous_ solar day.
-- **Variable Alignment:** Derive `vara` using `sunriseDate.getUTCDay()`.
-
-### B. Mathematical Constants & Precision
-
-- **Lunar Mansion Width:** Use exactly `(360 / 27)` instead of `13.3333` to prevent cumulative rounding errors in Nakshatra and Yoga indices.
-- **Tithi Definition:** - `Purnima` (Full Moon) is exactly `tithiIndex 14`.
-  - `Amavasya` (New Moon) is exactly `tithiIndex 29`.
-- **Normalization:** Apply the `((angle % 360) + 360) % 360` formula to every intermediate sum/difference of longitudes (e.g., Elongation, Yoga Sum).
-
-### C. Samvatsara (60-Year Cycle) Logic
-
-- Use the **North Indian / Shaka-based** Jovian cycle calculation:
-  - `Shaka_Year = Gregorian_Year - 78` (Adjust by -1 if the date is before Chaitra Shukla Pratipada).
-  - `Index = (Shaka_Year + 12) % 60`.
-- Map the index to the `SAMVATSARAS` constant array.
-
-### D. Karana Sequence Logic
-
-- Use a strictly conditional map for the four **Sthira** (Fixed) Karanas:
-  1. `Kimstughna`: 1st half of 1st Tithi (Index 0).
-  2. `Shakuni`: 2nd half of 29th Tithi (Index 57).
-  3. `Chatushpada`: 1st half of 30th Tithi (Index 58).
-  4. `Naga`: 2nd half of 30th Tithi (Index 59).
-- All other indices (`1` through `56`) follow: `REPEATING_KARANAS[(index - 1) % 7]`.

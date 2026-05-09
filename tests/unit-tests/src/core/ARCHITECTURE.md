@@ -28,7 +28,7 @@ test_cases:
       - samvatsare: Parabhava
       - ayane: Uttarayana
       - ritau: Vasanta
-      # - mase: Jyeshtha - Purnimanta, Vaishakha - Amanta
+      - mase: Vaishakha
       - sunSidereal: 24.10
       - moonSidereal: 283.41
       - sunRise: Fri May 08 2026 06:04:00 GMT-0400 (Eastern Daylight Time)
