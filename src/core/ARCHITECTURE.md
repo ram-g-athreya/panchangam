@@ -8,10 +8,14 @@
   - **nakshatra**: associated lunar mansion (star).
   - **yoga**: combined angular relationship between the Sun and the Moon.
   - **karana**: half of the tithi.
-  - **namasamvatsare**: year name in the 60-year Jovian cycle.
+  - **samvatsare**: year name in the 60-year Jovian cycle.
   - **ayane**: the solstice (Uttarayana or Dakshinayana).
   - **ritau**: the season.
   - **mase**: the vedic month.
+  - **sunSidereal**: sidereal sun longitude
+  - **moonSidereal**: sidereal moon longitude
+  - **sunRise**: Date and time of Sunrise
+  - **sunSet**: Date and time of Sunset
 - Write corresponding functions to calculate each component.
 - Expose a function called `computePanchangam` that takes `date`, `latitude`, and `longitude` as parameters and returns the Panchangam calculated at the **exact moment of local sunrise**.
 
@@ -36,43 +40,81 @@
 #### 2. Core Astronomical Principles
 
 - **Coordinate System:** All calculations must be performed using **Nirayana (Sidereal)** longitudes.
-- **Ayanamsha (Chitrapaksha/Lahiri):** To convert Tropical (Sayana) longitudes to Sidereal, use the high-precision Lahiri formula:
-  - _Calculation:_ `A = 23.85944 + (1.396333 * T) + (0.0003088 * T * T)`
-  - _Where:_ `T` is the Julian centuries from the J2000.0 epoch.
+- **Ayanamsha (Chitrapaksha/Lahiri):** To convert Tropical (Sayana) longitudes to Sidereal, use the high-precision Lahiri formula
 - **Nirayana Longitude Formula:** `L_sidereal = (L_tropical - A) % 360`
 
 #### 3. High-Precision Planetary Positions
 
-Planetary longitudes must be calculated for the Julian Century (T) from the J2000.0 epoch:
-**T = (JD - 2451545.0) / 36525**
+Planetary longitudes must be calculated for the Julian Century (T) from the J2000.0 epoch: `T = (JD - 2451545.0) / 36525.0`
 
 #### A. Ayanamsha (Chitrapaksha/Lahiri)
 
-To convert Tropical longitudes to Sidereal, apply the high-precision Lahiri formula:
-**A = 23.85944 + (1.396333 \* T) + (0.0003088 \* T \* T)**
+**Ayanamsha (Chitrapaksha/Lahiri)**: To match high-precision calendars, use the True Ayanamsha.
+
+- **Mean Ayanamsha (A_m)**: `23.857092 + 1.396971 * T + 0.0003086 * T * T;`
+- **Omega (omega)**: `125.04452 - 1934.136261 * T`
+- **Mean Longitude of Sun (LP)**: `280.4665 + 36000.7698 * T`
+- **Mean Longitude of Moon (L)**: `218.3165 + 481267.8813 * T`
+- **Nutation (N)**:
+
+```
+(-17.1996 * sin(omega) -
+      1.3187 * sin(2 * L) -
+      0.2274 * sin(2 * LP) +
+      0.2062 * sin(2 * omega)) / 3600
+```
+
+- **Ayanamsha (A)**: `A_m + N`
 
 #### B. Moon Longitude (Luni-Solar Perturbations)
 
 Calculate the Fundamental Arguments in degrees:
 
-- **Mean Longitude (L')**: 218.3164477 + (481267.8812307 \* T)
-- **Mean Elongation (D)**: 297.8501921 + (445267.1114034 \* T)
-- **Sun's Mean Anomaly (M')**: 357.5291092 + (35999.0502909 \* T)
-- **Moon's Mean Anomaly (M)**: 134.9633964 + (477198.8675055 \* T)
-- **Moon's Argument of Latitude (F)**: 93.2720950 + (483202.0175233 \* T)
+- **Mean Longitude (L_m)**: `218.3164477 + (481267.8812307 * T)`
+- **Mean Elongation (D)**: `297.8501921 + (445267.1114034 * T)`
+- **Sun's Mean Anomaly (M)**: `357.5291092 + (35999.0502909 * T)`
+- **Moon's Mean Anomaly (M')**: `134.9633964 + (477198.8675055 * T)`
+- **Moon's Argument of Latitude (F)**: `93.2720950 + (483202.0175233 * T)`
+- **Eccentricity of Earth's Orbit (E)**: `1 - 0.002516 * T - 0.0000074 * T * T`
 
 **Periodic Correction (L_corr)**:
-L_corr = (6.288774 \* sin(M)) + (1.274027 \* sin(2 \* D - M)) + (0.658314 \* sin(2 \* D)) + (0.213618 \* sin(2 \* M)) - (0.185116 \* sin(M')) - (0.114332 \* sin(2 \* F)) + (0.058793 \* sin(2 \* D - 2 \* M)) + (0.057066 \* sin(2 \* D - M' - M)) + (0.053322 \* sin(2 \* D + M))
+Major Periodic Terms (The "L" series in Meeus Table 47.A). These correct for Evection, Variation, and Annual Equation
 
-**Final Sidereal Moon**:
-**L_moon_sidereal = (L' + L_corr - A) % 360**
+```
+L_corr =
+  6288774 * sin(M') +
+  1274027 * sin(2 * D - M') +
+  658314 * sin(2 * D) +
+  213618 * sin(2 * M') -
+  185116 * E * sin(M) - // Solar influence
+  114332 * sin(2 * F) +
+  58793 * sin(2 * D - 2 * M') +
+  57066 * E * sin(2 * D - M - M') +
+  53322 * sin(2 * D + M') +
+  45758 * E * sin(2 * D - M) -
+  40923 * E * sin(M' - M) -
+  34720 * sin(D) -
+  30383 * E * sin(M + M') +
+  15327 * sin(2 * D - 2 * F) // Added term for inclination/node
+```
+
+**Final Sidereal Moon**: `L_moon_sidereal = (L' + L_corr / 1000000 - A) % 360`
 
 #### C. Sun Longitude
 
-- **Mean Longitude (L0)**: 280.46646 + (36000.76983 \* T)
-- **Equation of Center (C)**: (1.914602 - 0.004817 \* T) \* sin(M') + (0.019993 \* sin(2 \* M')) + (0.000101 \* sin(3 \* M'))
-- **Final Sidereal Sun**:
-  **L_sun_sidereal = (L0 + C - A) % 360**
+- **Mean Longitude (L0)**: `280.46646 + 36000.76983 * T + 0.0003032 * T * T`
+- **Mean Anomaly (M)**: `357.5291092 + 35999.0502909 * T - 0.0001537 * T * T`
+- **Equation of Center (C)**:
+
+```
+C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * sin(M) +
+    (0.019993 - 0.000101 * T) * sin(2 * M) +
+    0.000289 * sin(3 * M);
+```
+
+- **Aberration (Ab)**: `0.00569`
+- **Lahiri Ayanamsa (A)**: Use the `Lahiri Ayanamsa` function specified earlier.
+- **Final Sidereal Sun**: `L_sun_sidereal = (L0 + C - A - Ab) % 360`.
 
 #### 4. Element Definitions & Algorithms
 
@@ -118,10 +160,9 @@ A Karana is half of a Tithi, representing `6` degrees of elongation.
 
 ##### F. Mase (Vedic Month)
 
-Determined by the Sun's presence in a specific Sidereal Rashi (Zodiac sign).
-
-- **Logic:** Each month spans `30` degrees of solar sidereal longitude.
-- **Index:** `floor(L_sun_sidereal / 30)` (0=Chaitra, 1=Vaishakha, etc.).
+- **Sun's position at the last New Moon (S_nm)**: `sunSidereal - elongation * 0.0808`
+- **Rashi at New Moon (R_nm)**: `floor(S_nm / 30)`
+- **Mase Index**: `(R_nm + 1) % 12`
 
 ##### G. Ritau (Season)
 
@@ -137,40 +178,14 @@ Refers to the Sun's declination trend (Northward or Southward).
 - **Logic:** \* `Uttarayana`: Sun is in the arc from Sidereal Capricorn (`270` degrees) to Gemini (`90` degrees).
   - `Dakshinayana`: Sun is in the arc from Sidereal Cancer (`90` degrees) to Sagittarius (`270` degrees).
 
-##### I. Namasamvatsare (Year Name)
+##### I. Samvatsare (Year Name)
 
 The name of the year in the 60-year Jovian cycle.
 
-- **Logic:** Calculated by adding an offset to the current Shaka or Vikram Samvat year.
-- **Formula:** `(Year_current + Offset) % 60` mapped to the Samvatsara list.
-
-## 5. Refined Implementation Rules
-
-### A. Temporal Anchoring (The Sunrise Rule)
-
-- **Constraint:** All Panchangam elements (including `vara` and `namasamvatsare`) MUST be calculated based on the conditions at the `sunriseDate`.
-- **Logic:** If the input `date` is `2024-05-20T02:00:00Z` (2:00 AM) and local sunrise is at `05:45 AM`, the `computePanchangam` function must return the attributes for the _previous_ solar day.
-- **Variable Alignment:** Derive `vara` using `sunriseDate.getUTCDay()`.
-
-### B. Mathematical Constants & Precision
-
-- **Lunar Mansion Width:** Use exactly `(360 / 27)` instead of `13.3333` to prevent cumulative rounding errors in Nakshatra and Yoga indices.
-- **Tithi Definition:** - `Purnima` (Full Moon) is exactly `tithiIndex 14`.
-  - `Amavasya` (New Moon) is exactly `tithiIndex 29`.
-- **Normalization:** Apply the `((angle % 360) + 360) % 360` formula to every intermediate sum/difference of longitudes (e.g., Elongation, Yoga Sum).
-
-### C. Samvatsara (60-Year Cycle) Logic
-
-- Use the **North Indian / Shaka-based** Jovian cycle calculation:
-  - `Shaka_Year = Gregorian_Year - 78` (Adjust by -1 if the date is before Chaitra Shukla Pratipada).
-  - `Index = (Shaka_Year + 12) % 60`.
-- Map the index to the `SAMVATSARAS` constant array.
-
-### D. Karana Sequence Logic
-
-- Use a strictly conditional map for the four **Sthira** (Fixed) Karanas:
-  1. `Kimstughna`: 1st half of 1st Tithi (Index 0).
-  2. `Shakuni`: 2nd half of 29th Tithi (Index 57).
-  3. `Chatushpada`: 1st half of 30th Tithi (Index 58).
-  4. `Naga`: 2nd half of 30th Tithi (Index 59).
-- All other indices (`1` through `56`) follow: `REPEATING_KARANAS[(index - 1) % 7]`.
+- **Jupiter's Mean Longitude (L_j)**: `34.3964407 + 3034.9056746 * T + 0.00010547 * T * T`
+- **Samvatsara Elapsed (S_elapsed)**:
+  - One Samvatsara = Jupiter traversing 1 Rashi (30°).
+  - One 60-year cycle = 5 full revolutions of Jupiter (1800° total).
+  - 11.9 is the offset to align this astronomical motion with the J2000 epoch
+  - **Formula**: `L_j / 30 + 11.9`
+- **Samvatsara Index**: `floor(S_elapsed % 60)`

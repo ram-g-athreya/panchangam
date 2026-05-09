@@ -7,7 +7,7 @@ cd "$ROOT_DIR"
 
 # Replace these commands with the correct commands for your repository.
 INSTALL_CMD=(npm install)
-VERIFY_CMD=(npm test)
+VERIFY_CMD=(npm run check)
 START_CMD=(npm run dev-agent)
 
 echo "==> Working directory: $PWD"

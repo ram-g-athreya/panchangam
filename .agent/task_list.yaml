@@ -12,6 +12,34 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: add-test-cases
+    priority: 1
+    title: Add test cases as per the spec
+    status: passing
+    verification:
+      - vitest run exits 0
+      - npm run check (tsc --noEmit) exits 0
+    evidence:
+      - Installed vitest@4.1.5 as devDependency (2026-05-08)
+      - vite.config.ts: switched to `defineConfig` from `vitest/config`; added `test.include` and `test.environment: node` (2026-05-08)
+      - tsconfig.json: added "tests" and "vite.config.ts" to include array (2026-05-08)
+      - package.json: test script updated to `vitest run && npm run check` (2026-05-08)
+      - src/core/panchangam.ts: Panchangam interface extended with sunSidereal and moonSidereal fields (2026-05-08)
+      - tests/unit-tests/src/core/panchangam.test.ts: single test case for reference date 2026-05-08T22:34:10Z, lat 39.0437192, lon -77.4874899; asserts sunSidereal within ±0.02° of 24.10 and moonSidereal within ±0.06° of 283.41 (2026-05-08)
+      - vitest run: 1 test file, 1 test passed (2026-05-08)
+      - npm run check passed with no errors (2026-05-08)
+  - id: add-sunrise-sunset-to-panchangam
+    priority: 1
+    title: Add sunRise and sunSet fields to Panchangam per src/core/ARCHITECTURE.md
+    status: passing
+    verification:
+      - npm run check (tsc + lint + vitest) exits 0
+    evidence:
+      - panchangam.ts: computeSunriseDateForDay refactored into computeSolarEventDateForDay(isRise) + thin wrappers (2026-05-08)
+      - panchangam.ts: added computeSunsetDateForDay using east-side meridian (acos) for H, t starts at 18h local (2026-05-08)
+      - panchangam.ts: Panchangam interface extended with sunRise?: Date and sunSet?: Date (2026-05-08)
+      - panchangam.ts: computePanchangam returns sunRise and sunSet when lat/lon provided; undefined otherwise (2026-05-08)
+      - npm run check passed with no errors, 1 test passed (2026-05-08)
   - id: update-panchangam-calculation
     priority: 1
     title: Update panchangam calculation based on `src/core/ARCHITECTURE.md`
@@ -20,14 +48,14 @@ tasks:
       - npm run check (tsc --noEmit) exits 0
     evidence:
       - panchangam.ts: lahiriAyanamsha — 23.85944 + 1.396333*T + 0.0003088*T² (high-precision Chitrapaksha coefficients) (2026-05-06)
-      - panchangam.ts: tropicalSunLongitude — M uses 357.5291092 + 35999.0502909*T; C drops T² term, simplified to spec coefficients (2026-05-06)
+      - panchangam.ts: tropicalSunLongitude — L0 280.46646 + 36000.76983*T; M 357.5291092 + 35999.0502909*T; C (1.914602 - 0.004817*T)*sin(M) + 0.019993*sin(2M) + 0.000101*sin(3M) — matches updated spec (2026-05-07)
       - panchangam.ts: tropicalMoonLongitude — all 5 fundamental arguments updated to precise spec coefficients; correction reduced to exactly 9 spec terms (removed 4 extra terms) (2026-05-06)
       - panchangam.ts: computeSunriseDateForDay — zenith 90.8333 (90°50'), returns Date object (2026-05-06)
       - panchangam.ts: computeGoverningsunrise — if date is before today's sunrise, previous day's sunrise governs (Temporal Anchoring rule) (2026-05-06)
       - panchangam.ts: vara derived from sunriseDate.getUTCDay() (not input date) (2026-05-06)
       - panchangam.ts: namasamvatsare uses sunriseDate and Shaka-based formula: (Shaka_Year + 12) % 60, Shaka = Gregorian - 78 (adj -1 before Chaitra) (2026-05-06)
       - panchangam.ts: Nakshatra/Yoga width uses 360/27 constant (not 13.3333) to eliminate cumulative rounding (2026-05-06)
-      - npm run check passed with no errors (2026-05-06)
+      - npm run check passed with no errors (2026-05-07)
   - id: use-location-to-compute-panchangam
     priority: 1
     title: Use location to compute panchangam

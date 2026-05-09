@@ -455,3 +455,61 @@
 - Files updated: src/core/panchangam.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: all tasks now passing; await new tasks
+
+### Session 0030
+
+- Date: 2026-05-07
+- Goal: Review updated `src/core/ARCHITECTURE.md` (spec reformatted sun longitude section) against current implementation
+- Completed:
+  - Verified tropicalSunLongitude already matches new spec exactly: L0 280.46646+36000.76983*T, M 357.5291092+35999.0502909*T, C (1.914602-0.004817*T)*sin(M)+0.019993*sin(2M)+0.000101*sin(3M)
+  - No code changes required — spec was a clarification rewrite, not a formula change
+  - Consolidated duplicate task_list.yaml entry; updated evidence with 2026-05-07 verification
+- Verification run: npm run check exits 0
+- Files updated: .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks now passing; await new tasks
+
+### Session 0031
+
+- Date: 2026-05-08
+- Goal: Implement `add-test-cases` — add vitest infrastructure and the reference test case per `tests/unit-tests/src/core/ARCHITECTURE.md`
+- Completed:
+  - Installed vitest@4.1.5
+  - vite.config.ts: switched `defineConfig` import to `vitest/config`; added `test: { include: ["tests/**/*.test.ts"], environment: "node" }`
+  - tsconfig.json: added "tests" and "vite.config.ts" to `include` array so tsc type-checks test files
+  - package.json: `test` script updated to `vitest run && npm run check`
+  - src/core/panchangam.ts: `Panchangam` interface extended with `sunSidereal: number` and `moonSidereal: number`; both fields included in `computePanchangam` return
+  - Created tests/unit-tests/src/core/panchangam.test.ts: asserts `|sunSidereal - 24.10| ≤ 0.02` and `|moonSidereal - 283.41| ≤ 0.06` for the reference date
+- Verification run: vitest run exits 0 (1 test passed); npm run check exits 0; ./init.sh exits 0
+- Evidence captured: task_list.yaml add-test-cases status set to passing
+- Files updated: vite.config.ts, tsconfig.json, package.json, src/core/panchangam.ts, tests/unit-tests/src/core/panchangam.test.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks now passing; await new tasks
+
+### Session 0032
+
+- Date: 2026-05-08
+- Goal: Update test to cover all spec-required fields in a single `it` block per `.agent/ARCHITECTURE.md` ("all expected output should be verified within the same test")
+- Completed:
+  - Consolidated 3 separate `it` blocks into one test case
+  - Test now asserts: tithi.name, vara, nakshatra, karana, ayane, ritau, sunSidereal (±0.02°), moonSidereal (±0.06°)
+  - yoga and mase remain commented out in spec — not asserted
+- Verification run: vitest run exits 0 (1 test passed)
+- Files updated: tests/unit-tests/src/core/panchangam.test.ts, .agent/ARCHITECTURE.md, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks passing; await new tasks
+
+### Session 0033
+
+- Date: 2026-05-08
+- Goal: Add sunRise and sunSet fields to Panchangam per updated src/core/ARCHITECTURE.md
+- Completed:
+  - panchangam.ts: refactored computeSunriseDateForDay into computeSolarEventDateForDay(isRise) — shared NOAA algorithm; isRise controls t (6h vs 18h guess) and H (west vs east meridian side)
+  - panchangam.ts: added computeSunriseDateForDay and computeSunsetDateForDay as thin wrappers
+  - panchangam.ts: Panchangam interface extended with sunRise?: Date and sunSet?: Date
+  - panchangam.ts: computePanchangam computes and returns sunRise/sunSet when lat/lon are provided; undefined otherwise
+- Verification run: npm run check exits 0 (tsc + lint + vitest); 1 test passed
+- Evidence captured: task_list.yaml add-sunrise-sunset-to-panchangam set to passing
+- Files updated: src/core/panchangam.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: all tasks passing; await new tasks
