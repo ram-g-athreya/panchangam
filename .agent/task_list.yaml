@@ -12,6 +12,21 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: update-daily-view
+    priority: 1
+    title: Update daily view based on spec in `src/pages/ARCHITECTURE.md`
+    status: passing
+    verification:
+      - npm run check (tsc + lint + vitest) exits 0
+    evidence:
+      - DailyView.tsx: wrapped anga-grid in <section className="panchang-panel"> (2026-05-09)
+      - DailyView.css: added .panchang-panel — width 100% (mobile), 50% at ≥640px (tablet), 33.333% at ≥1024px (desktop) (2026-05-09)
+      - DailyView.css: anga-grid — 1 col (mobile), 2 cols at ≥640px (tablet), 3 cols at ≥1024px (desktop); explicit repeat() replaces auto-fit (2026-05-09)
+      - DailyView.css: .panchang-panel — background-color: var(--color-bg-secondary); padding 1rem; border-radius 8px (2026-05-09)
+      - DailyView.css: .anga-card — background-color changed from secondary to var(--color-bg-tertiary) (2026-05-09)
+      - DailyView.css: .daily-view padding changed from 2rem 3rem to 1rem per spec (2026-05-09)
+      - DailyView.css: anga-grid default changed from 1 col to 2 cols so cards never exceed 50% panel width (2026-05-09)
+      - npm run check passed with no errors, 1 test passed (2026-05-09)
   - id: add-test-cases
     priority: 1
     title: Add test cases as per the spec

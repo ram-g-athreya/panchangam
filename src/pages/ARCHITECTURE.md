@@ -7,43 +7,71 @@ All pages have the header component on top and the navigation sidebar initially 
 Specification for the `DailyView` page.
 
 - Derive the Panchangam by using the `computePanchangam` method for the current moment with the `latitude` and `longitude` if stored in localstorage.
+- Padding should be `1rem`
 
-### Information Cards
+### Panchang for Today
+
+This panel gives the basic Panchang information for today.
+
+- In desktop it should span about 1/3 width, in tablets half width and in mobile full width
+- Background color for the panel should be the secondary background color
+- Information is presented as cards where information is grouped based on the context
+
+#### Information Cards
 
 - Displays information cards of the same size with a label, value and sub
 - The cards must be responsive and the panel should not exceed the width of the page
+- The cards shouldn't exceed 50% width of the panel unless otherwise specified
+- Background color should be the tertiary background color
 - All icons should be of font-size `1rem`.
 - Labels should be of font-size `1rem` and `bold`.
+- Padding for each card should be `1rem`
+- Card should have a minimum width of `165px`
+- The card should wrap to the next row if the width overflows outside the panel
+- The icons used can be from fontawesome or bootstrap icons
+- Bootstrap icons should have a font-size of `1.5rem`
+- Gap between cards should be `1rem`
 
 ```yaml
 - label:
-    - Clock icon followed by a toggle switch with the text saying 12-hour or 24-hour in the background and being 12-hour by default.
+    - Clock icon (fontawesome) followed by a toggle switch with the text saying 12-hour or 24-hour in the background and being 12-hour by default.
     - Based on the value chosen the value below needs to change to 12-hour or 24-hour format
     - Store the value in localStorage and rehydrate on startup
     - Ensure that the storage key is in the constants file and imported
   value:
     - current time in 12-hour format of `hh:mm:ss AM / PM` if 12 hour format is set
     - current time in 24-hour format of `hh:mm:ss` if 24 hour format is set
-  subvalue: "current date in the format"
-  requirements: "the date and time should update every second"
-- label: moon icon followed by the word TITHI
+  subvalue: current date in the format
+  requirements: the date and time should update every second
+- label: sunrise-fill icon (bootstrap icons) followed by the word SUNRISE
+  value: Sunrise time only
+  subvalue: ""
+  requirements: based on Panchangam derived above and should change based on the 12-hour, 24-hour toggle. If the value is undefined then set a placeholder text that user should set their city
+- label: sunset-fill icon (bootstrap icons) followed by the word SUNSET
+  value: Sunset time only
+  subvalue: ""
+  requirements: based on Panchangam derived above and should change based on the 12-hour, 24-hour toggle. If the value is undefined then set a placeholder text that user should set their city
+- label: calendar icon (fontawesome) followed by VARA - MASA - SAMVATSARA
+  value: current vara - current masa - current samvatsara
+  requirements: the width of the card should span the whole row regardless of form factor
+- label: moon icon (fontawesome) followed by the word TITHI
   value: "current tithi"
   subvalue: "current paksha along with number"
   requirements: "based on Panchangam derived above"
-- label: sun icon followed by the word VARA
+- label: sun icon (fontawesome) followed by the word VARA
   value: "current vara"
   subvalue: ""
   requirements: "based on Panchangam derived above"
-- label: star icon followed by the word NAKSHATRA
+- label: star icon (fontawesome) followed by the word NAKSHATRA
   value: "current nakshatra"
   subvalue: ""
   requirements: "based on Panchangam derived above"
-- label: infinity icon followed by the word YOGA
+- label: infinity icon (fontawesome) followed by the word YOGA
   value: "current yoga"
   subvalue: ""
   requirements: "based on Panchangam derived above"
-- label: scale-balanced icon followed by the word KARANA
-  value: "current karana"
+- label: scale-balanced icon (fontawesome) followed by the word KARANA
+  value: current karana
   subvalue: ""
   requirements: "based on Panchangam derived above"
 ```

@@ -1,23 +1,46 @@
 .daily-view {
-  padding: 2rem 3rem;
+  padding: 1rem;
   box-sizing: border-box;
   width: 100%;
   overflow-x: hidden;
 }
 
+.panchang-panel {
+  width: 100%;
+  background-color: var(--color-bg-secondary);
+  padding: 1rem;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 640px) {
+  .panchang-panel {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .panchang-panel {
+    width: 33.333%;
+  }
+}
+
 .anga-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  gap: 1rem;
 }
 
 .anga-card {
-  background-color: var(--color-bg-secondary);
+  background-color: var(--color-bg-tertiary);
   border-radius: 6px;
-  padding: 1.25rem 1.5rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  box-sizing: border-box;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .anga-card__label {
@@ -32,14 +55,23 @@
   min-height: 1.5em;
 }
 
+.anga-card--full-row {
+  grid-column: 1 / -1;
+}
+
 .anga-card__label svg {
   flex-shrink: 0;
+}
+
+.anga-card__label .bi-icon {
+  font-size: 1.5rem;
 }
 
 .anga-card__value {
   font-size: 1.15rem;
   font-weight: 600;
   color: var(--color-text-primary);
+  word-break: break-word;
 }
 
 .anga-card__sub {

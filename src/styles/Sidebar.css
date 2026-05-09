@@ -47,8 +47,10 @@
   font-size: 1rem;
 }
 
-.sidebar__nav-link--active {
+.sidebar__nav-link--active,
+.sidebar__nav-link:hover {
   background-color: var(--color-bg-secondary);
+  font-weight: bold;
 }
 
 .sidebar__nav-icon {

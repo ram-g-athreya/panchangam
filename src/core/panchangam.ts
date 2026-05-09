@@ -518,7 +518,8 @@ function computeKarana(karanaIndex: number): string {
 
 export function computePanchangam(date: Date, latitude?: number, longitude?: number): Panchangam {
   const hasCoords = latitude !== undefined && longitude !== undefined;
-  const sunRise = hasCoords ? computeGoverningSunrise(date, latitude, longitude) : date;
+  const sunDate = hasCoords ? computeGoverningSunrise(date, latitude, longitude) : date;
+  const sunRise = hasCoords ? computeGoverningSunrise(date, latitude!, longitude!) : undefined;
   const sunSet = hasCoords ? computeSunsetDateForDay(date, latitude!, longitude!) : undefined;
 
   const jd = toJulianDay(date);
@@ -534,14 +535,14 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
     tithiIndex === 14 ? "Purnima" : tithiIndex === 29 ? "Amavasya" : TITHIS[tithiNumber - 1];
 
   // Vara derived from sunrise date so pre-sunrise inputs resolve to the previous solar day
-  const vara = VARAS[sunRise.getUTCDay()];
+  const vara = VARAS[sunDate.getUTCDay()];
 
   // Nakshatra: 27 equal segments using exact 360/27 to avoid cumulative rounding errors
   const nakshatraIndex = Math.floor(moonSidereal / NAKSHATRA_WIDTH) % 27;
   const nakshatra = NAKSHATRAS[nakshatraIndex];
 
   const yogaSum = mod360(
-    siderealSunLongitude(toJulianDay(sunRise)) + siderealMoonLongitude(toJulianDay(sunRise)),
+    siderealSunLongitude(toJulianDay(sunDate)) + siderealMoonLongitude(toJulianDay(sunDate)),
   );
   const yogaIndex = Math.floor(yogaSum / NAKSHATRA_WIDTH) % 27;
   const yoga = YOGAS[yogaIndex];
@@ -556,7 +557,7 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
     nakshatra,
     yoga,
     karana,
-    samvatsare: computeSamvatsare(sunRise),
+    samvatsare: computeSamvatsare(sunDate),
     ayane: computeAyane(sunSidereal),
     ritau: computeRitau(sunSidereal),
     mase: computeMase(sunSidereal, elongation),

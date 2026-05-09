@@ -7,7 +7,9 @@ import {
   faStar,
   faInfinity,
   faScaleBalanced,
+  faCalendarDays,
 } from "@fortawesome/free-solid-svg-icons";
+import { SunriseFill, SunsetFill } from "react-bootstrap-icons";
 import { computePanchangam } from "../core/panchangam";
 import type { TimeFormat, LocationData } from "../constants";
 import { TIME_FORMAT_KEY, LOCATION_KEY } from "../constants";
@@ -71,63 +73,92 @@ export function DailyView() {
 
   return (
     <main className="daily-view">
-      <div className="anga-grid">
-        <div className="anga-card">
-          <div className="anga-card__label">
-            <FontAwesomeIcon icon={faClock} />
-            <button
-              className={`time-format-toggle time-format-toggle--${timeFormat}`}
-              onClick={toggleTimeFormat}
-              aria-label="Toggle time format"
-            >
-              <span className="time-format-toggle__thumb" />
-              <span className="time-format-toggle__label">
-                {timeFormat === "12h" ? "12-hour" : "24-hour"}
-              </span>
-            </button>
+      <section className="panchang-panel">
+        <div className="anga-grid">
+          <div className="anga-card">
+            <div className="anga-card__label">
+              <FontAwesomeIcon icon={faClock} />
+              <button
+                className={`time-format-toggle time-format-toggle--${timeFormat}`}
+                onClick={toggleTimeFormat}
+                aria-label="Toggle time format"
+              >
+                <span className="time-format-toggle__thumb" />
+                <span className="time-format-toggle__label">
+                  {timeFormat === "12h" ? "12-hour" : "24-hour"}
+                </span>
+              </button>
+            </div>
+            <span className="anga-card__value">{formatTime(now, timeFormat)}</span>
+            <span className="anga-card__sub">{formatDate(now)}</span>
           </div>
-          <span className="anga-card__value">{formatTime(now, timeFormat)}</span>
-          <span className="anga-card__sub">{formatDate(now)}</span>
+          <div className="anga-card">
+            <span className="anga-card__label">
+              <SunriseFill className="bi-icon" />
+              SUNRISE
+            </span>
+            <span className="anga-card__value">
+              {p.sunRise ? formatTime(p.sunRise, timeFormat) : "Set your city"}
+            </span>
+          </div>
+          <div className="anga-card">
+            <span className="anga-card__label">
+              <SunsetFill className="bi-icon" />
+              SUNSET
+            </span>
+            <span className="anga-card__value">
+              {p.sunSet ? formatTime(p.sunSet, timeFormat) : "Set your city"}
+            </span>
+          </div>
+          <div className="anga-card anga-card--full-row">
+            <span className="anga-card__label">
+              <FontAwesomeIcon icon={faCalendarDays} />
+              VARA - MASA - SAMVATSARA
+            </span>
+            <span className="anga-card__value">
+              {p.vara} - {p.mase} - {p.samvatsare}
+            </span>
+          </div>
+          <div className="anga-card">
+            <span className="anga-card__label">
+              <FontAwesomeIcon icon={faMoon} />
+              TITHI
+            </span>
+            <span className="anga-card__value">{p.tithi.name}</span>
+            <span className="anga-card__sub">
+              {p.tithi.paksha} Paksha · {p.tithi.number}
+            </span>
+          </div>
+          <div className="anga-card">
+            <span className="anga-card__label">
+              <FontAwesomeIcon icon={faSun} />
+              VARA
+            </span>
+            <span className="anga-card__value">{p.vara}</span>
+          </div>
+          <div className="anga-card">
+            <span className="anga-card__label">
+              <FontAwesomeIcon icon={faStar} />
+              NAKSHATRA
+            </span>
+            <span className="anga-card__value">{p.nakshatra}</span>
+          </div>
+          <div className="anga-card">
+            <span className="anga-card__label">
+              <FontAwesomeIcon icon={faInfinity} />
+              YOGA
+            </span>
+            <span className="anga-card__value">{p.yoga}</span>
+          </div>
+          <div className="anga-card">
+            <span className="anga-card__label">
+              <FontAwesomeIcon icon={faScaleBalanced} />
+              KARANA
+            </span>
+            <span className="anga-card__value">{p.karana}</span>
+          </div>
         </div>
-        <div className="anga-card">
-          <span className="anga-card__label">
-            <FontAwesomeIcon icon={faMoon} />
-            TITHI
-          </span>
-          <span className="anga-card__value">{p.tithi.name}</span>
-          <span className="anga-card__sub">
-            {p.tithi.paksha} Paksha · {p.tithi.number}
-          </span>
-        </div>
-        <div className="anga-card">
-          <span className="anga-card__label">
-            <FontAwesomeIcon icon={faSun} />
-            VARA
-          </span>
-          <span className="anga-card__value">{p.vara}</span>
-        </div>
-        <div className="anga-card">
-          <span className="anga-card__label">
-            <FontAwesomeIcon icon={faStar} />
-            NAKSHATRA
-          </span>
-          <span className="anga-card__value">{p.nakshatra}</span>
-        </div>
-        <div className="anga-card">
-          <span className="anga-card__label">
-            <FontAwesomeIcon icon={faInfinity} />
-            YOGA
-          </span>
-          <span className="anga-card__value">{p.yoga}</span>
-        </div>
-        <div className="anga-card">
-          <span className="anga-card__label">
-            <FontAwesomeIcon icon={faScaleBalanced} />
-            KARANA
-          </span>
-          <span className="anga-card__value">{p.karana}</span>
-        </div>
-      </div>
+      </section>
     </main>
   );
 }
