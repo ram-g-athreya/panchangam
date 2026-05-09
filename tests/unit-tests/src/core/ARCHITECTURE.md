@@ -25,6 +25,7 @@ test_cases:
       - nakshatra: Shravana
       - yoga: Shubha
       - karana: Bava
+      - samvatsare: Parabhava
       - ayane: Uttarayana
       - ritau: Vasanta
       # - mase: Jyeshtha - Purnimanta, Vaishakha - Amanta

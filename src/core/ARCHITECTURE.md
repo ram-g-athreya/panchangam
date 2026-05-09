@@ -8,7 +8,7 @@
   - **nakshatra**: associated lunar mansion (star).
   - **yoga**: combined angular relationship between the Sun and the Moon.
   - **karana**: half of the tithi.
-  - **namasamvatsare**: year name in the 60-year Jovian cycle.
+  - **samvatsare**: year name in the 60-year Jovian cycle.
   - **ayane**: the solstice (Uttarayana or Dakshinayana).
   - **ritau**: the season.
   - **mase**: the vedic month.
@@ -179,12 +179,17 @@ Refers to the Sun's declination trend (Northward or Southward).
 - **Logic:** \* `Uttarayana`: Sun is in the arc from Sidereal Capricorn (`270` degrees) to Gemini (`90` degrees).
   - `Dakshinayana`: Sun is in the arc from Sidereal Cancer (`90` degrees) to Sagittarius (`270` degrees).
 
-##### I. Namasamvatsare (Year Name)
+##### I. Samvatsare (Year Name)
 
 The name of the year in the 60-year Jovian cycle.
 
-- **Logic:** Calculated by adding an offset to the current Shaka or Vikram Samvat year.
-- **Formula:** `(Year_current + Offset) % 60` mapped to the Samvatsara list.
+- **Jupiter's Mean Longitude (L_j)**: `34.3964407 + 3034.9056746 * T + 0.00010547 * T * T`
+- **Samvatsara Elapsed (S_elapsed)**:
+  - One Samvatsara = Jupiter traversing 1 Rashi (30°).
+  - One 60-year cycle = 5 full revolutions of Jupiter (1800° total).
+  - 11.9 is the offset to align this astronomical motion with the J2000 epoch
+  - **Formula**: `L_j / 30 + 11.9`
+- **Samvatsara Index**: `floor(S_elapsed % 60)`
 
 ## 5. Refined Implementation Rules
 

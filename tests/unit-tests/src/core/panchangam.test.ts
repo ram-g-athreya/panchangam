@@ -18,6 +18,7 @@ describe("computePanchangam", () => {
     expect(result.nakshatra).toBe("Shravana");
     expect(result.yoga).toBe("Shubha");
     expect(result.karana).toBe("Bava");
+    expect(result.samvatsare).toBe("Parabhava");
     expect(result.ayane).toBe("Uttarayana");
     expect(result.ritau).toBe("Vasanta");
     expect(Math.abs(result.sunSidereal - 24.1)).toBeLessThanOrEqual(SUN_LONGITUDE_TOLERANCE);

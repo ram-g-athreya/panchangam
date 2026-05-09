@@ -438,7 +438,7 @@ export interface Panchangam {
   nakshatra: string;
   yoga: string;
   karana: string;
-  namasamvatsare: string;
+  samvatsare: string;
   ayane: "Uttarayana" | "Dakshinayana";
   ritau: string;
   mase: string;
@@ -448,7 +448,7 @@ export interface Panchangam {
   sunSet?: Date;
 }
 
-function computeNamasamvatsare(date: Date): string {
+function computeSamvatsare(date: Date): string {
   const jd = toJulianDay(date);
   const T = toJulianCenturies(jd);
 
@@ -463,12 +463,12 @@ function computeNamasamvatsare(date: Date): string {
    * - One Samvatsara = Jupiter traversing 1 Rashi (30°).
    * - One 60-year cycle = 5 full revolutions of Jupiter (1800° total).
    * - 11.9 is the offset to align this astronomical motion with the
-   *   traditional 'Parabhava' start for the 2026 period.
+   *   J2000 epoch
    */
-  const totalSamvatsarasElapsed = L_j / 30 + 11.9;
+  const S_elapsed = L_j / 30 + 11.9;
 
   // The floor value gives the current Samvatsara in the 0-59 sequence
-  const index = Math.floor(totalSamvatsarasElapsed) % 60;
+  const index = Math.floor(S_elapsed) % 60;
 
   return SAMVATSARAS[index];
 }
@@ -539,7 +539,7 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
     nakshatra,
     yoga,
     karana,
-    namasamvatsare: computeNamasamvatsare(sunRise),
+    samvatsare: computeSamvatsare(sunRise),
     ayane: computeAyane(sunSidereal),
     ritau: computeRitau(sunSidereal),
     mase: computeMase(sunSidereal),
