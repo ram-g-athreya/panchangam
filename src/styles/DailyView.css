@@ -33,7 +33,6 @@
 }
 
 .panchang-panel__title {
-  font-size: 1rem;
   font-weight: bold;
   color: var(--color-text-primary);
   margin: 0;
@@ -79,17 +78,20 @@
   gap: 1rem;
 }
 
-.anga-card--time {
-  flex: 1;
-}
-
+.anga-card--time,
 .anga-card--calendar {
-  flex: 2;
+  flex: 1;
 }
 
 @media (max-width: 639px) {
   .anga-top-row {
     flex-direction: column;
+  }
+
+  .anga-card--time,
+  .anga-card--calendar {
+    flex: none;
+    width: 100%;
   }
 }
 

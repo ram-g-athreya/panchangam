@@ -121,10 +121,10 @@ export function DailyView() {
             <div className="anga-card anga-card--calendar">
               <span className="anga-card__label">
                 <FontAwesomeIcon icon={faCalendarDays} />
-                VARA - MASA - SAMVATSARA
+                MASA - SAMVATSARA
               </span>
               <span className="anga-card__value">
-                {p.vara} - {p.mase} - {p.samvatsare}
+                {p.mase} - {p.samvatsare}
               </span>
             </div>
           </div>

@@ -27,3 +27,7 @@ The app broadly has two themes, a sepia based light theme and a dark theme. The 
 - Primary Text: #D5C4A1
 - Secondary Text: #A88D70
 - Accent: #D4A373
+
+# Header Tags Font Sizes
+- `<header>`: `2rem`
+- `<h2>`: `1.15rem`

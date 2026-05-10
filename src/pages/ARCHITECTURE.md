@@ -70,23 +70,18 @@ requirements:
   requirements: based on Panchangam derived above
 - label: sun icon (fontawesome) followed by the word VARA
   value: "current vara"
-  subvalue: ""
   requirements: based on Panchangam derived above
 - label: star icon (fontawesome) followed by the word NAKSHATRA
   value: "current nakshatra"
-  subvalue: ""
   requirements: based on Panchangam derived above
 - label: infinity icon (fontawesome) followed by the word YOGA
   value: "current yoga"
-  subvalue: ""
   requirements: based on Panchangam derived above
 - label: scale-balanced icon (fontawesome) followed by the word KARANA
   value: current karana
-  subvalue: ""
   requirements: based on Panchangam derived above
 - label: icon based on requirements followed by the word RITU
   value: current ritu
-  subvalue: ""
   requirements:
     - based on Panchangam derived above. icon requirements below
       - Vasanta should be icon seedling (fontawesome)

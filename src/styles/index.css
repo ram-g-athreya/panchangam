@@ -48,3 +48,11 @@ h5,
 h6 {
   color: var(--color-accent);
 }
+
+header {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.15rem;
+}
