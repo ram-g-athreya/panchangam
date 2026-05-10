@@ -95,50 +95,60 @@ export function DailyView() {
   return (
     <main className="daily-view">
       <section className="panchang-panel">
+        <div className="panchang-panel__header">
+          <h2 className="panchang-panel__title">Panchangam for Today</h2>
+          <button
+            className={`time-format-toggle time-format-toggle--${timeFormat}`}
+            onClick={toggleTimeFormat}
+            aria-label="Toggle time format"
+          >
+            <span className="time-format-toggle__thumb" />
+            <span className="time-format-toggle__label">
+              {timeFormat === "12h" ? "12-hour" : "24-hour"}
+            </span>
+          </button>
+        </div>
         <div className="anga-grid">
-          <div className="anga-card">
-            <div className="anga-card__label">
-              <FontAwesomeIcon icon={faClock} />
-              <button
-                className={`time-format-toggle time-format-toggle--${timeFormat}`}
-                onClick={toggleTimeFormat}
-                aria-label="Toggle time format"
-              >
-                <span className="time-format-toggle__thumb" />
-                <span className="time-format-toggle__label">
-                  {timeFormat === "12h" ? "12-hour" : "24-hour"}
-                </span>
-              </button>
+          <div className="anga-top-row">
+            <div className="anga-card anga-card--time">
+              <span className="anga-card__label">
+                <FontAwesomeIcon icon={faClock} />
+                TIME
+              </span>
+              <span className="anga-card__value">{formatTime(now, timeFormat)}</span>
+              <span className="anga-card__sub">{formatDate(now)}</span>
             </div>
-            <span className="anga-card__value">{formatTime(now, timeFormat)}</span>
-            <span className="anga-card__sub">{formatDate(now)}</span>
-          </div>
-          <div className="anga-card">
-            <span className="anga-card__label">
-              <SunriseFill className="bi-icon" />
-              SUNRISE
-            </span>
-            <span className="anga-card__value">
-              {p.sunRise ? formatTime(p.sunRise, timeFormat) : "Set your city"}
-            </span>
-          </div>
-          <div className="anga-card">
-            <span className="anga-card__label">
-              <SunsetFill className="bi-icon" />
-              SUNSET
-            </span>
-            <span className="anga-card__value">
-              {p.sunSet ? formatTime(p.sunSet, timeFormat) : "Set your city"}
-            </span>
+            <div className="anga-card anga-card--calendar">
+              <span className="anga-card__label">
+                <FontAwesomeIcon icon={faCalendarDays} />
+                VARA - MASA - SAMVATSARA
+              </span>
+              <span className="anga-card__value">
+                {p.vara} - {p.mase} - {p.samvatsare}
+              </span>
+            </div>
           </div>
           <div className="anga-card anga-card--full-row">
-            <span className="anga-card__label">
-              <FontAwesomeIcon icon={faCalendarDays} />
-              VARA - MASA - SAMVATSARA
-            </span>
-            <span className="anga-card__value">
-              {p.vara} - {p.mase} - {p.samvatsare}
-            </span>
+            <div className="time-card__header">
+              <div className="time-card__section">
+                <span className="anga-card__label">
+                  <SunriseFill className="bi-icon" />
+                  SUNRISE
+                </span>
+                <span className="anga-card__value">
+                  {p.sunRise ? formatTime(p.sunRise, timeFormat) : "Set your city"}
+                </span>
+              </div>
+              <div className="time-card__section">
+                <span className="anga-card__label">
+                  <SunsetFill className="bi-icon" />
+                  SUNSET
+                </span>
+                <span className="anga-card__value">
+                  {p.sunSet ? formatTime(p.sunSet, timeFormat) : "Set your city"}
+                </span>
+              </div>
+            </div>
           </div>
           <div className="anga-card">
             <span className="anga-card__label">
