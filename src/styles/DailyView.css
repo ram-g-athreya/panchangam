@@ -25,6 +25,19 @@
   }
 }
 
+.panchang-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.panchang-panel__title {
+  font-weight: bold;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
 .anga-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
@@ -57,6 +70,44 @@
 
 .anga-card--full-row {
   grid-column: 1 / -1;
+}
+
+.anga-top-row {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 1rem;
+}
+
+.anga-card--time,
+.anga-card--calendar {
+  flex: 1;
+}
+
+@media (max-width: 639px) {
+  .anga-top-row {
+    flex-direction: column;
+  }
+
+  .anga-card--time,
+  .anga-card--calendar {
+    flex: none;
+    width: 100%;
+  }
+}
+
+.time-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.time-card__section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .anga-card__label svg {

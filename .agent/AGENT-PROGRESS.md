@@ -513,3 +513,18 @@
 - Files updated: src/core/panchangam.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: all tasks passing; await new tasks
+
+### Session 0034
+
+- Date: 2026-05-10
+- Goal: Implement updated DailyView spec — merge Clock/Sunrise/Sunset into one full-row card with 3 sections
+- Completed:
+  - DailyView.tsx: replaced separate Clock, Sunrise, Sunset cards with a single full-row card containing 3 sections (TIME, SUNRISE, SUNSET) and a 12/24-hour toggle at the end
+  - DailyView.tsx: each section has its own icon+label and value; date shown as subvalue spanning full width
+  - DailyView.css: added .time-card__header (flex, wrap, gap 1.5rem) and .time-card__section (flex column, flex 1) for 3-section layout
+  - task_list.yaml: removed duplicate not_started entry; update-daily-view remains passing
+- Verification run: npm run check exits 0 (tsc + lint + vitest); 1 test passed
+- Evidence captured: task_list.yaml update-daily-view status confirmed passing
+- Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: await new tasks or spec updates

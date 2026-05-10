@@ -13,9 +13,14 @@ Specification for the `DailyView` page.
 
 This panel gives the basic Panchang information for today.
 
-- In desktop it should span about 1/3 width, in tablets half width and in mobile full width
+- Its width should span 33.333% in desktop, 50% in tablets and 100% in mobile
 - Background color for the panel should be the secondary background color
 - Information is presented as cards where information is grouped based on the context
+- The Panel should have the title `Panchangam for Today`
+- On the right side of the title should be a toggle switch with the text saying 12-hour or 24-hour in the background and being 12-hour by default.
+- Based on the value chosen the value below needs to change to 12-hour or 24-hour format
+- Store the value in localStorage and rehydrate on startup
+- Ensure that the storage key is in the constants file and imported
 
 #### Information Cards
 
@@ -34,49 +39,49 @@ This panel gives the basic Panchang information for today.
 
 ```yaml
 - label:
-    - Clock icon (fontawesome) followed by a toggle switch with the text saying 12-hour or 24-hour in the background and being 12-hour by default.
-    - Based on the value chosen the value below needs to change to 12-hour or 24-hour format
-    - Store the value in localStorage and rehydrate on startup
-    - Ensure that the storage key is in the constants file and imported
+    - Clock icon (fontawesome) followed by TIME
+    - width should be 50% if desktop and tablet and 100% in mobile
   value:
-    - current time in 12-hour format of `hh:mm:ss AM / PM` if 12 hour format is set
-    - current time in 24-hour format of `hh:mm:ss` if 24 hour format is set
+    - First section should be the current time
+    - Second section should be the sunrise time
+    - Third section should be the sunset time
   subvalue: current date in the format
-  requirements: the date and time should update every second
-- label: sunrise-fill icon (bootstrap icons) followed by the word SUNRISE
-  value: Sunrise time only
-  subvalue: ""
-  requirements: based on Panchangam derived above and should change based on the 12-hour, 24-hour toggle. If the value is undefined then set a placeholder text that user should set their city
-- label: sunset-fill icon (bootstrap icons) followed by the word SUNSET
-  value: Sunset time only
-  subvalue: ""
-  requirements: based on Panchangam derived above and should change based on the 12-hour, 24-hour toggle. If the value is undefined then set a placeholder text that user should set their city
-- label: calendar icon (fontawesome) followed by VARA - MASA - SAMVATSARA
-  value: current vara - current masa - current samvatsara
-  requirements: the width of the card should span the whole row regardless of form factor
+  requirements:
+    - the TIME value should update every second
+    - all values should change based on the 12-hour, 24-hour toggle
+    - time in 12-hour format of `hh:mm:ss AM / PM` if 12 hour format is set
+    - time in 24-hour format of `hh:mm:ss` if 24 hour format is set
+- label: calendar icon (fontawesome) followed by MASA - SAMVATSARA
+  value: current masa - current samvatsara
+  requirements: the width of the card should span 50% in desktop and tablet and 100% in mobile
+- label:
+  - width should be entire row
+  - label should be split into 2 sections
+  - First section is sunrise-fill icon (bootstrap icons) followed by the word SUNRISE
+  - Secon sections is sunset-fill icon (bootstrap icons) followed by the word SUNSET
+requirements:
+  - all values should change based on the 12-hour, 24-hour toggle
+  - time in 12-hour format of `hh:mm:ss AM / PM` if 12 hour format is set
+  - time in 24-hour format of `hh:mm:ss` if 24 hour format is set
+  - If the value is undefined then set a placeholder text that user should set their city
 - label: moon icon (fontawesome) followed by the word TITHI
   value: "current tithi"
   subvalue: "current paksha along with number"
   requirements: based on Panchangam derived above
 - label: sun icon (fontawesome) followed by the word VARA
   value: "current vara"
-  subvalue: ""
   requirements: based on Panchangam derived above
 - label: star icon (fontawesome) followed by the word NAKSHATRA
   value: "current nakshatra"
-  subvalue: ""
   requirements: based on Panchangam derived above
 - label: infinity icon (fontawesome) followed by the word YOGA
   value: "current yoga"
-  subvalue: ""
   requirements: based on Panchangam derived above
 - label: scale-balanced icon (fontawesome) followed by the word KARANA
   value: current karana
-  subvalue: ""
   requirements: based on Panchangam derived above
 - label: icon based on requirements followed by the word RITU
   value: current ritu
-  subvalue: ""
   requirements:
     - based on Panchangam derived above. icon requirements below
       - Vasanta should be icon seedling (fontawesome)
