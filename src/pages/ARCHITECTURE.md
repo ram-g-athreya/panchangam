@@ -34,23 +34,34 @@ This panel gives the basic Panchang information for today.
 
 ```yaml
 - label:
-    - Clock icon (fontawesome) followed by a toggle switch with the text saying 12-hour or 24-hour in the background and being 12-hour by default.
+    - width should be for entire row
+    - label should be split into 3 sections followed by a toggle switch
+    - toggle switch with the text saying 12-hour or 24-hour in the background and being 12-hour by default.
     - Based on the value chosen the value below needs to change to 12-hour or 24-hour format
     - Store the value in localStorage and rehydrate on startup
     - Ensure that the storage key is in the constants file and imported
+    - First section is Clock icon (fontawesome) followed by TIME
+    - Second section is sunrise-fill icon (bootstrap icons) followed by the word SUNRISE
+    - Third sections is sunset-fill icon (bootstrap icons) followed by the word SUNSET
   value:
-    - current time in 12-hour format of `hh:mm:ss AM / PM` if 12 hour format is set
-    - current time in 24-hour format of `hh:mm:ss` if 24 hour format is set
+    - First section should be the current time
+    - Second section should be the sunrise time
+    - Third section should be the sunset time
   subvalue: current date in the format
-  requirements: the date and time should update every second
-- label: sunrise-fill icon (bootstrap icons) followed by the word SUNRISE
-  value: Sunrise time only
-  subvalue: ""
-  requirements: based on Panchangam derived above and should change based on the 12-hour, 24-hour toggle. If the value is undefined then set a placeholder text that user should set their city
-- label: sunset-fill icon (bootstrap icons) followed by the word SUNSET
-  value: Sunset time only
-  subvalue: ""
-  requirements: based on Panchangam derived above and should change based on the 12-hour, 24-hour toggle. If the value is undefined then set a placeholder text that user should set their city
+  requirements:
+    - the TIME value should update every second
+    - all values should change based on the 12-hour, 24-hour toggle
+    - time in 12-hour format of `hh:mm:ss AM / PM` if 12 hour format is set
+    - time in 24-hour format of `hh:mm:ss` if 24 hour format is set
+    - If the value is undefined then set a placeholder text that user should set their city
+# - label: sunrise-fill icon (bootstrap icons) followed by the word SUNRISE
+#   value: Sunrise time only
+#   subvalue: ""
+#   requirements: based on Panchangam derived above and should change based on the 12-hour, 24-hour toggle.
+# - label: sunset-fill icon (bootstrap icons) followed by the word SUNSET
+#   value: Sunset time only
+#   subvalue: ""
+#   requirements: based on Panchangam derived above and should change based on the 12-hour, 24-hour toggle. If the value is undefined then set a placeholder text that user should set their city
 - label: calendar icon (fontawesome) followed by VARA - MASA - SAMVATSARA
   value: current vara - current masa - current samvatsara
   requirements: the width of the card should span the whole row regardless of form factor

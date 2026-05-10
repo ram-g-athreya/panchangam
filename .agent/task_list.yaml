@@ -15,6 +15,10 @@ tasks:
   - id: update-daily-view
     priority: 1
     title: Update daily view based on spec in `src/pages/ARCHITECTURE.md`
+    status: not_started
+  - id: update-daily-view
+    priority: 1
+    title: Update daily view based on spec in `src/pages/ARCHITECTURE.md`
     status: passing
     verification:
       - npm run check (tsc + lint + vitest) exits 0
