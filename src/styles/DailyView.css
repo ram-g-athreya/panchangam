@@ -11,6 +11,7 @@
   padding: 1rem;
   border-radius: 8px;
   box-sizing: border-box;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 @media (min-width: 640px) {
@@ -54,6 +55,7 @@
   box-sizing: border-box;
   min-width: 0;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .anga-card__label {

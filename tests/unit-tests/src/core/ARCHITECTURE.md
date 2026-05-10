@@ -10,8 +10,8 @@ Add test cases
 
 ```yaml
 description:
-  - Allow an error of `0.02` for `siderealSunLongitude`
-  - Allow an error of `0.06` for `siderealMoonLongitude`
+  - Allow an error of `0.01` for `siderealSunLongitude`. Convert the panchang result to precision of 2
+  - Allow an error of `0.01` for `siderealMoonLongitude`. Convert the panchang result to precision of 2
   - Allow an error of `1 minute` for `sunRise` or `sunSet`
   - Keep all these error margins as constants at the top of the file and use them in the test
 test_cases:

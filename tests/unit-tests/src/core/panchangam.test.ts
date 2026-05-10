@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { computePanchangam } from "../../../../src/core/panchangam";
 
-const SUN_LONGITUDE_TOLERANCE = 0.02;
-const MOON_LONGITUDE_TOLERANCE = 0.06;
+const SUN_LONGITUDE_TOLERANCE = 0.01;
+const MOON_LONGITUDE_TOLERANCE = 0.01;
 const SOLAR_EVENT_TOLERANCE_MS = 60_000;
 
 describe("computePanchangam", () => {
@@ -22,8 +22,8 @@ describe("computePanchangam", () => {
     expect(result.ayane).toBe("Uttarayana");
     expect(result.ritau).toBe("Vasanta");
     expect(result.mase).toBe("Vaishakha");
-    expect(Math.abs(result.sunSidereal - 24.1)).toBeLessThanOrEqual(SUN_LONGITUDE_TOLERANCE);
-    expect(Math.abs(result.moonSidereal - 283.41)).toBeLessThanOrEqual(MOON_LONGITUDE_TOLERANCE);
+    expect(Math.abs(parseFloat(result.sunSidereal.toFixed(2)) - 24.10)).toBeLessThanOrEqual(SUN_LONGITUDE_TOLERANCE);
+    expect(Math.abs(parseFloat(result.moonSidereal.toFixed(2)) - 283.41)).toBeLessThanOrEqual(MOON_LONGITUDE_TOLERANCE);
 
     // sunRise: Fri May 08 2026 06:04:00 GMT-0400 = 2026-05-08T10:04:00Z
     expect(result.sunRise).toBeDefined();
