@@ -61,7 +61,9 @@ The links are as follows:
 Styling should be as follows:
 
 - Set the background color as the tertiary background color
-- Depending upon the current page, change the background of the corresponding link to secondary background so that user knows which page they are currently in.
+- Depending upon the current page or if user hovers a link,
+  - Change the background to secondary background color
+  - Make the text `bold`
 
 #### Theme Toggle Switch
 
