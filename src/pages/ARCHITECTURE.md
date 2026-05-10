@@ -57,23 +57,34 @@ This panel gives the basic Panchang information for today.
 - label: moon icon (fontawesome) followed by the word TITHI
   value: "current tithi"
   subvalue: "current paksha along with number"
-  requirements: "based on Panchangam derived above"
+  requirements: based on Panchangam derived above
 - label: sun icon (fontawesome) followed by the word VARA
   value: "current vara"
   subvalue: ""
-  requirements: "based on Panchangam derived above"
+  requirements: based on Panchangam derived above
 - label: star icon (fontawesome) followed by the word NAKSHATRA
   value: "current nakshatra"
   subvalue: ""
-  requirements: "based on Panchangam derived above"
+  requirements: based on Panchangam derived above
 - label: infinity icon (fontawesome) followed by the word YOGA
   value: "current yoga"
   subvalue: ""
-  requirements: "based on Panchangam derived above"
+  requirements: based on Panchangam derived above
 - label: scale-balanced icon (fontawesome) followed by the word KARANA
   value: current karana
   subvalue: ""
-  requirements: "based on Panchangam derived above"
+  requirements: based on Panchangam derived above
+- label: icon based on requirements followed by the word RITU
+  value: current ritu
+  subvalue: ""
+  requirements:
+    - based on Panchangam derived above. icon requirements below
+      - Vasanta should be icon seedling (fontawesome)
+      - Grishma should be icon emoji-sunglasses-fill (bootstrap icons)
+      - Varsha should be icon cloud-bolt (fontawesome)
+      - Sharada should be icon leaf (fontawesome)
+      - Hemanta should be icon wind (fontawesome)
+      - Shishira should be icon snowflake (fontawesome)
 ```
 
 ## Sankalpam

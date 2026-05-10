@@ -8,8 +8,13 @@ import {
   faInfinity,
   faScaleBalanced,
   faCalendarDays,
+  faSeedling,
+  faCloudBolt,
+  faLeaf,
+  faWind,
+  faSnowflake,
 } from "@fortawesome/free-solid-svg-icons";
-import { SunriseFill, SunsetFill } from "react-bootstrap-icons";
+import { SunriseFill, SunsetFill, EmojiSunglassesFill } from "react-bootstrap-icons";
 import { computePanchangam } from "../core/panchangam";
 import type { TimeFormat, LocationData } from "../constants";
 import { TIME_FORMAT_KEY, LOCATION_KEY } from "../constants";
@@ -40,6 +45,22 @@ function formatTime(date: Date, format: TimeFormat): string {
   const ampm = raw >= 12 ? "PM" : "AM";
   const hh = String(raw % 12 || 12).padStart(2, "0");
   return `${hh}:${mm}:${ss} ${ampm}`;
+}
+
+type RituIconProps = { ritu: string };
+function RituIcon({ ritu }: RituIconProps) {
+  if (ritu === "Grishma") return <EmojiSunglassesFill className="bi-icon" />;
+  const faIcon =
+    ritu === "Vasanta"
+      ? faSeedling
+      : ritu === "Varsha"
+        ? faCloudBolt
+        : ritu === "Sharada"
+          ? faLeaf
+          : ritu === "Hemanta"
+            ? faWind
+            : faSnowflake;
+  return <FontAwesomeIcon icon={faIcon} />;
 }
 
 function formatDate(date: Date): string {
@@ -156,6 +177,13 @@ export function DailyView() {
               KARANA
             </span>
             <span className="anga-card__value">{p.karana}</span>
+          </div>
+          <div className="anga-card">
+            <span className="anga-card__label">
+              <RituIcon ritu={p.ritau} />
+              RITU
+            </span>
+            <span className="anga-card__value">{p.ritau}</span>
           </div>
         </div>
       </section>
