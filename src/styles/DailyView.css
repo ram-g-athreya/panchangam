@@ -120,6 +120,20 @@
   font-size: 1.5rem;
 }
 
+.anga-card__time-sub {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.anga-card__time-sub-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
 .anga-card__value {
   font-size: 1.15rem;
   font-weight: 600;

@@ -7,7 +7,7 @@
   - **vara**: solar weekday (Calculated from Sunrise to Sunrise).
   - **nakshatra**: associated lunar mansion (star).
   - **yoga**: combined angular relationship between the Sun and the Moon.
-  - **karanas**: half of the tithi
+  - **karanas**: Array of both karanas for the day. First karana should have the endTime when the karana ends. It signifies half of the tithi.
   - **samvatsara**: year name in the 60-year Jovian cycle.
   - **ayana**: the solstice (Uttarayana or Dakshinayana).
   - **ritu**: the season.

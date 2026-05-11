@@ -23,7 +23,7 @@ export function Sankalpam() {
       <p className="sankalpam__text">
         {v(p.samvatsare)} Namasamvatsare, {v(p.ayane)}, {v(p.ritau)} Ritau, {v(p.mase)} Mase,{" "}
         {v(p.tithi.paksha)} Pakshe, {v(p.tithi.name)} Tithau, {v(p.vara)} Vasare, {v(p.nakshatra)}{" "}
-        Nakshatre, {v(p.yoga)} Yoge, {v(p.karana)} Karane
+        Nakshatre, {v(p.yoga)} Yoge, {v(p.karana.name)} Karane
       </p>
     </main>
   );

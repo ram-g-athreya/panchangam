@@ -17,7 +17,7 @@ describe("computePanchangam", () => {
     expect(result.vara).toBe("Shukravara");
     expect(result.nakshatra).toBe("Shravana");
     expect(result.yoga).toBe("Shubha");
-    expect(result.karana).toBe("Bava");
+    expect(result.karana.name).toBe("Bava");
     expect(result.samvatsare).toBe("Parabhava");
     expect(result.ayane).toBe("Uttarayana");
     expect(result.ritau).toBe("Vasanta");

@@ -78,7 +78,7 @@ requirements:
   value: "current yoga"
   requirements: based on Panchangam derived above
 - label: scale-balanced icon (fontawesome) followed by the word KARANA
-  value: current karana followed by `upto endTime` if it exists
+  value: iterate over karanas and render the name followed by `upto endTime` if it exists
   requirements: based on Panchangam derived above. `endTime` should be smaller `font-size` with accent color similar to subvalue
 - label: icon based on requirements followed by the word RITU
   value: current ritu

@@ -23,7 +23,7 @@ export interface Panchangam {
   vara: string;
   nakshatra: string;
   yoga: string;
-  karanas: Karana[];
+  karana: Karana;
   samvatsare: string;
   ayane: "Uttarayana" | "Dakshinayana";
   ritau: string;
@@ -464,13 +464,6 @@ function findEndTime(jd: number, type: PanchangElement): Date {
   return julianDayToDate(currentJD);
 }
 
-function dateBeforeEod(date: Date): boolean {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  tomorrow.setHours(0, 0, 0, 0);
-  return date < tomorrow;
-}
-
 function computeKarana(karanaIndex: number): Karana {
   // 60 karanas per lunar month (index 0–59)
   // Fixed: index 0 = Kimstughna, 57 = Shakuni, 58 = Chatushpada, 59 = Naga
@@ -494,35 +487,6 @@ function computeTithi(elongation: number): Tithi {
     number: tithiNumber,
     name: tithiName,
     paksha,
-  };
-}
-
-function computeTithiAndKaranas(sunRiseDate: Date): {
-  tithi: Tithi;
-  karanas: Karana[];
-} {
-  const jd = toJulianDay(sunRiseDate);
-  const elongation = getPanchangSegment(jd, "TITHI");
-
-  const tithi: Tithi = {
-    ...computeTithi(elongation),
-    endTime: findEndTime(jd, "TITHI"),
-  };
-
-  const karanaIndex = Math.floor(elongation / 6) % 60;
-  const karanaEndTime = findEndTime(jd, "KARANA");
-  const karanas: Karana[] = [
-    {
-      ...computeKarana(elongation),
-      endTime: karanaEndTime,
-    },
-    {
-      ...computeKarana((karanaIndex + 1) % 60),
-    },
-  ];
-  return {
-    tithi,
-    karanas,
   };
 }
 
@@ -554,10 +518,10 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
 
   // Karana: every 6° of elongation = one karana; 60 total per lunar month
   const karanaIndex = Math.floor(elongation / 6) % 60;
-  const karana = computeKarana(karanaIndex);
+  const karana: Karana = { ...computeKarana(karanaIndex), endTime: findEndTime(jd, "KARANA") };
 
   return {
-    tithi: computeTithi(sunRise ?? sunDate),
+    tithi: computeTithi(elongation),
     vara,
     nakshatra,
     yoga,

@@ -186,7 +186,12 @@ export function DailyView() {
               <FontAwesomeIcon icon={faScaleBalanced} />
               KARANA
             </span>
-            <span className="anga-card__value">{p.karana}</span>
+            <span className="anga-card__value">{p.karana.name}</span>
+            {p.karana.endTime && (
+              <span className="anga-card__sub">
+                upto {formatTime(p.karana.endTime, timeFormat)}
+              </span>
+            )}
           </div>
           <div className="anga-card">
             <span className="anga-card__label">
