@@ -10,8 +10,6 @@ Add test cases
 
 ```yaml
 description:
-  - Allow an error of `0.02` for `siderealSunLongitude`
-  - Allow an error of `0.06` for `siderealMoonLongitude`
   - Allow an error of `1 minute` for `sunRise` or `sunSet`
   - Keep all these error margins as constants at the top of the file and use them in the test
 test_cases:
@@ -22,15 +20,22 @@ test_cases:
     expected_output:
       - tithi: Saptami
       - vara: Shukravara
-      - nakshatra: Shravana
-      - yoga: Shubha
-      - karana: Bava
-      - samvatsare: Parabhava
-      - ayane: Uttarayana
-      - ritau: Vasanta
-      - mase: Vaishakha
-      - sunSidereal: 24.10
-      - moonSidereal: 283.41
+      - nakshatras:
+          - name: Uttara Ashadha
+            endTime: Fri May 08 2026 11:50:00 GMT-0400 (Eastern Daylight Time)
+          - name: Shravana
+      - yogas:
+          - name: Shubha
+            endTime: Fri May 08 2026 17:00:00 GMT-0400 (Eastern Daylight Time)
+          - name: Shukla
+      - karanas:
+          - name: Vishti
+            endTime: Fri May 08 2026 15:46:00 GMT-0400 (Eastern Daylight Time)
+          - name: Bava
+      - samvatsara: Parabhava
+      - ayana: Uttarayana
+      - ritu: Vasanta
+      - masa: Vaishakha
       - sunRise: Fri May 08 2026 06:04:00 GMT-0400 (Eastern Daylight Time)
       - sunSet: Thu May 07 2026 20:10:00 GMT-0400 (Eastern Daylight Time)
 ```

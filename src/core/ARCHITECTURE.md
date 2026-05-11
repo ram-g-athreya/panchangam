@@ -5,17 +5,16 @@
 - Create a Panchangam interface that has the following attributes as per the Vedic calendar:
   - **tithi**: lunar day object with `name`, `paksha` (`Shukla` or `Krishna`), and `number` signifying the day of the paksha.
   - **vara**: solar weekday (Calculated from Sunrise to Sunrise).
-  - **nakshatra**: associated lunar mansion (star).
-  - **yoga**: combined angular relationship between the Sun and the Moon.
-  - **karana**: half of the tithi.
-  - **samvatsare**: year name in the 60-year Jovian cycle.
-  - **ayane**: the solstice (Uttarayana or Dakshinayana).
-  - **ritau**: the season.
-  - **mase**: the vedic month.
-  - **sunSidereal**: sidereal sun longitude
-  - **moonSidereal**: sidereal moon longitude
+  - **nakshatras**: Array of nakshatras for the day. First nakshatra should have the endTime when the nakshatra ends. If the endTime is within the day then also include then also include the next nakshatra. Nakshatra is the associated lunar mansion (star) for the day.
+  - **yogas**: Array of nakshatras for the day. First nakshatra should have the endTime when the nakshatra ends. If the endTime is within the day then also include then also include the next nakshatra. Yoga is the combined angular relationship between the Sun and the Moon.
+  - **karanas**: Array of both karanas for the day. First karana should have the endTime when the karana ends. It signifies half of the tithi.
+  - **samvatsara**: year name in the 60-year Jovian cycle.
+  - **ayana**: the solstice (Uttarayana or Dakshinayana).
+  - **ritu**: the season.
+  - **masa**: the vedic month.
   - **sunRise**: Date and time of Sunrise
   - **sunSet**: Date and time of Sunset
+
 - Write corresponding functions to calculate each component.
 - Expose a function called `computePanchangam` that takes `date`, `latitude`, and `longitude` as parameters and returns the Panchangam calculated at the **exact moment of local sunrise**.
 
@@ -47,74 +46,13 @@
 
 Planetary longitudes must be calculated for the Julian Century (T) from the J2000.0 epoch: `T = (JD - 2451545.0) / 36525.0`
 
-#### A. Ayanamsha (Chitrapaksha/Lahiri)
+#### A. Moon Longitude (Luni-Solar Perturbations)
 
-**Ayanamsha (Chitrapaksha/Lahiri)**: To match high-precision calendars, use the True Ayanamsha.
+Use the `sweph-wasm` library to calculate the sidereal moon longitude based on the Julian Day with the flags `SEFLG_SWIEPH` and `SEFLG_SIDEREAL`
 
-- **Mean Ayanamsha (A_m)**: `23.857092 + 1.396971 * T + 0.0003086 * T * T;`
-- **Omega (omega)**: `125.04452 - 1934.136261 * T`
-- **Mean Longitude of Sun (LP)**: `280.4665 + 36000.7698 * T`
-- **Mean Longitude of Moon (L)**: `218.3165 + 481267.8813 * T`
-- **Nutation (N)**:
+#### B. Sun Longitude
 
-```
-(-17.1996 * sin(omega) -
-      1.3187 * sin(2 * L) -
-      0.2274 * sin(2 * LP) +
-      0.2062 * sin(2 * omega)) / 3600
-```
-
-- **Ayanamsha (A)**: `A_m + N`
-
-#### B. Moon Longitude (Luni-Solar Perturbations)
-
-Calculate the Fundamental Arguments in degrees:
-
-- **Mean Longitude (L_m)**: `218.3164477 + (481267.8812307 * T)`
-- **Mean Elongation (D)**: `297.8501921 + (445267.1114034 * T)`
-- **Sun's Mean Anomaly (M)**: `357.5291092 + (35999.0502909 * T)`
-- **Moon's Mean Anomaly (M')**: `134.9633964 + (477198.8675055 * T)`
-- **Moon's Argument of Latitude (F)**: `93.2720950 + (483202.0175233 * T)`
-- **Eccentricity of Earth's Orbit (E)**: `1 - 0.002516 * T - 0.0000074 * T * T`
-
-**Periodic Correction (L_corr)**:
-Major Periodic Terms (The "L" series in Meeus Table 47.A). These correct for Evection, Variation, and Annual Equation
-
-```
-L_corr =
-  6288774 * sin(M') +
-  1274027 * sin(2 * D - M') +
-  658314 * sin(2 * D) +
-  213618 * sin(2 * M') -
-  185116 * E * sin(M) - // Solar influence
-  114332 * sin(2 * F) +
-  58793 * sin(2 * D - 2 * M') +
-  57066 * E * sin(2 * D - M - M') +
-  53322 * sin(2 * D + M') +
-  45758 * E * sin(2 * D - M) -
-  40923 * E * sin(M' - M) -
-  34720 * sin(D) -
-  30383 * E * sin(M + M') +
-  15327 * sin(2 * D - 2 * F) // Added term for inclination/node
-```
-
-**Final Sidereal Moon**: `L_moon_sidereal = (L' + L_corr / 1000000 - A) % 360`
-
-#### C. Sun Longitude
-
-- **Mean Longitude (L0)**: `280.46646 + 36000.76983 * T + 0.0003032 * T * T`
-- **Mean Anomaly (M)**: `357.5291092 + 35999.0502909 * T - 0.0001537 * T * T`
-- **Equation of Center (C)**:
-
-```
-C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * sin(M) +
-    (0.019993 - 0.000101 * T) * sin(2 * M) +
-    0.000289 * sin(3 * M);
-```
-
-- **Aberration (Ab)**: `0.00569`
-- **Lahiri Ayanamsa (A)**: Use the `Lahiri Ayanamsa` function specified earlier.
-- **Final Sidereal Sun**: `L_sun_sidereal = (L0 + C - A - Ab) % 360`.
+Use the `sweph-wasm` library to calculate the sidereal sun longitude based on the Julian Day with the flags `SEFLG_SWIEPH` and `SEFLG_SIDEREAL`
 
 #### 4. Element Definitions & Algorithms
 

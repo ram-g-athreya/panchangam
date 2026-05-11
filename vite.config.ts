@@ -3,8 +3,13 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  test: {
-    include: ["tests/**/*.test.ts"],
-    environment: "node",
+  server: {
+    fs: {
+      allow: [".."],
+    },
+  },
+  assetsInclude: ["**/*.wasm"],
+  optimizeDeps: {
+    exclude: [],
   },
 });

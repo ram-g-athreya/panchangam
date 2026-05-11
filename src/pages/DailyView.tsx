@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faClock,
@@ -90,7 +90,13 @@ export function DailyView() {
   }
 
   const location = getLocation();
-  const p = computePanchangam(now, location?.latitude, location?.longitude);
+  // Recompute panchangam at most once per minute — astronomical values don't change per-second
+  const minuteKey = Math.floor(now.getTime() / 60000);
+  const p = useMemo(
+    () => computePanchangam(now, location?.latitude, location?.longitude),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [minuteKey, location?.latitude, location?.longitude],
+  );
 
   return (
     <main className="daily-view">
@@ -172,21 +178,42 @@ export function DailyView() {
               <FontAwesomeIcon icon={faStar} />
               NAKSHATRA
             </span>
-            <span className="anga-card__value">{p.nakshatra}</span>
+            {p.nakshatras.map((n, i) => (
+              <div key={i} className="anga-entry">
+                <span className="anga-card__value">{n.name}</span>
+                {n.endTime && (
+                  <span className="anga-card__sub">upto {formatTime(n.endTime, timeFormat)}</span>
+                )}
+              </div>
+            ))}
           </div>
           <div className="anga-card">
             <span className="anga-card__label">
               <FontAwesomeIcon icon={faInfinity} />
               YOGA
             </span>
-            <span className="anga-card__value">{p.yoga}</span>
+            {p.yogas.map((y, i) => (
+              <div key={i} className="anga-entry">
+                <span className="anga-card__value">{y.name}</span>
+                {y.endTime && (
+                  <span className="anga-card__sub">upto {formatTime(y.endTime, timeFormat)}</span>
+                )}
+              </div>
+            ))}
           </div>
           <div className="anga-card">
             <span className="anga-card__label">
               <FontAwesomeIcon icon={faScaleBalanced} />
               KARANA
             </span>
-            <span className="anga-card__value">{p.karana}</span>
+            {p.karanas.map((k, i) => (
+              <div key={i} className="anga-entry">
+                <span className="anga-card__value">{k.name}</span>
+                {k.endTime && (
+                  <span className="anga-card__sub">upto {formatTime(k.endTime, timeFormat)}</span>
+                )}
+              </div>
+            ))}
           </div>
           <div className="anga-card">
             <span className="anga-card__label">

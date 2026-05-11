@@ -31,3 +31,9 @@ The app broadly has two themes, a sepia based light theme and a dark theme. The 
 # Header Tags Font Sizes
 - `<header>`: `2rem`
 - `<h2>`: `1.15rem`
+
+# Panel Styling
+- Panels should have a box shadow so that they appear to be floating on the screen
+
+# Card Styling
+- Cards should have a box shadow so that they appear to be floating on the screen
