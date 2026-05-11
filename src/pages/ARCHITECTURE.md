@@ -41,10 +41,7 @@ This panel gives the basic Panchang information for today.
 - label:
     - Clock icon (fontawesome) followed by TIME
     - width should be 50% if desktop and tablet and 100% in mobile
-  value:
-    - First section should be the current time
-    - Second section should be the sunrise time
-    - Third section should be the sunset time
+  value: Current time
   subvalue: current date in the format
   requirements:
     - the TIME value should update every second
@@ -65,21 +62,21 @@ requirements:
   - time in 24-hour format of `hh:mm:ss` if 24 hour format is set
   - If the value is undefined then set a placeholder text that user should set their city
 - label: moon icon (fontawesome) followed by the word TITHI
-  value: "current tithi"
-  subvalue: "current paksha along with number"
+  value: current tithi
+  subvalue: current paksha along with number
   requirements: based on Panchangam derived above
 - label: sun icon (fontawesome) followed by the word VARA
-  value: "current vara"
+  value: current vara
   requirements: based on Panchangam derived above
 - label: star icon (fontawesome) followed by the word NAKSHATRA
-  value: "current nakshatra"
-  requirements: based on Panchangam derived above
+  value: iterate over nakshatras and render the name followed by `upto endTime` if it exists
+  requirements: based on Panchangam derived above. `endTime` should be smaller `font-size` with accent color similar to subvalue and not bold
 - label: infinity icon (fontawesome) followed by the word YOGA
   value: "current yoga"
   requirements: based on Panchangam derived above
 - label: scale-balanced icon (fontawesome) followed by the word KARANA
   value: iterate over karanas and render the name followed by `upto endTime` if it exists
-  requirements: based on Panchangam derived above. `endTime` should be smaller `font-size` with accent color similar to subvalue
+  requirements: based on Panchangam derived above. `endTime` should be smaller `font-size` with accent color similar to subvalue and not bold
 - label: icon based on requirements followed by the word RITU
   value: current ritu
   requirements:

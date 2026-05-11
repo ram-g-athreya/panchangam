@@ -18,18 +18,21 @@ interface Karana {
   endTime?: Date;
 }
 
+interface Nakshatra {
+  name: string;
+  endTime?: Date;
+}
+
 export interface Panchangam {
   tithi: Tithi;
   vara: string;
-  nakshatra: string;
+  nakshatras: Nakshatra[];
   yoga: string;
-  karana: Karana;
+  karanas: Karana[];
   samvatsare: string;
   ayane: "Uttarayana" | "Dakshinayana";
   ritau: string;
   mase: string;
-  sunSidereal: number;
-  moonSidereal: number;
   sunRise?: Date;
   sunSet?: Date;
 }
@@ -496,7 +499,7 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
   const sunRise = hasCoords ? computeGoverningSunrise(date, latitude!, longitude!) : undefined;
   const sunSet = hasCoords ? computeSunsetDateForDay(date, latitude!, longitude!) : undefined;
 
-  const jd = toJulianDay(date);
+  const jd = toJulianDay(sunRise ?? date);
   const sunSidereal = siderealSunLongitude(jd);
   const moonSidereal = siderealMoonLongitude(jd);
 
@@ -508,7 +511,10 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
 
   // Nakshatra: 27 equal segments using exact 360/27 to avoid cumulative rounding errors
   const nakshatraIndex = Math.floor(moonSidereal / NAKSHATRA_WIDTH) % 27;
-  const nakshatra = NAKSHATRAS[nakshatraIndex];
+  const nakshatras: Nakshatra[] = [
+    { name: NAKSHATRAS[nakshatraIndex], endTime: findEndTime(jd, "NAKSHATRA") },
+    { name: NAKSHATRAS[(nakshatraIndex + 1) % 27] },
+  ];
 
   const yogaSum = mod360(
     siderealSunLongitude(toJulianDay(sunDate)) + siderealMoonLongitude(toJulianDay(sunDate)),
@@ -518,20 +524,21 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
 
   // Karana: every 6° of elongation = one karana; 60 total per lunar month
   const karanaIndex = Math.floor(elongation / 6) % 60;
-  const karana: Karana = { ...computeKarana(karanaIndex), endTime: findEndTime(jd, "KARANA") };
+  const karanas: Karana[] = [
+    { ...computeKarana(karanaIndex), endTime: findEndTime(jd, "KARANA") },
+    { ...computeKarana((karanaIndex + 1) % 60) },
+  ];
 
   return {
     tithi: computeTithi(elongation),
     vara,
-    nakshatra,
+    nakshatras,
     yoga,
-    karana,
+    karanas,
     samvatsare: computeSamvatsare(sunDate),
     ayane: computeAyana(sunSidereal),
     ritau: computeRitu(sunSidereal),
     mase: computeMasa(sunSidereal, elongation),
-    sunSidereal,
-    moonSidereal,
     sunRise,
     sunSet,
   };

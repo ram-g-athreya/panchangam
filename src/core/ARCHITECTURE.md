@@ -5,17 +5,16 @@
 - Create a Panchangam interface that has the following attributes as per the Vedic calendar:
   - **tithi**: lunar day object with `name`, `paksha` (`Shukla` or `Krishna`), and `number` signifying the day of the paksha.
   - **vara**: solar weekday (Calculated from Sunrise to Sunrise).
-  - **nakshatra**: associated lunar mansion (star).
-  - **yoga**: combined angular relationship between the Sun and the Moon.
+  - **nakshatras**: Array of nakshatras for the day. First nakshatra should have the endTime when the nakshatra ends. If the endTime is within the day then also include then also include the next nakshatra. Nakshatra is the associated lunar mansion (star) for the day.
+  - **yogas**: combined angular relationship between the Sun and the Moon.
   - **karanas**: Array of both karanas for the day. First karana should have the endTime when the karana ends. It signifies half of the tithi.
   - **samvatsara**: year name in the 60-year Jovian cycle.
   - **ayana**: the solstice (Uttarayana or Dakshinayana).
   - **ritu**: the season.
   - **masa**: the vedic month.
-  - **sunSidereal**: sidereal sun longitude
-  - **moonSidereal**: sidereal moon longitude
   - **sunRise**: Date and time of Sunrise
   - **sunSet**: Date and time of Sunset
+
 - Write corresponding functions to calculate each component.
 - Expose a function called `computePanchangam` that takes `date`, `latitude`, and `longitude` as parameters and returns the Panchangam calculated at the **exact moment of local sunrise**.
 
