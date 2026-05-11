@@ -7,11 +7,11 @@
   - **vara**: solar weekday (Calculated from Sunrise to Sunrise).
   - **nakshatra**: associated lunar mansion (star).
   - **yoga**: combined angular relationship between the Sun and the Moon.
-  - **karana**: half of the tithi.
-  - **samvatsare**: year name in the 60-year Jovian cycle.
-  - **ayane**: the solstice (Uttarayana or Dakshinayana).
-  - **ritau**: the season.
-  - **mase**: the vedic month.
+  - **karanas**: half of the tithi
+  - **samvatsara**: year name in the 60-year Jovian cycle.
+  - **ayana**: the solstice (Uttarayana or Dakshinayana).
+  - **ritu**: the season.
+  - **masa**: the vedic month.
   - **sunSidereal**: sidereal sun longitude
   - **moonSidereal**: sidereal moon longitude
   - **sunRise**: Date and time of Sunrise

@@ -6,6 +6,34 @@ await swe.initSwissEph();
 // Set to Lahiri
 swe.set_sid_mode(1, 0, 0);
 
+interface Tithi {
+  number: number;
+  name: string;
+  paksha: "Shukla" | "Krishna";
+  endTime?: Date;
+}
+
+interface Karana {
+  name: string;
+  endTime?: Date;
+}
+
+export interface Panchangam {
+  tithi: Tithi;
+  vara: string;
+  nakshatra: string;
+  yoga: string;
+  karanas: Karana[];
+  samvatsare: string;
+  ayane: "Uttarayana" | "Dakshinayana";
+  ritau: string;
+  mase: string;
+  sunSidereal: number;
+  moonSidereal: number;
+  sunRise?: Date;
+  sunSet?: Date;
+}
+
 const TITHIS = [
   "Pratipada",
   "Dwitiya",
@@ -212,6 +240,19 @@ const toJulianDay = (date: Date): number =>
     1,
   ).julianDayUT;
 
+function julianDayToDate(jd: number) {
+  const { year, month, day, hour: decimalHour } = swe.revjul(jd, 1);
+  const h = Math.floor(decimalHour);
+
+  const mFull = (decimalHour - h) * 60;
+  const m = Math.floor(mFull);
+
+  const sFull = (mFull - m) * 60;
+  const s = Math.floor(sFull);
+  const ms = Math.round((sFull - s) * 1000);
+  return new Date(Date.UTC(year, month - 1, day, h, m, s, ms));
+}
+
 /**
  * Converts a Julian Day to Julian Centuries since the J2000.0 epoch.
  * Used as the time variable 'T' in astronomical polynomial series.
@@ -318,22 +359,6 @@ function computeGoverningSunrise(date: Date, latitude: number, longitude: number
   return todaySunrise;
 }
 
-export interface Panchangam {
-  tithi: { number: number; name: string; paksha: "Shukla" | "Krishna" };
-  vara: string;
-  nakshatra: string;
-  yoga: string;
-  karana: string;
-  samvatsare: string;
-  ayane: "Uttarayana" | "Dakshinayana";
-  ritau: string;
-  mase: string;
-  sunSidereal: number;
-  moonSidereal: number;
-  sunRise?: Date;
-  sunSet?: Date;
-}
-
 function computeSamvatsare(date: Date): string {
   const jd = toJulianDay(date);
   const T = toJulianCenturies(jd);
@@ -359,17 +384,17 @@ function computeSamvatsare(date: Date): string {
   return SAMVATSARAS[index];
 }
 
-function computeAyane(sunSidereal: number): "Uttarayana" | "Dakshinayana" {
+function computeAyana(sunSidereal: number): "Uttarayana" | "Dakshinayana" {
   // Uttarayana: Sun in sidereal Capricorn [270°, 360°) through Gemini [0°, 90°)
   return sunSidereal < 90 || sunSidereal >= 270 ? "Uttarayana" : "Dakshinayana";
 }
 
-function computeRitau(sunSidereal: number): string {
+function computeRitu(sunSidereal: number): string {
   const index = Math.floor(sunSidereal / 60) % 6;
   return RITUS[index];
 }
 
-function computeMase(sunSidereal: number, elongation: number): string {
+function computeMasa(sunSidereal: number, elongation: number): string {
   /**
    * 1. Calculate Sun's position at the last New Moon.
    * Elongation increases by ~12.19° per day, while the Sun moves ~0.98° per day.
@@ -391,17 +416,6 @@ function computeMase(sunSidereal: number, elongation: number): string {
   return MASAS[masaIndex];
 }
 
-function computeKarana(karanaIndex: number): string {
-  // 60 karanas per lunar month (index 0–59)
-  // Fixed: index 0 = Kimstughna, 57 = Shakuni, 58 = Chatushpada, 59 = Naga
-  // Repeating: indices 1–56 cycle through 7 names
-  if (karanaIndex === 0) return "Kimstughna";
-  if (karanaIndex === 57) return "Shakuni";
-  if (karanaIndex === 58) return "Chatushpada";
-  if (karanaIndex === 59) return "Naga";
-  return REPEATING_KARANAS[(karanaIndex - 1) % 7];
-}
-
 const getPanchangSegment = (jd: number, type: PanchangElement) => {
   const s = siderealSunLongitude(jd);
   const m = siderealMoonLongitude(jd);
@@ -416,19 +430,6 @@ const getPanchangSegment = (jd: number, type: PanchangElement) => {
       return mod360(m - s);
   }
 };
-
-function julianDayToDate(jd: number) {
-  const { year, month, day, hour: decimalHour } = swe.revjul(jd, 1);
-  const h = Math.floor(decimalHour);
-
-  const mFull = (decimalHour - h) * 60;
-  const m = Math.floor(mFull);
-
-  const sFull = (mFull - m) * 60;
-  const s = Math.floor(sFull);
-  const ms = Math.round((sFull - s) * 1000);
-  return new Date(Date.UTC(year, month - 1, day, h, m, s, ms));
-}
 
 function findEndTime(jd: number, type: PanchangElement): Date {
   let currentJD = jd;
@@ -463,6 +464,68 @@ function findEndTime(jd: number, type: PanchangElement): Date {
   return julianDayToDate(currentJD);
 }
 
+function dateBeforeEod(date: Date): boolean {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setHours(0, 0, 0, 0);
+  return date < tomorrow;
+}
+
+function computeKarana(karanaIndex: number): Karana {
+  // 60 karanas per lunar month (index 0–59)
+  // Fixed: index 0 = Kimstughna, 57 = Shakuni, 58 = Chatushpada, 59 = Naga
+  // Repeating: indices 1–56 cycle through 7 names
+  if (karanaIndex === 0) return { name: "Kimstughna" };
+  if (karanaIndex === 57) return { name: "Shakuni" };
+  if (karanaIndex === 58) return { name: "Chatushpada" };
+  if (karanaIndex === 59) return { name: "Naga" };
+  return {
+    name: REPEATING_KARANAS[(karanaIndex - 1) % 7],
+  };
+}
+
+function computeTithi(elongation: number): Tithi {
+  const tithiIndex = Math.floor(elongation / 12); // 0–29
+  const paksha: "Shukla" | "Krishna" = tithiIndex < 15 ? "Shukla" : "Krishna";
+  const tithiNumber = (tithiIndex % 15) + 1;
+  const tithiName =
+    tithiIndex === 14 ? "Purnima" : tithiIndex === 29 ? "Amavasya" : TITHIS[tithiNumber - 1];
+  return {
+    number: tithiNumber,
+    name: tithiName,
+    paksha,
+  };
+}
+
+function computeTithiAndKaranas(sunRiseDate: Date): {
+  tithi: Tithi;
+  karanas: Karana[];
+} {
+  const jd = toJulianDay(sunRiseDate);
+  const elongation = getPanchangSegment(jd, "TITHI");
+
+  const tithi: Tithi = {
+    ...computeTithi(elongation),
+    endTime: findEndTime(jd, "TITHI"),
+  };
+
+  const karanaIndex = Math.floor(elongation / 6) % 60;
+  const karanaEndTime = findEndTime(jd, "KARANA");
+  const karanas: Karana[] = [
+    {
+      ...computeKarana(elongation),
+      endTime: karanaEndTime,
+    },
+    {
+      ...computeKarana((karanaIndex + 1) % 60),
+    },
+  ];
+  return {
+    tithi,
+    karanas,
+  };
+}
+
 export function computePanchangam(date: Date, latitude?: number, longitude?: number): Panchangam {
   const hasCoords = latitude !== undefined && longitude !== undefined;
   const sunDate = hasCoords ? computeGoverningSunrise(date, latitude, longitude) : date;
@@ -475,11 +538,6 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
 
   // Tithi: every 12° of elongation between sidereal moon and sun
   const elongation = mod360(moonSidereal - sunSidereal);
-  const tithiIndex = Math.floor(elongation / 12); // 0–29
-  const paksha: "Shukla" | "Krishna" = tithiIndex < 15 ? "Shukla" : "Krishna";
-  const tithiNumber = (tithiIndex % 15) + 1;
-  const tithiName =
-    tithiIndex === 14 ? "Purnima" : tithiIndex === 29 ? "Amavasya" : TITHIS[tithiNumber - 1];
 
   // Vara derived from sunrise date so pre-sunrise inputs resolve to the previous solar day
   const vara = VARAS[sunDate.getUTCDay()];
@@ -499,15 +557,15 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
   const karana = computeKarana(karanaIndex);
 
   return {
-    tithi: { number: tithiNumber, name: tithiName, paksha },
+    tithi: computeTithi(sunRise ?? sunDate),
     vara,
     nakshatra,
     yoga,
     karana,
     samvatsare: computeSamvatsare(sunDate),
-    ayane: computeAyane(sunSidereal),
-    ritau: computeRitau(sunSidereal),
-    mase: computeMase(sunSidereal, elongation),
+    ayane: computeAyana(sunSidereal),
+    ritau: computeRitu(sunSidereal),
+    mase: computeMasa(sunSidereal, elongation),
     sunSidereal,
     moonSidereal,
     sunRise,
