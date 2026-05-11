@@ -23,11 +23,16 @@ interface Nakshatra {
   endTime?: Date;
 }
 
+interface Yoga {
+  name: string;
+  endTime?: Date;
+}
+
 export interface Panchangam {
   tithi: Tithi;
   vara: string;
   nakshatras: Nakshatra[];
-  yoga: string;
+  yogas: Yoga[];
   karanas: Karana[];
   samvatsare: string;
   ayane: "Uttarayana" | "Dakshinayana";
@@ -516,11 +521,12 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
     { name: NAKSHATRAS[(nakshatraIndex + 1) % 27] },
   ];
 
-  const yogaSum = mod360(
-    siderealSunLongitude(toJulianDay(sunDate)) + siderealMoonLongitude(toJulianDay(sunDate)),
-  );
+  const yogaSum = mod360(sunSidereal + moonSidereal);
   const yogaIndex = Math.floor(yogaSum / NAKSHATRA_WIDTH) % 27;
-  const yoga = YOGAS[yogaIndex];
+  const yogas: Yoga[] = [
+    { name: YOGAS[yogaIndex], endTime: findEndTime(jd, "YOGA") },
+    { name: YOGAS[(yogaIndex + 1) % 27] },
+  ];
 
   // Karana: every 6° of elongation = one karana; 60 total per lunar month
   const karanaIndex = Math.floor(elongation / 6) % 60;
@@ -533,7 +539,7 @@ export function computePanchangam(date: Date, latitude?: number, longitude?: num
     tithi: computeTithi(elongation),
     vara,
     nakshatras,
-    yoga,
+    yogas,
     karanas,
     samvatsare: computeSamvatsare(sunDate),
     ayane: computeAyana(sunSidereal),

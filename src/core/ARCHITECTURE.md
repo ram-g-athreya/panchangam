@@ -6,7 +6,7 @@
   - **tithi**: lunar day object with `name`, `paksha` (`Shukla` or `Krishna`), and `number` signifying the day of the paksha.
   - **vara**: solar weekday (Calculated from Sunrise to Sunrise).
   - **nakshatras**: Array of nakshatras for the day. First nakshatra should have the endTime when the nakshatra ends. If the endTime is within the day then also include then also include the next nakshatra. Nakshatra is the associated lunar mansion (star) for the day.
-  - **yogas**: combined angular relationship between the Sun and the Moon.
+  - **yogas**: Array of nakshatras for the day. First nakshatra should have the endTime when the nakshatra ends. If the endTime is within the day then also include then also include the next nakshatra. Yoga is the combined angular relationship between the Sun and the Moon.
   - **karanas**: Array of both karanas for the day. First karana should have the endTime when the karana ends. It signifies half of the tithi.
   - **samvatsara**: year name in the 60-year Jovian cycle.
   - **ayana**: the solstice (Uttarayana or Dakshinayana).

@@ -69,14 +69,17 @@ requirements:
   value: current vara
   requirements: based on Panchangam derived above
 - label: star icon (fontawesome) followed by the word NAKSHATRA
-  value: iterate over nakshatras and render the name followed by `upto endTime` if it exists
-  requirements: based on Panchangam derived above. `endTime` should be smaller `font-size` with accent color similar to subvalue and not bold
-- label: infinity icon (fontawesome) followed by the word YOGA
-  value: "current yoga"
+  value: iterate over nakshatras and display the name
+  subvalue: `upto endTime` if it exists for the item
+  requirements: based on Panchangam derived above
+- label: infinity icon (fontawesome) followed by the word YOGA. Ensure that the text is closer to value and has adequate gap with the next value below.
+  value: iterate over yogas and display the name
+  subvalue: `upto endTime` if it exists for the item. Ensure that the text is closer to value and has adequate gap with the next value below.
   requirements: based on Panchangam derived above
 - label: scale-balanced icon (fontawesome) followed by the word KARANA
-  value: iterate over karanas and render the name followed by `upto endTime` if it exists
-  requirements: based on Panchangam derived above. `endTime` should be smaller `font-size` with accent color similar to subvalue and not bold
+  value: iterate over karanas and display the name
+  subvalue: `upto endTime` if it exists for the item
+  requirements: based on Panchangam derived above. Ensure that the text is closer to value and has adequate gap with the next value below.
 - label: icon based on requirements followed by the word RITU
   value: current ritu
   requirements:

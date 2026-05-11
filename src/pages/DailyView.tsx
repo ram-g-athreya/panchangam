@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, Fragment } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faClock,
@@ -179,12 +179,12 @@ export function DailyView() {
               NAKSHATRA
             </span>
             {p.nakshatras.map((n, i) => (
-              <span key={i} className="anga-card__value">
-                {n.name}
+              <Fragment key={i}>
+                <span className="anga-card__value">{n.name}</span>
                 {n.endTime && (
-                  <span className="anga-card__sub"> upto {formatTime(n.endTime, timeFormat)}</span>
+                  <span className="anga-card__sub">upto {formatTime(n.endTime, timeFormat)}</span>
                 )}
-              </span>
+              </Fragment>
             ))}
           </div>
           <div className="anga-card">
@@ -192,7 +192,14 @@ export function DailyView() {
               <FontAwesomeIcon icon={faInfinity} />
               YOGA
             </span>
-            <span className="anga-card__value">{p.yoga}</span>
+            {p.yogas.map((y, i) => (
+              <Fragment key={i}>
+                <span className="anga-card__value">{y.name}</span>
+                {y.endTime && (
+                  <span className="anga-card__sub">upto {formatTime(y.endTime, timeFormat)}</span>
+                )}
+              </Fragment>
+            ))}
           </div>
           <div className="anga-card">
             <span className="anga-card__label">
@@ -200,12 +207,12 @@ export function DailyView() {
               KARANA
             </span>
             {p.karanas.map((k, i) => (
-              <span key={i} className="anga-card__value">
-                {k.name}
+              <Fragment key={i}>
+                <span className="anga-card__value">{k.name}</span>
                 {k.endTime && (
-                  <span className="anga-card__sub"> upto {formatTime(k.endTime, timeFormat)}</span>
+                  <span className="anga-card__sub">upto {formatTime(k.endTime, timeFormat)}</span>
                 )}
-              </span>
+              </Fragment>
             ))}
           </div>
           <div className="anga-card">

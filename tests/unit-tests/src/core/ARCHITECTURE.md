@@ -23,7 +23,9 @@ test_cases:
       - nakshatras:
           - name: Uttara Ashadha
           - name: Shravana
-      - yoga: Shubha
+      - yogas:
+          - name: Shubha
+          - name: Shukla
       - karanas:
           - name: Vishti
           - name: Bava
