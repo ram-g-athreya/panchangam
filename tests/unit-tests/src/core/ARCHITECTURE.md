@@ -22,12 +22,15 @@ test_cases:
       - vara: Shukravara
       - nakshatras:
           - name: Uttara Ashadha
+            endTime: Fri May 08 2026 11:50:00 GMT-0400 (Eastern Daylight Time)
           - name: Shravana
       - yogas:
           - name: Shubha
+            endTime: Fri May 08 2026 17:00:00 GMT-0400 (Eastern Daylight Time)
           - name: Shukla
       - karanas:
           - name: Vishti
+            endTime: Fri May 08 2026 15:46:00 GMT-0400 (Eastern Daylight Time)
           - name: Bava
       - samvatsara: Parabhava
       - ayana: Uttarayana

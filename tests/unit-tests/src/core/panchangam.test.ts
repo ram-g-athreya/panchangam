@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { computePanchangam } from "../../../../src/core/panchangam";
 
 const SOLAR_EVENT_TOLERANCE_MS = 60_000;
+const END_TIME_TOLERANCE_MS = 60_000;
 
 describe("computePanchangam", () => {
   it("returns correct panchangam for reference case: Fri May 08 2026 18:34:10 GMT-0400, Virginia", () => {
@@ -14,11 +15,22 @@ describe("computePanchangam", () => {
     expect(result.tithi.name).toBe("Saptami");
     expect(result.vara).toBe("Shukravara");
     expect(result.nakshatras[0].name).toBe("Uttara Ashadha");
+    expect(result.nakshatras[0].endTime).toBeDefined();
+    expect(
+      Math.abs(result.nakshatras[0].endTime!.getTime() - new Date("2026-05-08T15:50:00Z").getTime()),
+    ).toBeLessThanOrEqual(END_TIME_TOLERANCE_MS);
     expect(result.nakshatras[1].name).toBe("Shravana");
     expect(result.yogas[0].name).toBe("Shubha");
     expect(result.yogas[0].endTime).toBeDefined();
+    expect(
+      Math.abs(result.yogas[0].endTime!.getTime() - new Date("2026-05-08T21:00:00Z").getTime()),
+    ).toBeLessThanOrEqual(END_TIME_TOLERANCE_MS);
     expect(result.yogas[1].name).toBe("Shukla");
     expect(result.karanas[0].name).toBe("Vishti");
+    expect(result.karanas[0].endTime).toBeDefined();
+    expect(
+      Math.abs(result.karanas[0].endTime!.getTime() - new Date("2026-05-08T19:46:00Z").getTime()),
+    ).toBeLessThanOrEqual(END_TIME_TOLERANCE_MS);
     expect(result.karanas[1].name).toBe("Bava");
     expect(result.samvatsare).toBe("Parabhava");
     expect(result.ayane).toBe("Uttarayana");

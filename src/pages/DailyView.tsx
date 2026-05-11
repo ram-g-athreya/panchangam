@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, Fragment } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faClock,
@@ -179,12 +179,12 @@ export function DailyView() {
               NAKSHATRA
             </span>
             {p.nakshatras.map((n, i) => (
-              <Fragment key={i}>
+              <div key={i} className="anga-entry">
                 <span className="anga-card__value">{n.name}</span>
                 {n.endTime && (
                   <span className="anga-card__sub">upto {formatTime(n.endTime, timeFormat)}</span>
                 )}
-              </Fragment>
+              </div>
             ))}
           </div>
           <div className="anga-card">
@@ -193,12 +193,12 @@ export function DailyView() {
               YOGA
             </span>
             {p.yogas.map((y, i) => (
-              <Fragment key={i}>
+              <div key={i} className="anga-entry">
                 <span className="anga-card__value">{y.name}</span>
                 {y.endTime && (
                   <span className="anga-card__sub">upto {formatTime(y.endTime, timeFormat)}</span>
                 )}
-              </Fragment>
+              </div>
             ))}
           </div>
           <div className="anga-card">
@@ -207,12 +207,12 @@ export function DailyView() {
               KARANA
             </span>
             {p.karanas.map((k, i) => (
-              <Fragment key={i}>
+              <div key={i} className="anga-entry">
                 <span className="anga-card__value">{k.name}</span>
                 {k.endTime && (
                   <span className="anga-card__sub">upto {formatTime(k.endTime, timeFormat)}</span>
                 )}
-              </Fragment>
+              </div>
             ))}
           </div>
           <div className="anga-card">
