@@ -1,10 +1,8 @@
 // All angles in degrees unless noted. All final values use Nirayana (sidereal) longitudes.
-import SwissEph from "swisseph-wasm";
-const swe = new SwissEph();
-await swe.initSwissEph();
+import { Astrosk, SE } from "astrosk-wasm";
 
-// Set to Lahiri
-swe.set_sid_mode(1, 0, 0);
+const astrosk = await Astrosk.init();
+astrosk.setSidMode(1, 0, 0);
 
 interface Tithi {
   number: number;
@@ -238,18 +236,17 @@ function dayOfYear(date: Date): number {
 }
 
 const toJulianDay = (date: Date): number =>
-  swe.utc_to_jd(
-    date.getUTCFullYear(),
-    date.getUTCMonth() + 1,
-    date.getUTCDate(),
-    date.getUTCHours(),
-    date.getUTCMinutes(),
-    date.getUTCSeconds(),
-    1,
-  ).julianDayUT;
+  astrosk.utcToJd({
+    year: date.getUTCFullYear(),
+    month: date.getUTCMonth() + 1,
+    day: date.getUTCDate(),
+    hour: date.getUTCHours(),
+    minute: date.getUTCMinutes(),
+    second: date.getUTCSeconds(),
+  }).jdUt;
 
 function julianDayToDate(jd: number) {
-  const { year, month, day, hour: decimalHour } = swe.revjul(jd, 1);
+  const { year, month, day, hour: decimalHour } = astrosk.revjul(jd);
   const h = Math.floor(decimalHour);
 
   const mFull = (decimalHour - h) * 60;
@@ -278,11 +275,11 @@ const mod360 = (x: number): number => ((x % 360) + 360) % 360;
 const toRad = (degree: number): number => (degree * Math.PI) / 180;
 const toDeg = (rad: number): number => (rad * 180) / Math.PI;
 
-const siderealSunLongitude = (jd: number, flags = swe.SEFLG_SWIEPH | swe.SEFLG_SIDEREAL): number =>
-  swe.calc_ut(jd, swe.SE_SUN, flags)[0];
+const siderealSunLongitude = (jd: number, flags = SE.FLG.SWIEPH | SE.FLG.SIDEREAL): number =>
+  astrosk.calcUt(jd, SE.SUN, flags).longitude;
 
-const siderealMoonLongitude = (jd: number, flags = swe.SEFLG_SWIEPH | swe.SEFLG_SIDEREAL): number =>
-  swe.calc_ut(jd, swe.SE_MOON, flags)[0];
+const siderealMoonLongitude = (jd: number, flags = SE.FLG.SWIEPH | SE.FLG.SIDEREAL): number =>
+  astrosk.calcUt(jd, SE.MOON, flags).longitude;
 
 // NOAA zenith algorithm for sunrise (isRise=true) or sunset (isRise=false).
 // Falls back to solar noon/midnight if the sun never rises/sets (polar regions).

@@ -3,16 +3,13 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  define: {
-    "process.env": {},
-    global: "window",
-    exports: {},
+  server: {
+    fs: {
+      allow: [".."],
+    },
   },
-  test: {
-    include: ["tests/**/*.test.ts"],
-    environment: "node",
-  },
+  assetsInclude: ["**/*.wasm"],
   optimizeDeps: {
-    exclude: ["swisseph-wasm"],
+    exclude: [],
   },
 });

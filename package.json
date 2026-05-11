@@ -19,11 +19,11 @@
     "@fortawesome/free-solid-svg-icons": "^7.2.0",
     "@fortawesome/react-fontawesome": "^3.3.1",
     "@vercel/analytics": "^2.0.1",
+    "astrosk-wasm": "^0.3.1",
     "react": "^19.2.5",
     "react-bootstrap-icons": "^1.11.6",
     "react-dom": "^19.2.5",
-    "react-router-dom": "^7.14.2",
-    "swisseph-wasm": "^0.0.5"
+    "react-router-dom": "^6.30.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
