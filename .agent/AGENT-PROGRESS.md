@@ -528,3 +528,19 @@
 - Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: await new tasks or spec updates
+
+### Session 0013
+
+- Date: 2026-05-11
+- Goal: Implement `add-lunar-phase` task — add lunar phase display to TITHI card
+- Completed:
+  - DailyView.tsx: imported `Moon` from `lunarphase-js`
+  - DailyView.tsx: moved TITHI card into `anga-top-row` alongside TIME card; both get `flex:1` for 50% width at tablet/desktop, 100% at mobile
+  - DailyView.tsx: TITHI label uses `anga-card__label--split` — left shows `Moon.lunarPhaseEmoji(now)` emoji, right has faMoon icon + TITHI text
+  - DailyView.tsx: MASA-SAMVATSARA moved from `anga-top-row` into new `anga-half-row` wrapper; constrained to `calc(50% - 0.5rem)` at tablet/desktop, 100% at mobile
+  - DailyView.css: added `anga-card--tithi` to flex rule; added `.anga-half-row` + responsive overrides; added `.anga-card__label--split`, `.anga-card__label-right`, `.lunar-phase-emoji`
+- Verification run: `npm run check` exits 0; 1 test passed
+- Evidence captured: task_list.yaml status set to passing
+- Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: commit and all tasks are complete

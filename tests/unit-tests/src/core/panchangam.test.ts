@@ -17,7 +17,9 @@ describe("computePanchangam", () => {
     expect(result.nakshatras[0].name).toBe("Uttara Ashadha");
     expect(result.nakshatras[0].endTime).toBeDefined();
     expect(
-      Math.abs(result.nakshatras[0].endTime!.getTime() - new Date("2026-05-08T15:50:00Z").getTime()),
+      Math.abs(
+        result.nakshatras[0].endTime!.getTime() - new Date("2026-05-08T15:50:00Z").getTime(),
+      ),
     ).toBeLessThanOrEqual(END_TIME_TOLERANCE_MS);
     expect(result.nakshatras[1].name).toBe("Shravana");
     expect(result.yogas[0].name).toBe("Shubha");

@@ -20,6 +20,7 @@
     "@fortawesome/react-fontawesome": "^3.3.1",
     "@vercel/analytics": "^2.0.1",
     "astrosk-wasm": "^0.3.1",
+    "lunarphase-js": "^2.0.3",
     "react": "^19.2.5",
     "react-bootstrap-icons": "^1.11.6",
     "react-dom": "^19.2.5",

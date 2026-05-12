@@ -495,13 +495,18 @@ function computeTithi(elongation: number): Tithi {
   };
 }
 
-export function computePanchangam(date: Date, latitude?: number, longitude?: number): Panchangam {
+export function computePanchangam(
+  date: Date,
+  latitude?: number,
+  longitude?: number,
+  useSunrise: boolean = true,
+): Panchangam {
   const hasCoords = latitude !== undefined && longitude !== undefined;
   const sunDate = hasCoords ? computeGoverningSunrise(date, latitude, longitude) : date;
   const sunRise = hasCoords ? computeGoverningSunrise(date, latitude!, longitude!) : undefined;
   const sunSet = hasCoords ? computeSunsetDateForDay(date, latitude!, longitude!) : undefined;
 
-  const jd = toJulianDay(sunRise ?? date);
+  const jd = toJulianDay(useSunrise ? (sunRise ?? date) : date);
   const sunSidereal = siderealSunLongitude(jd);
   const moonSidereal = siderealMoonLongitude(jd);
 
