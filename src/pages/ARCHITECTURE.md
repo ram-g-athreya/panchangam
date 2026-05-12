@@ -16,11 +16,6 @@ This panel gives the basic Panchang information for today.
 - Its width should span 33.333% in desktop, 50% in tablets and 100% in mobile
 - Background color for the panel should be the secondary background color
 - Information is presented as cards where information is grouped based on the context
-- The Panel should have the title `Panchangam for Today`
-- On the right side of the title should be a toggle switch with the text saying 12-hour or 24-hour in the background and being 12-hour by default.
-- Based on the value chosen the value below needs to change to 12-hour or 24-hour format
-- Store the value in localStorage and rehydrate on startup
-- Ensure that the storage key is in the constants file and imported
 
 #### Information Cards
 

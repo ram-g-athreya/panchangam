@@ -4,11 +4,12 @@
   align-items: center;
   gap: 0;
   height: 2rem;
-  min-width: 25rem;
+  width: 25rem;
+  max-width: 25rem;
+  margin-left: auto;
   background-color: var(--color-bg-main);
   border-radius: 0.4rem;
   padding: 0 0.6rem;
-  margin-left: auto;
 }
 
 .city-search__icon {
@@ -28,6 +29,7 @@
   background: none;
   border: none;
   outline: none;
+  padding: 0;
   color: var(--color-text-primary);
   font-size: 1rem;
   flex: 1;
@@ -88,9 +90,10 @@
 
 @media (max-width: 640px) {
   .city-search {
-    margin-left: 0;
-    min-width: unset;
     width: 100%;
+    max-width: unset;
+    margin-left: 0;
+    order: 99;
     box-sizing: border-box;
   }
 }

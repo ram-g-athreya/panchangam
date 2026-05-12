@@ -28,11 +28,42 @@ Create a city search text box with the following spec as a separate standalone c
 - set `font-size` as `1rem`
 - set `minimum-width` as `25rem`
 
+## Settings
+
+- Settings icon which when clicked produces a list of toggles in a callout
+- The toggles are as follows:
+  - Time
+  - Theme
+- Add a separator between toggles
+- Cicking again on the setting icon or clicking outside or pressing the `esc` key closes the callout
+- When the callout is open highlight the icon by making it bold
+
+### Time Toggle Switch
+
+- Has the label `Time` followed by toggle switch with the text saying 12-hour or 24-hour in the background and being 12-hour by default.
+- Based on the value chosen the value below needs to change to 12-hour or 24-hour format
+- Store the value in localStorage and rehydrate on startup
+- Ensure that the storage key is in the constants file and imported
+
+### Theme Toggle Switch
+
+- Has the label `Theme` followed by toggle switch
+- the toggle switch should be a slider, ie, the slider should physically move between states with `light` being the default and on the left side and the `dark` being the right side
+- Use `font-awesome` icons through the npm library to implement the icons.
+- the light icon should use the solid sun icon
+- the dark icon should use the solid moon icon
+- the background of the toggle should change to the appropriate light or dark background depending on the current state
+- store the current toggle value in `localStorage` and re-hydrate it from storage when the app is reloaded. If there is no value present in `localStorage` then set the value as `light` by default
+- In the background display the text `Light` or `Dark` depending on the current theme. The text should be `0.75rem` and set the `left` or `right` offset to `0.75rem` depending on the case
+
 ## Header
 
 - The top panel has a padding of `1rem 0.5rem`
 - Has a button with the hamburger bars navigation icon followed by the `Panchangam` text.
-- The right side has the `City Search Text Box` on larger screens and in smaller screens push the text box below the `Panchangam` text and have it span the entire row
+- The `City Search Text Box`
+  - should have width no more than `25rem` on larger screens and should be on the right end of the screen
+  - in smaller screens push the text box below the `Panchangam` text and have it span the entire row
+- the settings icon in all screens should be on the right most end
 
 ### Panchangam Text
 
@@ -64,14 +95,3 @@ Styling should be as follows:
 - Depending upon the current page or if user hovers a link,
   - Change the background to secondary background color
   - Make the text `bold`
-
-#### Theme Toggle Switch
-
-- A toggle switch is on the right corner to toggle between light and dark themes
-- the toggle switch should be a slider, ie, the slider should physically move between states with `light` being the default and on the left side and the `dark` being the right side
-- Use `font-awesome` icons through the npm library to implement the icons.
-- the light icon should use the solid sun icon
-- the dark icon should use the solid moon icon
-- the background of the toggle should change to the appropriate light or dark background depending on the current state
-- store the current toggle value in `localStorage` and re-hydrate it from storage when the app is reloaded. If there is no value present in `localStorage` then set the value as `light` by default
-- In the background display the text `Light` or `Dark` depending on the current theme. The text should be `0.75rem` and set the `left` or `right` offset to `0.75rem` depending on the case
