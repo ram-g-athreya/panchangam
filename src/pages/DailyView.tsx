@@ -16,7 +16,7 @@ import { SunriseFill, SunsetFill, EmojiSunglassesFill } from "react-bootstrap-ic
 import { Moon } from "lunarphase-js";
 import { computePanchangam } from "../core/panchangam";
 import type { TimeFormat, LocationData } from "../constants";
-import { TIME_FORMAT_KEY, LOCATION_KEY } from "../constants";
+import { LOCATION_KEY } from "../constants";
 import "../styles/DailyView.css";
 
 function getLocation(): { latitude: number; longitude: number } | null {
@@ -26,11 +26,6 @@ function getLocation(): { latitude: number; longitude: number } | null {
     return { latitude: data.latitude, longitude: data.longitude };
   }
   return null;
-}
-
-function getInitialTimeFormat(): TimeFormat {
-  const stored = localStorage.getItem(TIME_FORMAT_KEY);
-  return stored === "24h" ? "24h" : "12h";
 }
 
 function formatTime(date: Date, format: TimeFormat): string {
@@ -71,22 +66,17 @@ function formatDate(date: Date): string {
   });
 }
 
-export function DailyView() {
+interface DailyViewProps {
+  timeFormat: TimeFormat;
+}
+
+export function DailyView({ timeFormat }: DailyViewProps) {
   const [now, setNow] = useState(new Date());
-  const [timeFormat, setTimeFormat] = useState<TimeFormat>(getInitialTimeFormat);
 
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
-
-  function toggleTimeFormat() {
-    setTimeFormat((f) => {
-      const next = f === "12h" ? "24h" : "12h";
-      localStorage.setItem(TIME_FORMAT_KEY, next);
-      return next;
-    });
-  }
 
   const location = getLocation();
   // Recompute panchangam at most once per minute — astronomical values don't change per-second
@@ -100,19 +90,6 @@ export function DailyView() {
   return (
     <main className="daily-view">
       <section className="panchang-panel">
-        <div className="panchang-panel__header">
-          <h2 className="panchang-panel__title">Panchangam for Today</h2>
-          <button
-            className={`time-format-toggle time-format-toggle--${timeFormat}`}
-            onClick={toggleTimeFormat}
-            aria-label="Toggle time format"
-          >
-            <span className="time-format-toggle__thumb" />
-            <span className="time-format-toggle__label">
-              {timeFormat === "12h" ? "12-hour" : "24-hour"}
-            </span>
-          </button>
-        </div>
         <div className="anga-grid">
           <div className="anga-top-row">
             <div className="anga-card anga-card--time">

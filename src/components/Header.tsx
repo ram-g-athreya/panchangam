@@ -3,6 +3,8 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { CitySearch } from "./CitySearch";
+import { Settings } from "./Settings";
+import type { Theme, TimeFormat } from "../constants";
 import "../styles/Header.css";
 
 library.add(faBars);
@@ -11,9 +13,19 @@ const barsIcon = findIconDefinition({ prefix: "fas", iconName: "bars" });
 
 interface HeaderProps {
   onOpenSidebar: () => void;
+  theme: Theme;
+  onToggleTheme: () => void;
+  timeFormat: TimeFormat;
+  onToggleTimeFormat: () => void;
 }
 
-export function Header({ onOpenSidebar }: HeaderProps) {
+export function Header({
+  onOpenSidebar,
+  theme,
+  onToggleTheme,
+  timeFormat,
+  onToggleTimeFormat,
+}: HeaderProps) {
   return (
     <header className="header">
       <div className="header__top">
@@ -24,6 +36,12 @@ export function Header({ onOpenSidebar }: HeaderProps) {
           Panchangam
         </Link>
         <CitySearch />
+        <Settings
+          theme={theme}
+          onToggleTheme={onToggleTheme}
+          timeFormat={timeFormat}
+          onToggleTimeFormat={onToggleTimeFormat}
+        />
       </div>
     </header>
   );

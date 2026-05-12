@@ -544,3 +544,21 @@
 - Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: commit and all tasks are complete
+
+### Session 0014
+
+- Date: 2026-05-11
+- Goal: Implement `add-settings` task — gear icon in header with Time + Theme callout
+- Completed:
+  - Created Settings.tsx: gear icon button, callout with Time toggle + separator + Theme toggle; closes on click-outside/Esc/re-click; icon highlighted when open
+  - Created Settings.css: callout layout (absolute, right-aligned, secondary bg, 14rem min-width, z-index 200)
+  - index.css: moved theme-toggle and time-format-toggle CSS here from Sidebar.css and DailyView.css (shared by Settings, Sidebar, DailyView)
+  - App.tsx: lifted timeFormat state + toggleTimeFormat; passed to Header and DailyView
+  - Header.tsx: added theme/timeFormat props; renders Settings at rightmost end of header top
+  - DailyView.tsx: removed internal timeFormat state; accepts timeFormat + onToggleTimeFormat as props
+  - CitySearch.css: margin-left:auto → flex:1 (fills space left of Settings); mobile: order:99 + flex:0 0 100% (wraps to row 2, Settings stays row 1)
+- Verification run: npm run check exits 0; 1 test passed
+- Evidence captured: task_list.yaml status set to passing
+- Files updated: src/components/Settings.tsx, src/styles/Settings.css, src/styles/index.css, src/styles/Sidebar.css, src/styles/DailyView.css, src/components/Header.tsx, src/pages/DailyView.tsx, src/App.tsx, src/styles/CitySearch.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: commit
