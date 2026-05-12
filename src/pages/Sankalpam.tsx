@@ -14,7 +14,7 @@ function getLocation(): { latitude: number; longitude: number } | null {
 
 export function Sankalpam() {
   const location = getLocation();
-  const p = computePanchangam(new Date(), location?.latitude, location?.longitude);
+  const p = computePanchangam(new Date(), location?.latitude, location?.longitude, false);
   const v = (s: string) => <strong>{s}</strong>;
 
   return (
@@ -22,8 +22,9 @@ export function Sankalpam() {
       <h1 className="sankalpam__title">Sankalpam</h1>
       <p className="sankalpam__text">
         {v(p.samvatsare)} Namasamvatsare, {v(p.ayane)}, {v(p.ritau)} Ritau, {v(p.mase)} Mase,{" "}
-        {v(p.tithi.paksha)} Pakshe, {v(p.tithi.name)} Tithau, {v(p.vara)} Vasare, {v(p.nakshatras[0].name)}{" "}
-        Nakshatre, {v(p.yogas[0].name)} Yoge, {v(p.karanas[0].name)} Karane
+        {v(p.tithi.paksha)} Pakshe, {v(p.tithi.name)} Tithau, {v(p.vara)} Vasare,{" "}
+        {v(p.nakshatras[0].name)} Nakshatre, {v(p.yogas[0].name)} Yoge, {v(p.karanas[0].name)}{" "}
+        Karane
       </p>
     </main>
   );

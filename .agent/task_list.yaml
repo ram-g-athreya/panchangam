@@ -12,6 +12,10 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: add-lunar-phase
+    priority: 1
+    title: Update daily view based on spec in `src/pages/ARCHITECTURE.md`
+    status: not_started
   - id: update-daily-view
     priority: 1
     title: Update daily view based on spec in `src/pages/ARCHITECTURE.md`

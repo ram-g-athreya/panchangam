@@ -48,6 +48,10 @@ This panel gives the basic Panchang information for today.
     - all values should change based on the 12-hour, 24-hour toggle
     - time in 12-hour format of `hh:mm:ss AM / PM` if 12 hour format is set
     - time in 24-hour format of `hh:mm:ss` if 24 hour format is set
+- label: left side should display the lunar phase using the `lunarphase-js` library. the right side should have the moon icon (fontawesome) followed by the word TITHI
+  value: current tithi
+  subvalue: current paksha along with number
+  requirements: based on Panchangam derived above. the width of the card should span 50% in desktop and tablet and 100% in mobile
 - label: calendar icon (fontawesome) followed by MASA - SAMVATSARA
   value: current masa - current samvatsara
   requirements: the width of the card should span 50% in desktop and tablet and 100% in mobile
@@ -61,10 +65,6 @@ requirements:
   - time in 12-hour format of `hh:mm:ss AM / PM` if 12 hour format is set
   - time in 24-hour format of `hh:mm:ss` if 24 hour format is set
   - If the value is undefined then set a placeholder text that user should set their city
-- label: moon icon (fontawesome) followed by the word TITHI
-  value: current tithi
-  subvalue: current paksha along with number
-  requirements: based on Panchangam derived above
 - label: sun icon (fontawesome) followed by the word VARA
   value: current vara
   requirements: based on Panchangam derived above
