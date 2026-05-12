@@ -191,7 +191,7 @@ export function DailyView({ timeFormat }: DailyViewProps) {
           <div className="anga-card anga-card--full-row anga-card--centered">
             <span className="anga-card__label">
               <FontAwesomeIcon icon={faCalendarDays} />
-              VARA - MASA - SAMVATSARA
+              VASARA - MASA - SAMVATSARA
             </span>
             <span className="anga-card__value">
               {p.vara} - {p.mase} - {p.samvatsare}
