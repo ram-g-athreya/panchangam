@@ -87,14 +87,14 @@ const NAKSHATRAS = [
   "Revatī",
 ] as const;
 
-const VARAS = [
-  "Ravivāsara",
-  "Somavāsara",
-  "Maṅgalavāsara",
-  "Budhavāsara",
-  "Guruvāsara",
-  "Śukravāsara",
-  "Śanivāsara",
+const VARA = [
+  "Ravivāra",
+  "Somavāra",
+  "Maṅgalavāra",
+  "Budhavāra",
+  "Guruvāra",
+  "Śukravāra",
+  "Śanivāra",
 ] as const;
 
 const YOGAS = [
@@ -513,8 +513,8 @@ export function computePanchangam(
   // Tithi: every 12° of elongation between sidereal moon and sun
   const elongation = mod360(moonSidereal - sunSidereal);
 
-  // Vara derived from sunrise date so pre-sunrise inputs resolve to the previous solar day
-  const vara = VARAS[sunDate.getUTCDay()];
+  // Vasara derived from sunrise date so pre-sunrise inputs resolve to the previous solar day
+  const vara = VARA[sunDate.getUTCDay()];
 
   // Nakshatra: 27 equal segments using exact 360/27 to avoid cumulative rounding errors
   const nakshatraIndex = Math.floor(moonSidereal / NAKSHATRA_WIDTH) % 27;

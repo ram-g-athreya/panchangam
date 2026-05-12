@@ -98,6 +98,7 @@ This panel gives the basic Panchang information for today.
   requirements:
     - the width of the card should be 100%
     - Center the text
+    - `font-size` of the value text should be `1rem`
 ```
 
 ## Sankalpam
