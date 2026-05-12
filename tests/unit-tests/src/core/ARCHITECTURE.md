@@ -18,24 +18,24 @@ test_cases:
       latitude: 39.0437192
       longitude: -77.4874899
     expected_output:
-      - tithi: Saptami
-      - vara: Shukravara
+      - tithi: Saptamī
+      - vara: Śukravāra
       - nakshatras:
-          - name: Uttara Ashadha
+          - name: Uttarāṣāḍhā
             endTime: Fri May 08 2026 11:50:00 GMT-0400 (Eastern Daylight Time)
-          - name: Shravana
+          - name: Śravaṇa
       - yogas:
-          - name: Shubha
+          - name: Śubha
             endTime: Fri May 08 2026 17:00:00 GMT-0400 (Eastern Daylight Time)
-          - name: Shukla
+          - name: Śukla
       - karanas:
-          - name: Vishti
+          - name: Viṣṭi
             endTime: Fri May 08 2026 15:46:00 GMT-0400 (Eastern Daylight Time)
           - name: Bava
-      - samvatsara: Parabhava
+      - samvatsara: Parābhava
       - ayana: Uttarayana
       - ritu: Vasanta
-      - masa: Vaishakha
+      - masa: Vaiśākha
       - sunRise: Fri May 08 2026 06:04:00 GMT-0400 (Eastern Daylight Time)
       - sunSet: Thu May 07 2026 20:10:00 GMT-0400 (Eastern Daylight Time)
 ```

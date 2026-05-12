@@ -40,7 +40,7 @@
   flex-direction: column;
   gap: 0.5rem;
   box-sizing: border-box;
-  min-width: 0;
+  min-width: 165px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
@@ -64,6 +64,7 @@
 .anga-top-row {
   grid-column: 1 / -1;
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 
@@ -133,6 +134,10 @@
 
 .anga-card--centered .anga-card__label {
   justify-content: center;
+}
+
+.anga-card--centered .anga-card__value {
+  font-size: 1rem;
 }
 
 .anga-card__label svg {

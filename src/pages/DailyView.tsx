@@ -43,13 +43,13 @@ function formatTime(date: Date, format: TimeFormat): string {
 
 type RituIconProps = { ritu: string };
 function RituIcon({ ritu }: RituIconProps) {
-  if (ritu === "Grishma") return <EmojiSunglassesFill className="bi-icon" />;
+  if (ritu === "Grīṣma") return <EmojiSunglassesFill className="bi-icon" />;
   const faIcon =
     ritu === "Vasanta"
       ? faSeedling
-      : ritu === "Varsha"
+      : ritu === "Varṣā"
         ? faCloudBolt
-        : ritu === "Sharada"
+        : ritu === "Śarada"
           ? faLeaf
           : ritu === "Hemanta"
             ? faWind

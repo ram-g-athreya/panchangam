@@ -12,32 +12,32 @@ describe("computePanchangam", () => {
 
     const result = computePanchangam(date, latitude, longitude);
 
-    expect(result.tithi.name).toBe("Saptami");
-    expect(result.vara).toBe("Shukravara");
-    expect(result.nakshatras[0].name).toBe("Uttara Ashadha");
+    expect(result.tithi.name).toBe("Saptamī");
+    expect(result.vara).toBe("Śukravāra");
+    expect(result.nakshatras[0].name).toBe("Uttarāṣāḍhā");
     expect(result.nakshatras[0].endTime).toBeDefined();
     expect(
       Math.abs(
         result.nakshatras[0].endTime!.getTime() - new Date("2026-05-08T15:50:00Z").getTime(),
       ),
     ).toBeLessThanOrEqual(END_TIME_TOLERANCE_MS);
-    expect(result.nakshatras[1].name).toBe("Shravana");
-    expect(result.yogas[0].name).toBe("Shubha");
+    expect(result.nakshatras[1].name).toBe("Śravaṇa");
+    expect(result.yogas[0].name).toBe("Śubha");
     expect(result.yogas[0].endTime).toBeDefined();
     expect(
       Math.abs(result.yogas[0].endTime!.getTime() - new Date("2026-05-08T21:00:00Z").getTime()),
     ).toBeLessThanOrEqual(END_TIME_TOLERANCE_MS);
-    expect(result.yogas[1].name).toBe("Shukla");
-    expect(result.karanas[0].name).toBe("Vishti");
+    expect(result.yogas[1].name).toBe("Śukla");
+    expect(result.karanas[0].name).toBe("Viṣṭi");
     expect(result.karanas[0].endTime).toBeDefined();
     expect(
       Math.abs(result.karanas[0].endTime!.getTime() - new Date("2026-05-08T19:46:00Z").getTime()),
     ).toBeLessThanOrEqual(END_TIME_TOLERANCE_MS);
     expect(result.karanas[1].name).toBe("Bava");
-    expect(result.samvatsare).toBe("Parabhava");
+    expect(result.samvatsare).toBe("Parābhava");
     expect(result.ayane).toBe("Uttarayana");
     expect(result.ritau).toBe("Vasanta");
-    expect(result.mase).toBe("Vaishakha");
+    expect(result.mase).toBe("Vaiśākha");
 
     // sunRise: Fri May 08 2026 06:04:00 GMT-0400 = 2026-05-08T10:04:00Z
     expect(result.sunRise).toBeDefined();
