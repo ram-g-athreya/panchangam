@@ -15,7 +15,18 @@ tasks:
   - id: add-lunar-phase
     priority: 1
     title: Update daily view based on spec in `src/pages/ARCHITECTURE.md`
-    status: not_started
+    status: passing
+    verification:
+      - npm run check (tsc + lint + vitest) exits 0
+    evidence:
+      - DailyView.tsx: imported Moon from lunarphase-js (2026-05-11)
+      - DailyView.tsx: TITHI card moved into anga-top-row alongside TIME card — each flex:1 for 50% width at tablet/desktop (2026-05-11)
+      - DailyView.tsx: TITHI label split — left side shows Moon.lunarPhaseEmoji(now) emoji, right side has faMoon icon + TITHI text (2026-05-11)
+      - DailyView.tsx: MASA-SAMVATSARA moved into anga-half-row wrapper — card constrained to calc(50% - 0.5rem) at tablet/desktop, 100% at mobile (2026-05-11)
+      - DailyView.css: added anga-card--tithi to flex:1 rule alongside time/calendar cards (2026-05-11)
+      - DailyView.css: added anga-half-row + responsive rules for MASA-SAMVATSARA card (2026-05-11)
+      - DailyView.css: added anga-card__label--split (justify-content:space-between), anga-card__label-right (flex row), lunar-phase-emoji (font-size:1.5rem) (2026-05-11)
+      - npm run check passed with no errors, 1 test passed (2026-05-11)
   - id: update-daily-view
     priority: 1
     title: Update daily view based on spec in `src/pages/ARCHITECTURE.md`

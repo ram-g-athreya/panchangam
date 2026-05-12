@@ -48,7 +48,7 @@
 .anga-card {
   background-color: var(--color-bg-tertiary);
   border-radius: 6px;
-  padding: 1rem;
+  padding: 0.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -81,7 +81,8 @@
 }
 
 .anga-card--time,
-.anga-card--calendar {
+.anga-card--tithi,
+.anga-card--half {
   flex: 1;
 }
 
@@ -91,10 +92,30 @@
   }
 
   .anga-card--time,
-  .anga-card--calendar {
+  .anga-card--tithi,
+  .anga-card--half {
     flex: none;
     width: 100%;
   }
+}
+
+.tithi-card__inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tithi-card__lunar-phase {
+  font-size: 3rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.tithi-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
 }
 
 .time-card__header {
@@ -110,6 +131,21 @@
   gap: 0.4rem;
   flex: 1;
   min-width: 0;
+  align-items: center;
+  text-align: center;
+}
+
+.time-card__section .anga-card__label {
+  justify-content: center;
+}
+
+.anga-card--centered {
+  align-items: center;
+  text-align: center;
+}
+
+.anga-card--centered .anga-card__label {
+  justify-content: center;
 }
 
 .anga-card__label svg {

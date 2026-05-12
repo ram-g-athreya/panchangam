@@ -30,7 +30,7 @@ This panel gives the basic Panchang information for today.
 - Background color should be the tertiary background color
 - All icons should be of font-size `1rem`.
 - Labels should be of font-size `1rem` and `bold`.
-- Padding for each card should be `1rem`
+- Padding for each card should be `0.75rem`
 - Card should have a minimum width of `165px`
 - The card should wrap to the next row if the width overflows outside the panel
 - The icons used can be from fontawesome or bootstrap icons
@@ -48,48 +48,61 @@ This panel gives the basic Panchang information for today.
     - all values should change based on the 12-hour, 24-hour toggle
     - time in 12-hour format of `hh:mm:ss AM / PM` if 12 hour format is set
     - time in 24-hour format of `hh:mm:ss` if 24 hour format is set
-- label: left side should display the lunar phase using the `lunarphase-js` library. the right side should have the moon icon (fontawesome) followed by the word TITHI
+- label: the word TITHI
   value: current tithi
   subvalue: current paksha along with number
-  requirements: based on Panchangam derived above. the width of the card should span 50% in desktop and tablet and 100% in mobile
-- label: calendar icon (fontawesome) followed by MASA - SAMVATSARA
-  value: current masa - current samvatsara
-  requirements: the width of the card should span 50% in desktop and tablet and 100% in mobile
+  requirements:
+    - based on Panchangam derived above
+    - left side should display the lunar phase using the `lunarphase-js` library
+    - the right side should have the label, value and subvalue
+    - the width of the card should span 50% in desktop and tablet and 100% in mobile
 - label:
-  - width should be entire row
-  - label should be split into 2 sections
-  - First section is sunrise-fill icon (bootstrap icons) followed by the word SUNRISE
-  - Secon sections is sunset-fill icon (bootstrap icons) followed by the word SUNSET
-requirements:
-  - all values should change based on the 12-hour, 24-hour toggle
-  - time in 12-hour format of `hh:mm:ss AM / PM` if 12 hour format is set
-  - time in 24-hour format of `hh:mm:ss` if 24 hour format is set
-  - If the value is undefined then set a placeholder text that user should set their city
-- label: sun icon (fontawesome) followed by the word VARA
-  value: current vara
-  requirements: based on Panchangam derived above
+    - width should be entire row
+    - label should be split into 2 sections
+    - First section is sunrise-fill icon (bootstrap icons) followed by the word SUNRISE
+    - Second sections is sunset-fill icon (bootstrap icons) followed by the word SUNSET
+  requirements:
+    - all values should change based on the 12-hour, 24-hour toggle
+    - time in 12-hour format of `hh:mm:ss AM / PM` if 12 hour format is set
+    - time in 24-hour format of `hh:mm:ss` if 24 hour format is set
+    - If the value is undefined then set a placeholder text that user should set their city
+    - Center the text
 - label: star icon (fontawesome) followed by the word NAKSHATRA
   value: iterate over nakshatras and display the name
   subvalue: `upto endTime` if it exists for the item
-  requirements: based on Panchangam derived above
+  requirements:
+    - based on Panchangam derived above
+    - width should be 50% in desktop and tablet and 100% in mobile
 - label: infinity icon (fontawesome) followed by the word YOGA. Ensure that the text is closer to value and has adequate gap with the next value below.
   value: iterate over yogas and display the name
   subvalue: `upto endTime` if it exists for the item. Ensure that the text is closer to value and has adequate gap with the next value below.
-  requirements: based on Panchangam derived above
+  requirements:
+    - based on Panchangam derived above
+    - width should be 50% in desktop and tablet and 100% in mobile
 - label: scale-balanced icon (fontawesome) followed by the word KARANA
   value: iterate over karanas and display the name
   subvalue: `upto endTime` if it exists for the item
-  requirements: based on Panchangam derived above. Ensure that the text is closer to value and has adequate gap with the next value below.
+  requirements:
+    - based on Panchangam derived above.
+    - Ensure that the text is closer to value and has adequate gap with the next value below.
+    - width should be 50% in desktop and tablet and 100% in mobile
 - label: icon based on requirements followed by the word RITU
   value: current ritu
   requirements:
-    - based on Panchangam derived above. icon requirements below
+    - based on Panchangam derived above.
+    - icon requirements below:
       - Vasanta should be icon seedling (fontawesome)
       - Grishma should be icon emoji-sunglasses-fill (bootstrap icons)
       - Varsha should be icon cloud-bolt (fontawesome)
       - Sharada should be icon leaf (fontawesome)
       - Hemanta should be icon wind (fontawesome)
       - Shishira should be icon snowflake (fontawesome)
+    - width should be 50% in desktop and tablet and 100% in mobile
+- label: calendar icon (fontawesome) followed by VARA - MASA - SAMVATSARA
+  value: current vara - current masa - current samvatsara
+  requirements:
+    - the width of the card should be 100%
+    - Center the text
 ```
 
 ## Sankalpam

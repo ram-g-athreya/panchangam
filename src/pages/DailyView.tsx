@@ -2,8 +2,6 @@ import { useState, useEffect, useMemo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faClock,
-  faMoon,
-  faSun,
   faStar,
   faInfinity,
   faScaleBalanced,
@@ -15,6 +13,7 @@ import {
   faSnowflake,
 } from "@fortawesome/free-solid-svg-icons";
 import { SunriseFill, SunsetFill, EmojiSunglassesFill } from "react-bootstrap-icons";
+import { Moon } from "lunarphase-js";
 import { computePanchangam } from "../core/panchangam";
 import type { TimeFormat, LocationData } from "../constants";
 import { TIME_FORMAT_KEY, LOCATION_KEY } from "../constants";
@@ -124,14 +123,17 @@ export function DailyView() {
               <span className="anga-card__value">{formatTime(now, timeFormat)}</span>
               <span className="anga-card__sub">{formatDate(now)}</span>
             </div>
-            <div className="anga-card anga-card--calendar">
-              <span className="anga-card__label">
-                <FontAwesomeIcon icon={faCalendarDays} />
-                MASA - SAMVATSARA
-              </span>
-              <span className="anga-card__value">
-                {p.mase} - {p.samvatsare}
-              </span>
+            <div className="anga-card anga-card--tithi">
+              <div className="tithi-card__inner">
+                <div className="tithi-card__lunar-phase">{Moon.lunarPhaseEmoji(now)}</div>
+                <div className="tithi-card__info">
+                  <span className="anga-card__label">TITHI</span>
+                  <span className="anga-card__value">{p.tithi.name}</span>
+                  <span className="anga-card__sub">
+                    {p.tithi.paksha} Paksha · {p.tithi.number}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
           <div className="anga-card anga-card--full-row">
@@ -156,71 +158,67 @@ export function DailyView() {
               </div>
             </div>
           </div>
-          <div className="anga-card">
-            <span className="anga-card__label">
-              <FontAwesomeIcon icon={faMoon} />
-              TITHI
-            </span>
-            <span className="anga-card__value">{p.tithi.name}</span>
-            <span className="anga-card__sub">
-              {p.tithi.paksha} Paksha · {p.tithi.number}
-            </span>
+          <div className="anga-top-row">
+            <div className="anga-card anga-card--half">
+              <span className="anga-card__label">
+                <FontAwesomeIcon icon={faStar} />
+                NAKSHATRA
+              </span>
+              {p.nakshatras.map((n, i) => (
+                <div key={i} className="anga-entry">
+                  <span className="anga-card__value">{n.name}</span>
+                  {n.endTime && (
+                    <span className="anga-card__sub">upto {formatTime(n.endTime, timeFormat)}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="anga-card anga-card--half">
+              <span className="anga-card__label">
+                <FontAwesomeIcon icon={faInfinity} />
+                YOGA
+              </span>
+              {p.yogas.map((y, i) => (
+                <div key={i} className="anga-entry">
+                  <span className="anga-card__value">{y.name}</span>
+                  {y.endTime && (
+                    <span className="anga-card__sub">upto {formatTime(y.endTime, timeFormat)}</span>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="anga-card">
-            <span className="anga-card__label">
-              <FontAwesomeIcon icon={faSun} />
-              VARA
-            </span>
-            <span className="anga-card__value">{p.vara}</span>
+          <div className="anga-top-row">
+            <div className="anga-card anga-card--half">
+              <span className="anga-card__label">
+                <FontAwesomeIcon icon={faScaleBalanced} />
+                KARANA
+              </span>
+              {p.karanas.map((k, i) => (
+                <div key={i} className="anga-entry">
+                  <span className="anga-card__value">{k.name}</span>
+                  {k.endTime && (
+                    <span className="anga-card__sub">upto {formatTime(k.endTime, timeFormat)}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="anga-card anga-card--half">
+              <span className="anga-card__label">
+                <RituIcon ritu={p.ritau} />
+                RITU
+              </span>
+              <span className="anga-card__value">{p.ritau}</span>
+            </div>
           </div>
-          <div className="anga-card">
+          <div className="anga-card anga-card--full-row anga-card--centered">
             <span className="anga-card__label">
-              <FontAwesomeIcon icon={faStar} />
-              NAKSHATRA
+              <FontAwesomeIcon icon={faCalendarDays} />
+              VARA - MASA - SAMVATSARA
             </span>
-            {p.nakshatras.map((n, i) => (
-              <div key={i} className="anga-entry">
-                <span className="anga-card__value">{n.name}</span>
-                {n.endTime && (
-                  <span className="anga-card__sub">upto {formatTime(n.endTime, timeFormat)}</span>
-                )}
-              </div>
-            ))}
-          </div>
-          <div className="anga-card">
-            <span className="anga-card__label">
-              <FontAwesomeIcon icon={faInfinity} />
-              YOGA
+            <span className="anga-card__value">
+              {p.vara} - {p.mase} - {p.samvatsare}
             </span>
-            {p.yogas.map((y, i) => (
-              <div key={i} className="anga-entry">
-                <span className="anga-card__value">{y.name}</span>
-                {y.endTime && (
-                  <span className="anga-card__sub">upto {formatTime(y.endTime, timeFormat)}</span>
-                )}
-              </div>
-            ))}
-          </div>
-          <div className="anga-card">
-            <span className="anga-card__label">
-              <FontAwesomeIcon icon={faScaleBalanced} />
-              KARANA
-            </span>
-            {p.karanas.map((k, i) => (
-              <div key={i} className="anga-entry">
-                <span className="anga-card__value">{k.name}</span>
-                {k.endTime && (
-                  <span className="anga-card__sub">upto {formatTime(k.endTime, timeFormat)}</span>
-                )}
-              </div>
-            ))}
-          </div>
-          <div className="anga-card">
-            <span className="anga-card__label">
-              <RituIcon ritu={p.ritau} />
-              RITU
-            </span>
-            <span className="anga-card__value">{p.ritau}</span>
           </div>
         </div>
       </section>
