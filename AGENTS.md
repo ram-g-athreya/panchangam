@@ -13,9 +13,10 @@ Before writing code:
 3. Read `.agent/ARCHITECTURE.md` and ensure that the code is organized as specified.
 4. Read `.agent/UI-STYLE.md` and ensure that the CSS styles are applied as specified.
 5. Read `.agent/task_list.yaml` and choose the highest-priority unfinished task.
-6. Review recent commits with `git log --oneline -5`.
-7. Run `./init.sh`.
-8. Run the required smoke or end-to-end verification before starting new work.
+6. Ignore the `.agent/archive` directory completely
+7. Review recent commits with `git log --oneline -5`.
+8. Run `./init.sh`.
+9. Run the required smoke or end-to-end verification before starting new work.
 
 If baseline verification is already failing, fix that first. Do not stack new
 task work on top of a broken starting state.
