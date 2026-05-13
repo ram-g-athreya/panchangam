@@ -16,7 +16,13 @@
   - **sunSet**: Date and time of Sunset
 
 - Write corresponding functions to calculate each component.
-- Expose a function called `computePanchangam` that takes `date`, `latitude`, and `longitude` as parameters and returns the Panchangam calculated at the **exact moment of local sunrise**.
+- Expose a function called `computePanchangam` that takes the following as parameters:
+  - `date`
+  - `latitude`
+  - `longitude`
+  - `lunarSystem` (values can be `amanta` or `purnimantha`)
+  - `useSunrise` (default being `true`)
+- returns the corresponding Panchangam
 
 ### Algorithm
 
@@ -100,7 +106,8 @@ A Karana is half of a Tithi, representing `6` degrees of elongation.
 
 - **Sun's position at the last New Moon (S_nm)**: `sunSidereal - elongation * 0.0808`
 - **Rashi at New Moon (R_nm)**: `floor(S_nm / 30)`
-- **Mase Index**: `(R_nm + 1) % 12`
+- **Mase Index (M)**: `(R_nm + 1) % 12`
+- If user chooses `purnimanta` then `M = (M + 1) % 12`
 
 ##### G. Ritau (Season)
 

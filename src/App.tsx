@@ -5,8 +5,8 @@ import { Header } from "./components/Header";
 import { Sidebar } from "./components/Sidebar";
 import { DailyView } from "./pages/DailyView";
 import { Sankalpam } from "./pages/Sankalpam";
-import type { Theme, TimeFormat } from "./constants";
-import { THEME_KEY, TIME_FORMAT_KEY } from "./constants";
+import type { Theme, TimeFormat, LunarSystem } from "./constants";
+import { THEME_KEY, TIME_FORMAT_KEY, LUNAR_SYSTEM_KEY } from "./constants";
 
 function getInitialTheme(): Theme {
   const stored = localStorage.getItem(THEME_KEY);
@@ -18,9 +18,15 @@ function getInitialTimeFormat(): TimeFormat {
   return stored === "24h" ? "24h" : "12h";
 }
 
+function getInitialLunarSystem(): LunarSystem {
+  const stored = localStorage.getItem(LUNAR_SYSTEM_KEY);
+  return stored === "purnimanta" ? "purnimanta" : "amanta";
+}
+
 export function App() {
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
   const [timeFormat, setTimeFormat] = useState<TimeFormat>(getInitialTimeFormat);
+  const [lunarSystem, setLunarSystem] = useState<LunarSystem>(getInitialLunarSystem);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -43,6 +49,14 @@ export function App() {
     });
   }
 
+  function toggleLunarSystem() {
+    setLunarSystem((l) => {
+      const next = l === "amanta" ? "purnimanta" : "amanta";
+      localStorage.setItem(LUNAR_SYSTEM_KEY, next);
+      return next;
+    });
+  }
+
   return (
     <BrowserRouter>
       <Header
@@ -51,10 +65,12 @@ export function App() {
         onToggleTheme={toggleTheme}
         timeFormat={timeFormat}
         onToggleTimeFormat={toggleTimeFormat}
+        lunarSystem={lunarSystem}
+        onToggleLunarSystem={toggleLunarSystem}
       />
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <Routes>
-        <Route path="/" element={<DailyView timeFormat={timeFormat} />} />
+        <Route path="/" element={<DailyView timeFormat={timeFormat} lunarSystem={lunarSystem} />} />
         <Route path="/sankalpam" element={<Sankalpam />} />
       </Routes>
       <Analytics />

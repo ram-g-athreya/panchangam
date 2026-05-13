@@ -33,6 +33,7 @@ Create a city search text box with the following spec as a separate standalone c
 - Settings icon which when clicked produces a list of toggles in a callout
 - The toggles are as follows:
   - Time
+  - Lunar System
   - Theme
 - Add a separator between toggles
 - Cicking again on the setting icon or clicking outside or pressing the `esc` key closes the callout
@@ -44,6 +45,17 @@ Create a city search text box with the following spec as a separate standalone c
 - Based on the value chosen the value below needs to change to 12-hour or 24-hour format
 - Store the value in localStorage and rehydrate on startup
 - Ensure that the storage key is in the constants file and imported
+
+### Lunar System Toggle Switch
+
+- Has the label `Lunar System` followed by toggle switch
+- the toggle switch should be a slider, ie, the slider should physically move between states with `Amānta` being the default and on the left side and the `Pūrṇimānta` being the right side
+- Use the `lunarphase-js` npm library for implementing the icons.
+- `Amānta` should have the new moon
+- `Pūrṇimānta` should have the new moon
+- store the current toggle value in `localStorage` and re-hydrate it from storage when the app is reloaded. If there is no value present in `localStorage` then set the value as `Amānta` by default
+- In the background display the text `Amānta` or `Pūrṇimānta` depending on the current value. The text should be `0.75rem` and set the `left` or `right` offset to `0.75rem` depending on the case
+- Width of the toggle should `7rem`
 
 ### Theme Toggle Switch
 

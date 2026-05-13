@@ -1,13 +1,16 @@
 // All angles in degrees unless noted. All final values use Nirayana (sidereal) longitudes.
 import { Astrosk, SE } from "astrosk-wasm";
+import type { LunarSystem } from "../constants";
 
 const astrosk = await Astrosk.init();
 astrosk.setSidMode(1, 0, 0);
 
+type paksha = "Śukla" | "Kṛṣṇa";
+
 interface Tithi {
   number: number;
   name: string;
-  paksha: "Shukla" | "Krishna";
+  paksha: paksha;
   endTime?: Date;
 }
 
@@ -399,7 +402,7 @@ function computeRitu(sunSidereal: number): string {
   return RITUS[index];
 }
 
-function computeMasa(sunSidereal: number, elongation: number): string {
+function computeMasa(sunSidereal: number, elongation: number, lunarSystem: LunarSystem): string {
   /**
    * 1. Calculate Sun's position at the last New Moon.
    * Elongation increases by ~12.19° per day, while the Sun moves ~0.98° per day.
@@ -416,7 +419,8 @@ function computeMasa(sunSidereal: number, elongation: number): string {
    * Since the MASAS array starts with Chaitra (Index 0), we shift the index.
    */
   const R_nm = Math.floor(S_nm / 30); // 0 = Mesha, 11 = Meena
-  const masaIndex = (R_nm + 1) % 12;
+  let masaIndex = (R_nm + 1) % 12;
+  if (lunarSystem === "purnimanta") masaIndex = (masaIndex + 1) % 12;
 
   return MASAS[masaIndex];
 }
@@ -484,7 +488,7 @@ function computeKarana(karanaIndex: number): Karana {
 
 function computeTithi(elongation: number): Tithi {
   const tithiIndex = Math.floor(elongation / 12); // 0–29
-  const paksha: "Shukla" | "Krishna" = tithiIndex < 15 ? "Shukla" : "Krishna";
+  const paksha: paksha = tithiIndex < 15 ? "Śukla" : "Kṛṣṇa";
   const tithiNumber = (tithiIndex % 15) + 1;
   const tithiName =
     tithiIndex === 14 ? "Pūrṇimā" : tithiIndex === 29 ? "Amāvasyā" : TITHIS[tithiNumber - 1];
@@ -499,6 +503,7 @@ export function computePanchangam(
   date: Date,
   latitude?: number,
   longitude?: number,
+  lunarSystem: LunarSystem = "amanta",
   useSunrise: boolean = true,
 ): Panchangam {
   const hasCoords = latitude !== undefined && longitude !== undefined;
@@ -546,7 +551,7 @@ export function computePanchangam(
     samvatsare: computeSamvatsare(sunDate),
     ayane: computeAyana(sunSidereal),
     ritau: computeRitu(sunSidereal),
-    mase: computeMasa(sunSidereal, elongation),
+    mase: computeMasa(sunSidereal, elongation, lunarSystem),
     sunRise,
     sunSet,
   };
