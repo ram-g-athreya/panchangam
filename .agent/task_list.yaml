@@ -12,19 +12,9 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
-  - id: add-settings
+  - id: add-lunar-system
     priority: 1
-    title: Add settings based on the spec in `src/components/ARCHITECTURE.md` and `src/pages/ARCHITECTURE.md`
-    status: passing
-    verification:
-      - npm run check (tsc + lint + vitest) exits 0
-    evidence:
-      - Settings.tsx: gear icon button toggles callout with Time toggle + separator + Theme toggle (2026-05-11)
-      - Settings.tsx: closes on click-outside (pointerdown), Esc key, or icon re-click; icon bold+accent when open (2026-05-11)
-      - Settings.css: callout positioned absolute right:0, z-index 200, secondary bg, 14rem min-width (2026-05-11)
-      - index.css: theme-toggle and time-format-toggle styles moved here from Sidebar.css and DailyView.css (2026-05-11)
-      - App.tsx: timeFormat state lifted here; toggleTimeFormat passed to Header and DailyView (2026-05-11)
-      - Header.tsx: accepts theme/toggleTheme/timeFormat/toggleTimeFormat; renders Settings at rightmost position (2026-05-11)
-      - DailyView.tsx: accepts timeFormat+onToggleTimeFormat as props; removed internal state (2026-05-11)
-      - CitySearch.css: margin-left:auto → flex:1; mobile uses order:99 + flex:0 0 100% to wrap below settings (2026-05-11)
-      - npm run check passed with no errors, 1 test passed (2026-05-11)
+    title: Add lunar system based on spec in `src/components/ARCHITECTURE.md` and `src/core/ARCHITECTURE.md`
+    status: in_progress
+    evidence: Build passes cleanly. LunarSystem type/key added to constants, state managed in App, passed through Header to Settings. Toggle renders between Time and Theme with separators, slider animates, localStorage persisted, defaults to Amānta.
+    

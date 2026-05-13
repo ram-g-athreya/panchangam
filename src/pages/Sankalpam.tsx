@@ -1,6 +1,6 @@
 import { computePanchangam } from "../core/panchangam";
-import type { LocationData } from "../constants";
-import { LOCATION_KEY } from "../constants";
+import type { LocationData, LunarSystem } from "../constants";
+import { LOCATION_KEY, LUNAR_SYSTEM_KEY } from "../constants";
 import "../styles/Sankalpam.css";
 
 function getLocation(): { latitude: number; longitude: number } | null {
@@ -12,9 +12,19 @@ function getLocation(): { latitude: number; longitude: number } | null {
   return null;
 }
 
+function getLunarSystem(): LunarSystem {
+  return localStorage.getItem(LUNAR_SYSTEM_KEY) === "purnimanta" ? "purnimanta" : "amanta";
+}
+
 export function Sankalpam() {
   const location = getLocation();
-  const p = computePanchangam(new Date(), location?.latitude, location?.longitude, false);
+  const p = computePanchangam(
+    new Date(),
+    location?.latitude,
+    location?.longitude,
+    getLunarSystem(),
+    false,
+  );
   const v = (s: string) => <strong>{s}</strong>;
 
   return (

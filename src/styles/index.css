@@ -169,3 +169,55 @@ h2 {
 .time-format-toggle--24h .time-format-toggle__label {
   left: 0.4rem;
 }
+
+.lunar-system-toggle {
+  position: relative;
+  width: 7rem;
+  height: 2rem;
+  border-radius: 1rem;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  background-color: var(--color-bg-main);
+  transition: background-color 0.3s ease;
+}
+
+.lunar-system-toggle__thumb {
+  position: absolute;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  top: 0.2rem;
+  left: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease;
+  pointer-events: none;
+  z-index: 1;
+  font-size: 1rem;
+}
+
+/* track(7) - thumb(1.6) - left(0.2) - right(0.2) = 5rem */
+.lunar-system-toggle--purnimanta .lunar-system-toggle__thumb {
+  transform: translateX(5rem);
+}
+
+.lunar-system-toggle__label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+.lunar-system-toggle--amanta .lunar-system-toggle__label {
+  right: 0.75rem;
+}
+
+.lunar-system-toggle--purnimanta .lunar-system-toggle__label {
+  left: 0.75rem;
+}

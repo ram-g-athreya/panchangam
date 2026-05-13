@@ -1,17 +1,32 @@
 import { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear, faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
-import type { Theme, TimeFormat } from "../constants";
+import { Moon, LunarPhase } from "lunarphase-js";
+import type { Theme, TimeFormat, LunarSystem } from "../constants";
 import "../styles/Settings.css";
+
+const moonEmojiBySystem = {
+  amanta: Moon.emojiForLunarPhase(LunarPhase.NEW),
+  purnimanta: Moon.emojiForLunarPhase(LunarPhase.FULL),
+};
 
 interface SettingsProps {
   theme: Theme;
   onToggleTheme: () => void;
   timeFormat: TimeFormat;
   onToggleTimeFormat: () => void;
+  lunarSystem: LunarSystem;
+  onToggleLunarSystem: () => void;
 }
 
-export function Settings({ theme, onToggleTheme, timeFormat, onToggleTimeFormat }: SettingsProps) {
+export function Settings({
+  theme,
+  onToggleTheme,
+  timeFormat,
+  onToggleTimeFormat,
+  lunarSystem,
+  onToggleLunarSystem,
+}: SettingsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -54,6 +69,20 @@ export function Settings({ theme, onToggleTheme, timeFormat, onToggleTimeFormat 
               <span className="time-format-toggle__thumb" />
               <span className="time-format-toggle__label">
                 {timeFormat === "12h" ? "12-hour" : "24-hour"}
+              </span>
+            </button>
+          </div>
+          <hr className="settings__separator" />
+          <div className="settings__row">
+            <span className="settings__label">Lunar System</span>
+            <button
+              className={`lunar-system-toggle lunar-system-toggle--${lunarSystem}`}
+              onClick={onToggleLunarSystem}
+              aria-label="Toggle lunar system"
+            >
+              <span className="lunar-system-toggle__thumb">{moonEmojiBySystem[lunarSystem]}</span>
+              <span className="lunar-system-toggle__label">
+                {lunarSystem === "amanta" ? "Amānta" : "Pūrṇimānta"}
               </span>
             </button>
           </div>

@@ -15,7 +15,7 @@ import {
 import { SunriseFill, SunsetFill, EmojiSunglassesFill } from "react-bootstrap-icons";
 import { Moon } from "lunarphase-js";
 import { computePanchangam } from "../core/panchangam";
-import type { TimeFormat, LocationData } from "../constants";
+import type { TimeFormat, LocationData, LunarSystem } from "../constants";
 import { LOCATION_KEY } from "../constants";
 import "../styles/DailyView.css";
 
@@ -68,9 +68,10 @@ function formatDate(date: Date): string {
 
 interface DailyViewProps {
   timeFormat: TimeFormat;
+  lunarSystem: LunarSystem;
 }
 
-export function DailyView({ timeFormat }: DailyViewProps) {
+export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
   const [now, setNow] = useState(new Date());
 
   useEffect(() => {
@@ -82,9 +83,9 @@ export function DailyView({ timeFormat }: DailyViewProps) {
   // Recompute panchangam at most once per minute — astronomical values don't change per-second
   const minuteKey = Math.floor(now.getTime() / 60000);
   const p = useMemo(
-    () => computePanchangam(now, location?.latitude, location?.longitude),
+    () => computePanchangam(now, location?.latitude, location?.longitude, lunarSystem),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [minuteKey, location?.latitude, location?.longitude],
+    [minuteKey, location?.latitude, location?.longitude, lunarSystem],
   );
 
   return (

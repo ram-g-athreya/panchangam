@@ -4,6 +4,9 @@ export const THEME_KEY = "theme";
 export type TimeFormat = "12h" | "24h";
 export const TIME_FORMAT_KEY = "timeFormat";
 
+export type LunarSystem = "amanta" | "purnimanta";
+export const LUNAR_SYSTEM_KEY = "lunarSystem";
+
 export interface LocationData {
   city: string;
   country: string;
