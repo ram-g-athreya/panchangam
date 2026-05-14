@@ -12,6 +12,8 @@
   - **ayana**: the solstice (Uttarayana or Dakshinayana).
   - **ritu**: the season.
   - **masa**: the vedic month.
+  - **sunSign**: the Sun Rashi
+  - **moonSign**: the Moon Rashi
   - **sunRise**: Date and time of Sunrise
   - **sunSet**: Date and time of Sunset
 
@@ -134,3 +136,11 @@ The name of the year in the 60-year Jovian cycle.
   - 11.9 is the offset to align this astronomical motion with the J2000 epoch
   - **Formula**: `L_j / 30 + 11.9`
 - **Samvatsara Index**: `floor(S_elapsed % 60)`
+
+##### J. Sun Sign (Sun Rashi)
+
+- **Sun Rashi Index**: `floor(sunSidereal % 30)`
+
+##### K. Moon Sign (Moon Rashi)
+
+- **Moon Rashi Index**: `floor(moonSidereal % 30)`

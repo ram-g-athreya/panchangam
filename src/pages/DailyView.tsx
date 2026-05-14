@@ -183,10 +183,10 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
             </div>
             <div className="anga-card anga-card--half">
               <span className="anga-card__label">
-                <RituIcon ritu={p.ritau} />
+                <RituIcon ritu={p.ritu} />
                 RITU
               </span>
-              <span className="anga-card__value">{p.ritau}</span>
+              <span className="anga-card__value">{p.ritu}</span>
             </div>
           </div>
           <div className="anga-card anga-card--full-row anga-card--centered">
@@ -195,7 +195,7 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
               VARA - MASA - SAMVATSARA
             </span>
             <span className="anga-card__value">
-              {p.vara} - {p.mase} - {p.samvatsare}
+              {p.vara} - {p.masa} - {p.samvatsare}
             </span>
           </div>
         </div>

@@ -99,6 +99,35 @@ This panel gives the basic Panchang information for today.
     - the width of the card should be 100%
     - Center the text
     - `font-size` of the value text should be `1rem`
+- label:
+    - width should be entire row
+    - label should be split into 2 sections
+    - First section is sun icon (fontawesome) followed by the word SUN RASHI
+    - Second sections is moon icon (fontawesome) followed by the word MOON RASHI
+  value:
+    - First section should have the corresponding zodiac icon followed by the Sun Rashi
+    - Second section should have the corresponding zodiac icon followed by the Sun Rashi
+  subvalue:
+    - the corresponding english name with first letter capitalized
+  requirements:
+    - all values should change based on the 12-hour, 24-hour toggle
+    - time in 12-hour format of `hh:mm:ss AM / PM` if 12 hour format is set
+    - time in 24-hour format of `hh:mm:ss` if 24 hour format is set
+    - If the value is undefined then set a placeholder text that user should set their city
+    - Zodiac Icon mappings (all are fontawesome otherwise specified within brackets):
+      - Meṣa: aries
+      - Vṛṣabha: taurus
+      - Mithuna: gemini
+      - Karka: cancer
+      - Siṃha: leo
+      - Kanyā: virgo
+      - Tulā: libra
+      - Vṛścika: scorpio
+      - Dhanu: sagittarius
+      - Makara: capricorn
+      - Kumbha: aquarius
+      - Mīna: pisces
+    - Center the text
 ```
 
 ## Sankalpam

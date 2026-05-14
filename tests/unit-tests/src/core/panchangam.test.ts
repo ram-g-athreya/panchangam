@@ -32,9 +32,9 @@ function assertCommon(result: Panchangam, expected: Panchangam) {
   expect(result.karanas[1].name).toBe(expected.karanas[1].name);
 
   expect(result.samvatsare).toBe(expected.samvatsare);
-  expect(result.ayane).toBe(expected.ayane);
-  expect(result.ritau).toBe(expected.ritau);
-  expect(result.mase).toBe(expected.mase);
+  expect(result.ayana).toBe(expected.ayana);
+  expect(result.ritu).toBe(expected.ritu);
+  expect(result.masa).toBe(expected.masa);
 
   expect(result.sunRise).toBeDefined();
   expect(Math.abs(result.sunRise!.getTime() - expected.sunRise!.getTime())).toBeLessThanOrEqual(
@@ -62,9 +62,9 @@ describe("computePanchangam", () => {
       yogas: [{ name: "Śubha", endTime: new Date("2026-05-08T21:00:00Z") }, { name: "Śukla" }],
       karanas: [{ name: "Viṣṭi", endTime: new Date("2026-05-08T19:46:00Z") }, { name: "Bava" }],
       samvatsare: "Parābhava",
-      ayane: "Uttarayana",
-      ritau: "Vasanta",
-      mase: "Vaiśākha",
+      ayana: "Uttarayana",
+      ritu: "Vasanta",
+      masa: "Vaiśākha",
       sunRise: new Date("2026-05-08T10:04:00Z"),
       sunSet: new Date("2026-05-08T00:10:00Z"),
     });
@@ -81,9 +81,9 @@ describe("computePanchangam", () => {
       yogas: [{ name: "Śubha", endTime: new Date("2026-05-08T21:00:00Z") }, { name: "Śukla" }],
       karanas: [{ name: "Viṣṭi", endTime: new Date("2026-05-08T19:46:00Z") }, { name: "Bava" }],
       samvatsare: "Parābhava",
-      ayane: "Uttarayana",
-      ritau: "Vasanta",
-      mase: "Jyeṣṭha",
+      ayana: "Uttarayana",
+      ritu: "Vasanta",
+      masa: "Jyeṣṭha",
       sunRise: new Date("2026-05-08T10:04:00Z"),
       sunSet: new Date("2026-05-08T00:10:00Z"),
     });
