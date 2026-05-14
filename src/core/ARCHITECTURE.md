@@ -12,8 +12,8 @@
   - **ayana**: the solstice (Uttarayana or Dakshinayana).
   - **ritu**: the season.
   - **masa**: the vedic month.
-  - **sunSign**: the Sun Rashi
-  - **moonSign**: the Moon Rashi
+  - **sunRashi**: the Sun Rashi
+  - **moonRashi**: the Moon Rashi
   - **sunRise**: Date and time of Sunrise
   - **sunSet**: Date and time of Sunset
 

@@ -42,3 +42,49 @@
 - Files updated: src/components/Settings.tsx, src/styles/Settings.css, src/styles/index.css, src/styles/Sidebar.css, src/styles/DailyView.css, src/components/Header.tsx, src/pages/DailyView.tsx, src/App.tsx, src/styles/CitySearch.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: commit
+
+### Session 0037
+
+- Date: 2026-05-13
+- Goal: Implement `add-sun-and-moon-sign` task — sunRashi + moonRashi in core and DailyView card
+- Completed:
+  - panchangam.ts: replaced single `rashi` field with `sunRashi` and `moonRashi` on Panchangam interface; computed via `RASHIS[floor(sunSidereal/30)%12]` and `RASHIS[floor(moonSidereal/30)%12]`
+  - DailyView.tsx: imported all 12 FA zodiac icons + faSun + faMoon; added RASHI_ICON and RASHI_ENGLISH lookup maps; added full-row Sun Rashi / Moon Rashi card (two sections, centered, zodiac icon + Sanskrit name + English subvalue)
+  - Tests: replaced `rashi` assertion with `sunRashi` ("Meṣa") and `moonRashi` ("Makara") assertions in both amanta and purnimanta test cases
+  - task_list.yaml: status set to passing with evidence
+- Verification run: npm run build exits 0; npm run test — 2 tests passing
+- Known risk or unresolved issue: none
+- Next best step: commit changes
+
+### Session 0038
+
+- Date: 2026-05-13
+- Goal: Complete `add-lunar-system` and `add-sun-and-moon-sign` tasks end-to-end
+
+#### Lunar System toggle (add-lunar-system)
+- constants.ts: added `LunarSystem = "amanta" | "purnimanta"` type and `LUNAR_SYSTEM_KEY`
+- App.tsx: added `lunarSystem` state with `getInitialLunarSystem` (reads localStorage) and `toggleLunarSystem`; passed through to Header and DailyView
+- Settings.tsx: added Lunar System toggle row between Time and Theme; uses `lunarphase-js` Moon.emojiForLunarPhase — 🌑 (new moon) for Amānta, 🌕 (full moon) for Pūrṇimānta; slider physically moves left↔right
+- index.css: added `lunar-system-toggle` CSS (7rem wide, thumb translates 5rem for purnimanta, label at 0.75rem offset)
+- Header.tsx: threads `lunarSystem` + `onToggleLunarSystem` props through to Settings
+
+#### Calculations update
+- panchangam.ts: added `lunarSystem: LunarSystem` param (4th, before `useSunrise`) to `computePanchangam`; `computeMasa` shifts masa index by +1 for purnimanta; both use imported `LunarSystem` type from constants
+- panchangam.ts: added `RASHIS` array and `sunRashi`/`moonRashi` fields to `Panchangam` interface computed via `RASHIS[floor(sidereal/30)%12]`
+- Panchangam interface field renames (by user): `ayane`→`ayana`, `ritau`→`ritu`, `mase`→`masa`; paksha values `"Shukla"`/`"Krishna"` → `"Śukla"`/`"Kṛṣṇa"`
+- DailyView.tsx: passes `lunarSystem` prop to `computePanchangam`; added `useMemo` dep
+- Sankalpam.tsx: reads `lunarSystem` directly from localStorage via `LUNAR_SYSTEM_KEY`; updated field references to `ayana`, `ritu`, `masa`
+
+#### Sun/Moon Rashi card in DailyView
+- Imported all 12 FA zodiac icons + `faSun` + `faMoon` + `IconDefinition`
+- Added `RASHI: Record<string, { icon: IconDefinition; zodiacName: string }>` lookup combining icon and English zodiac name
+- Added full-row Sun Rashi / Moon Rashi card at bottom of anga-grid: two sections, each 50% width (`rashi-card__section: flex: 0 0 calc(50% - 0.75rem)`), centered; label = planet icon + "SUN/MOON RASHI", value = zodiac icon + Sanskrit name, subvalue = English zodiac name
+- DailyView.css: added `.rashi-card__header` and `.rashi-card__section` rules
+
+#### Tests
+- panchangam.test.ts: uses `Panchangam` interface directly (no separate `ExpectedPanchangam`); `assertCommon(result, expected: Panchangam)` asserts all fields including `tithi.number`, `tithi.paksha`, `sunRashi`, `moonRashi`
+- Two test cases: amanta (`masa="Vaiśākha"`) and purnimanta (`masa="Jyeṣṭha"`); both assert `sunRashi="Meṣa"`, `moonRashi="Makara"` for May 08 2026 Virginia reference
+
+- Verification run: `npm run build` exits 0; `npm run test` — 2 tests passing
+- Known risk or unresolved issue: none
+- Next best step: commit all changes

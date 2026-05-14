@@ -21,4 +21,8 @@ tasks:
     priority: 1
     title: Add sun and moon sign based on spec in `src/pages/ARCHITECTURE.md` and `src/core/ARCHITECTURE.md`
     status: passing
-    
+    evidence: >
+      Build and tests pass (npm run build + npm run test — 2 tests passing).
+      Panchangam interface now has sunRashi and moonRashi fields computed from sidereal sun/moon longitudes via RASHIS lookup.
+      DailyView renders a full-row Sun Rashi / Moon Rashi card with FA zodiac icons, Sanskrit name, and English subvalue.
+      Tests assert sunRashi=Meṣa and moonRashi=Makara for the May 08 2026 Virginia reference case.

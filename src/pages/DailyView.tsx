@@ -11,7 +11,22 @@ import {
   faLeaf,
   faWind,
   faSnowflake,
+  faSun,
+  faMoon,
+  faAries,
+  faTaurus,
+  faGemini,
+  faCancer,
+  faLeo,
+  faVirgo,
+  faLibra,
+  faScorpio,
+  faSagittarius,
+  faCapricorn,
+  faAquarius,
+  faPisces,
 } from "@fortawesome/free-solid-svg-icons";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { SunriseFill, SunsetFill, EmojiSunglassesFill } from "react-bootstrap-icons";
 import { Moon } from "lunarphase-js";
 import { computePanchangam } from "../core/panchangam";
@@ -65,6 +80,21 @@ function formatDate(date: Date): string {
     day: "numeric",
   });
 }
+
+const RASHI: Record<string, { icon: IconDefinition; zodiacName: string }> = {
+  Meṣa: { icon: faAries, zodiacName: "Aries" },
+  Vṛṣabha: { icon: faTaurus, zodiacName: "Taurus" },
+  Mithuna: { icon: faGemini, zodiacName: "Gemini" },
+  Karka: { icon: faCancer, zodiacName: "Cancer" },
+  Siṃha: { icon: faLeo, zodiacName: "Leo" },
+  Kanyā: { icon: faVirgo, zodiacName: "Virgo" },
+  Tulā: { icon: faLibra, zodiacName: "Libra" },
+  Vṛścika: { icon: faScorpio, zodiacName: "Scorpio" },
+  Dhanu: { icon: faSagittarius, zodiacName: "Sagittarius" },
+  Makara: { icon: faCapricorn, zodiacName: "Capricorn" },
+  Kumbha: { icon: faAquarius, zodiacName: "Aquarius" },
+  Mīna: { icon: faPisces, zodiacName: "Pisces" },
+};
 
 interface DailyViewProps {
   timeFormat: TimeFormat;
@@ -197,6 +227,30 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
             <span className="anga-card__value">
               {p.vara} - {p.masa} - {p.samvatsare}
             </span>
+          </div>
+          <div className="anga-card anga-card--full-row">
+            <div className="rashi-card__header">
+              <div className="rashi-card__section">
+                <span className="anga-card__label">
+                  <FontAwesomeIcon icon={faSun} />
+                  SURYA RASHI
+                </span>
+                <span className="anga-card__value">
+                  <FontAwesomeIcon icon={RASHI[p.sunRashi].icon} /> {p.sunRashi}
+                </span>
+                <span className="anga-card__sub">{RASHI[p.sunRashi].zodiacName}</span>
+              </div>
+              <div className="rashi-card__section">
+                <span className="anga-card__label">
+                  <FontAwesomeIcon icon={faMoon} />
+                  CHANDRA RASHI
+                </span>
+                <span className="anga-card__value">
+                  <FontAwesomeIcon icon={RASHI[p.moonRashi].icon} /> {p.moonRashi}
+                </span>
+                <span className="anga-card__sub">{RASHI[p.moonRashi].zodiacName}</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>

@@ -40,6 +40,8 @@ export interface Panchangam {
   ayana: Ayana;
   ritu: string;
   masa: string;
+  sunRashi: string;
+  moonRashi: string;
   sunRise?: Date;
   sunSet?: Date;
 }
@@ -568,6 +570,8 @@ export function computePanchangam(
     ayana: computeAyana(sunSidereal),
     ritu: computeRitu(sunSidereal),
     masa: computeMasa(sunSidereal, elongation, lunarSystem),
+    sunRashi: RASHIS[Math.floor(sunSidereal / 30) % 12],
+    moonRashi: RASHIS[Math.floor(moonSidereal / 30) % 12],
     sunRise,
     sunSet,
   };

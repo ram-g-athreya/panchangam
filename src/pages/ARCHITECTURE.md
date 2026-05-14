@@ -101,9 +101,9 @@ This panel gives the basic Panchang information for today.
     - `font-size` of the value text should be `1rem`
 - label:
     - width should be entire row
-    - label should be split into 2 sections
-    - First section is sun icon (fontawesome) followed by the word SUN RASHI
-    - Second sections is moon icon (fontawesome) followed by the word MOON RASHI
+    - label should be split into 2 sections each of 50% width
+    - First section is sun icon (fontawesome) followed by the word SURYA RASHI
+    - Second sections is moon icon (fontawesome) followed by the word CHANDRA RASHI
   value:
     - First section should have the corresponding zodiac icon followed by the Sun Rashi
     - Second section should have the corresponding zodiac icon followed by the Sun Rashi

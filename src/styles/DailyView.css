@@ -166,3 +166,22 @@
   flex-direction: column;
   gap: 0.1rem;
 }
+
+.rashi-card__header {
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.rashi-card__section {
+  flex: 0 0 calc(50% - 0.75rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: center;
+  text-align: center;
+}
+
+.rashi-card__section .anga-card__label {
+  justify-content: center;
+}

@@ -35,6 +35,8 @@ function assertCommon(result: Panchangam, expected: Panchangam) {
   expect(result.ayana).toBe(expected.ayana);
   expect(result.ritu).toBe(expected.ritu);
   expect(result.masa).toBe(expected.masa);
+  expect(result.sunRashi).toBe(expected.sunRashi);
+  expect(result.moonRashi).toBe(expected.moonRashi);
 
   expect(result.sunRise).toBeDefined();
   expect(Math.abs(result.sunRise!.getTime() - expected.sunRise!.getTime())).toBeLessThanOrEqual(
@@ -65,6 +67,8 @@ describe("computePanchangam", () => {
       ayana: "Uttarayana",
       ritu: "Vasanta",
       masa: "Vaiśākha",
+      sunRashi: "Meṣa",
+      moonRashi: "Makara",
       sunRise: new Date("2026-05-08T10:04:00Z"),
       sunSet: new Date("2026-05-08T00:10:00Z"),
     });
@@ -84,6 +88,8 @@ describe("computePanchangam", () => {
       ayana: "Uttarayana",
       ritu: "Vasanta",
       masa: "Jyeṣṭha",
+      sunRashi: "Meṣa",
+      moonRashi: "Makara",
       sunRise: new Date("2026-05-08T10:04:00Z"),
       sunSet: new Date("2026-05-08T00:10:00Z"),
     });
