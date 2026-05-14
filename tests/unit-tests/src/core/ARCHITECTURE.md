@@ -37,6 +37,8 @@ test_cases:
       - ayana: Uttarayana
       - ritu: Vasanta
       - masa: Vaiśākha
+      - sunRashi: Meṣa
+      - moonRashi: Makara
       - sunRise: Fri May 08 2026 06:04:00 GMT-0400 (Eastern Daylight Time)
       - sunSet: Thu May 07 2026 20:10:00 GMT-0400 (Eastern Daylight Time)
   - parameters:
@@ -66,6 +68,8 @@ test_cases:
       - ayana: Uttarayana
       - ritu: Vasanta
       - masa: Jyeṣṭha
+      - sunRashi: Meṣa
+      - moonRashi: Makara
       - sunRise: Fri May 08 2026 06:04:00 GMT-0400 (Eastern Daylight Time)
       - sunSet: Thu May 07 2026 20:10:00 GMT-0400 (Eastern Daylight Time)
 ```

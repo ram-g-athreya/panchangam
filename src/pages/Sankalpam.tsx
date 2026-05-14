@@ -31,7 +31,7 @@ export function Sankalpam() {
     <main className="sankalpam">
       <h1 className="sankalpam__title">Sankalpam</h1>
       <p className="sankalpam__text">
-        {v(p.samvatsare)} Namasamvatsare, {v(p.ayane)}, {v(p.ritau)} Ritau, {v(p.mase)} Mase,{" "}
+        {v(p.samvatsare)} Namasamvatsare, {v(p.ayana)}, {v(p.ritu)} Ritau, {v(p.masa)} Mase,{" "}
         {v(p.tithi.paksha)} Pakshe, {v(p.tithi.name)} Tithau, {v(p.vara)}, {v(p.nakshatras[0].name)}{" "}
         Nakshatre, {v(p.yogas[0].name)} Yoge, {v(p.karanas[0].name)} Karane
       </p>

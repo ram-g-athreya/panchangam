@@ -5,12 +5,13 @@ import type { LunarSystem } from "../constants";
 const astrosk = await Astrosk.init();
 astrosk.setSidMode(1, 0, 0);
 
-type paksha = "Śukla" | "Kṛṣṇa";
+type Paksha = "Śukla" | "Kṛṣṇa";
+type Ayana = "Uttarayana" | "Dakshinayana";
 
 interface Tithi {
   number: number;
   name: string;
-  paksha: paksha;
+  paksha: Paksha;
   endTime?: Date;
 }
 
@@ -36,9 +37,11 @@ export interface Panchangam {
   yogas: Yoga[];
   karanas: Karana[];
   samvatsare: string;
-  ayane: "Uttarayana" | "Dakshinayana";
-  ritau: string;
-  mase: string;
+  ayana: Ayana;
+  ritu: string;
+  masa: string;
+  sunRashi: string;
+  moonRashi: string;
   sunRise?: Date;
   sunSet?: Date;
 }
@@ -217,6 +220,21 @@ const MASAS = [
   "Pauṣa",
   "Māgha",
   "Phālguna",
+] as const;
+
+const RASHIS = [
+  "Meṣa", // Aries
+  "Vṛṣabha", // Taurus
+  "Mithuna", // Gemini
+  "Karka", // Cancer
+  "Siṃha", // Leo
+  "Kanyā", // Virgo
+  "Tulā", // Libra
+  "Vṛścika", // Scorpio
+  "Dhanu", // Sagittarius
+  "Makara", // Capricorn
+  "Kumbha", // Aquarius
+  "Mīna", // Pisces
 ] as const;
 
 const RITUS = ["Vasanta", "Grīṣma", "Varṣā", "Śarada", "Hemanta", "Śiśira"] as const;
@@ -488,7 +506,7 @@ function computeKarana(karanaIndex: number): Karana {
 
 function computeTithi(elongation: number): Tithi {
   const tithiIndex = Math.floor(elongation / 12); // 0–29
-  const paksha: paksha = tithiIndex < 15 ? "Śukla" : "Kṛṣṇa";
+  const paksha: Paksha = tithiIndex < 15 ? "Śukla" : "Kṛṣṇa";
   const tithiNumber = (tithiIndex % 15) + 1;
   const tithiName =
     tithiIndex === 14 ? "Pūrṇimā" : tithiIndex === 29 ? "Amāvasyā" : TITHIS[tithiNumber - 1];
@@ -549,9 +567,11 @@ export function computePanchangam(
     yogas,
     karanas,
     samvatsare: computeSamvatsare(sunDate),
-    ayane: computeAyana(sunSidereal),
-    ritau: computeRitu(sunSidereal),
-    mase: computeMasa(sunSidereal, elongation, lunarSystem),
+    ayana: computeAyana(sunSidereal),
+    ritu: computeRitu(sunSidereal),
+    masa: computeMasa(sunSidereal, elongation, lunarSystem),
+    sunRashi: RASHIS[Math.floor(sunSidereal / 30) % 12],
+    moonRashi: RASHIS[Math.floor(moonSidereal / 30) % 12],
     sunRise,
     sunSet,
   };
