@@ -83,13 +83,13 @@ const NAKSHATRAS = [
   "Anurādhā",
   "Jyeṣṭhā",
   "Mūlā",
-  "Pūrvāṣāḍhā",
-  "Uttarāṣāḍhā",
+  "Pūrva Aṣāḍhā",
+  "Uttara Aṣāḍhā",
   "Śravaṇa",
   "Dhaniṣṭhā",
   "Śatabhiṣā",
-  "Pūrvabhādrapadā",
-  "Uttarabhādrapadā",
+  "Pūrva Bhādrapadā",
+  "Uttara Bhādrapadā",
   "Revatī",
 ] as const;
 
@@ -517,6 +517,10 @@ function computeTithi(elongation: number): Tithi {
   };
 }
 
+function computeRashi(siderealLongitude: number): string {
+  return RASHIS[Math.floor(siderealLongitude / 30) % 12];
+}
+
 export function computePanchangam(
   date: Date,
   latitude?: number,
@@ -570,8 +574,8 @@ export function computePanchangam(
     ayana: computeAyana(sunSidereal),
     ritu: computeRitu(sunSidereal),
     masa: computeMasa(sunSidereal, elongation, lunarSystem),
-    sunRashi: RASHIS[Math.floor(sunSidereal / 30) % 12],
-    moonRashi: RASHIS[Math.floor(moonSidereal / 30) % 12],
+    sunRashi: computeRashi(sunSidereal),
+    moonRashi: computeRashi(moonSidereal),
     sunRise,
     sunSet,
   };

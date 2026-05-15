@@ -28,11 +28,17 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { SunriseFill, SunsetFill, EmojiSunglassesFill } from "react-bootstrap-icons";
-import { Moon } from "lunarphase-js";
 import { computePanchangam } from "../core/panchangam";
 import type { TimeFormat, LocationData, LunarSystem } from "../constants";
 import { LOCATION_KEY } from "../constants";
 import "../styles/DailyView.css";
+
+const moonPhaseImages = import.meta.glob<{ default: string }>(
+  "../assets/images/moon-phases/*.webp",
+  { eager: true },
+);
+
+console.log(moonPhaseImages);
 
 function getLocation(): { latitude: number; longitude: number } | null {
   const stored = localStorage.getItem(LOCATION_KEY);
@@ -133,7 +139,17 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
             </div>
             <div className="anga-card anga-card--tithi">
               <div className="tithi-card__inner">
-                <div className="tithi-card__lunar-phase">{Moon.lunarPhaseEmoji(now)}</div>
+                <div className="tithi-card__lunar-phase">
+                  <img
+                    src={
+                      moonPhaseImages[
+                        `../assets/images/moon-phases/${p.tithi.number}_${p.tithi.paksha}.webp`.normalize("NFD")
+                      ]?.default
+                    }
+                    alt={`${p.tithi.paksha} ${p.tithi.number}`}
+                    className="tithi-card__moon-image"
+                  />
+                </div>
                 <div className="tithi-card__info">
                   <span className="anga-card__label">TITHI</span>
                   <span className="anga-card__value">{p.tithi.name}</span>
@@ -233,7 +249,7 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
               <div className="rashi-card__section">
                 <span className="anga-card__label">
                   <FontAwesomeIcon icon={faSun} />
-                  SURYA RASHI
+                  SUN RASHI
                 </span>
                 <span className="anga-card__value">
                   <FontAwesomeIcon icon={RASHI[p.sunRashi].icon} /> {p.sunRashi}
@@ -243,7 +259,7 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
               <div className="rashi-card__section">
                 <span className="anga-card__label">
                   <FontAwesomeIcon icon={faMoon} />
-                  CHANDRA RASHI
+                  MOON RASHI
                 </span>
                 <span className="anga-card__value">
                   <FontAwesomeIcon icon={RASHI[p.moonRashi].icon} /> {p.moonRashi}

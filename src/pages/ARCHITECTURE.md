@@ -48,7 +48,7 @@ This panel gives the basic Panchang information for today.
   subvalue: current paksha along with number
   requirements:
     - based on Panchangam derived above
-    - left side should display the lunar phase using the `lunarphase-js` library
+    - left side should display the image of the lunar phase by using the corresponding image based on `src/assets/images/${tithi.number}_${tithi.paksha}.webp`
     - the right side should have the label, value and subvalue
     - the width of the card should span 50% in desktop and tablet and 100% in mobile
 - label:
@@ -102,8 +102,8 @@ This panel gives the basic Panchang information for today.
 - label:
     - width should be entire row
     - label should be split into 2 sections each of 50% width
-    - First section is sun icon (fontawesome) followed by the word SURYA RASHI
-    - Second sections is moon icon (fontawesome) followed by the word CHANDRA RASHI
+    - First section is sun icon (fontawesome) followed by the word SUN RASHI
+    - Second sections is moon icon (fontawesome) followed by the word MOON RASHI
   value:
     - First section should have the corresponding zodiac icon followed by the Sun Rashi
     - Second section should have the corresponding zodiac icon followed by the Sun Rashi

@@ -22,7 +22,7 @@ test_cases:
       - tithi: Saptamī
       - vara: Śukravāra
       - nakshatras:
-          - name: Uttarāṣāḍhā
+          - name: Uttara Aṣāḍhā
             endTime: Fri May 08 2026 11:50:00 GMT-0400 (Eastern Daylight Time)
           - name: Śravaṇa
       - yogas:
@@ -53,7 +53,7 @@ test_cases:
           paksha:
       - vara: Śukravāra
       - nakshatras:
-          - name: Uttarāṣāḍhā
+          - name: Uttara Aṣāḍhā
             endTime: Fri May 08 2026 11:50:00 GMT-0400 (Eastern Daylight Time)
           - name: Śravaṇa
       - yogas:

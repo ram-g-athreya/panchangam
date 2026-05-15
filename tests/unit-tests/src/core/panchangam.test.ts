@@ -58,7 +58,7 @@ describe("computePanchangam", () => {
       tithi: { number: 7, name: "Saptamī", paksha: "Kṛṣṇa" },
       vara: "Śukravāra",
       nakshatras: [
-        { name: "Uttarāṣāḍhā", endTime: new Date("2026-05-08T15:50:00Z") },
+        { name: "Uttara Aṣāḍhā", endTime: new Date("2026-05-08T15:50:00Z") },
         { name: "Śravaṇa" },
       ],
       yogas: [{ name: "Śubha", endTime: new Date("2026-05-08T21:00:00Z") }, { name: "Śukla" }],
@@ -79,7 +79,7 @@ describe("computePanchangam", () => {
       tithi: { number: 7, name: "Saptamī", paksha: "Kṛṣṇa" },
       vara: "Śukravāra",
       nakshatras: [
-        { name: "Uttarāṣāḍhā", endTime: new Date("2026-05-08T15:50:00Z") },
+        { name: "Uttara Aṣāḍhā", endTime: new Date("2026-05-08T15:50:00Z") },
         { name: "Śravaṇa" },
       ],
       yogas: [{ name: "Śubha", endTime: new Date("2026-05-08T21:00:00Z") }, { name: "Śukla" }],
