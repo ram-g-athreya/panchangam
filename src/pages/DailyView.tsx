@@ -33,12 +33,9 @@ import type { TimeFormat, LocationData, LunarSystem } from "../constants";
 import { LOCATION_KEY } from "../constants";
 import "../styles/DailyView.css";
 
-const moonPhaseImages = import.meta.glob<{ default: string }>(
-  "../assets/images/moon-phases/*.webp",
-  { eager: true },
-);
-
-console.log(moonPhaseImages);
+const getMoonPhaseImage = (number: number, paksha: string): string => {
+  return encodeURI(`/images/moon-phases/${number}_${paksha}.webp`);
+};
 
 function getLocation(): { latitude: number; longitude: number } | null {
   const stored = localStorage.getItem(LOCATION_KEY);
@@ -141,11 +138,7 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
               <div className="tithi-card__inner">
                 <div className="tithi-card__lunar-phase">
                   <img
-                    src={
-                      moonPhaseImages[
-                        `../assets/images/moon-phases/${p.tithi.number}_${p.tithi.paksha}.webp`.normalize("NFD")
-                      ]?.default
-                    }
+                    src={getMoonPhaseImage(p.tithi.number, p.tithi.paksha)}
                     alt={`${p.tithi.paksha} ${p.tithi.number}`}
                     className="tithi-card__moon-image"
                   />

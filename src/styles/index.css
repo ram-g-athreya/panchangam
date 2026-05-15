@@ -27,8 +27,8 @@
 @font-face {
   font-family: "Samarkan";
   src:
-    url("../assets/fonts/samarkan/samarkan.woff") format("woff"),
-    url("../assets/fonts/samarkan/samarkan.ttf") format("truetype");
+    url("/fonts/samarkan/samarkan.woff") format("woff"),
+    url("/fonts/samarkan/samarkan.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
