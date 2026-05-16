@@ -3,9 +3,14 @@
   box-sizing: border-box;
   width: 100%;
   overflow-x: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
 }
 
-.panchang-panel {
+.panchang-panel,
+.star-birthday-panel {
   width: 100%;
   background-color: var(--color-bg-secondary);
   padding: 1rem;
@@ -15,15 +20,76 @@
 }
 
 @media (min-width: 640px) {
-  .panchang-panel {
-    width: 50%;
+  .panchang-panel,
+  .star-birthday-panel {
+    width: calc(50% - 0.5rem);
   }
 }
 
 @media (min-width: 1024px) {
-  .panchang-panel {
+  .panchang-panel,
+  .star-birthday-panel {
     width: 33.333%;
   }
+}
+
+.star-birthday-panel__title {
+  margin-bottom: 0.75rem;
+}
+
+.star-birthday-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.star-birthday-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.star-birthday-form__label {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.star-birthday-form__datetime {
+  background-color: var(--color-bg-main);
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.4rem 0.6rem;
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  width: 100%;
+  color-scheme: light dark;
+}
+
+.star-birthday-panel .city-search {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+}
+
+.star-birthday-form__btn {
+  background-color: var(--color-accent);
+  color: var(--color-bg-main);
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  align-self: center;
+}
+
+.star-birthday-form__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .anga-grid {

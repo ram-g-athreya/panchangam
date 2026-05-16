@@ -88,3 +88,17 @@
 - Verification run: `npm run build` exits 0; `npm run test` — 2 tests passing
 - Known risk or unresolved issue: none
 - Next best step: commit all changes
+
+### Session 0039
+
+- Date: 2026-05-16
+- Goal: Implement `find-starbirth-day-ui` task — Find My Star Birthday panel in DailyView
+- Completed:
+  - CitySearch.tsx: added `CitySearchProps` interface with `saveToStorage?: boolean` and `onLocationSelect?: (data: LocationData) => void`; initial display value driven by `saveToStorage`; `handleSelect` writes to localStorage only when `saveToStorage=true`, always calls `onLocationSelect`; `handleBlur` reverts using `displayValueRef` for non-storage instances
+  - DailyView.tsx: imported CitySearch; added `FindStarBirthdayPanel` function component with state for `birthDateTime` (string) and `birthLocation` (LocationData | null); renders Birth Date & Time datetime-local input, Birth City CitySearch (saveToStorage=false), Current City CitySearch (default, syncs global location); Find Star Birthday button disabled until all fields filled
+  - DailyView.css: updated `.daily-view` to `display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start`; combined `.panchang-panel, .star-birthday-panel` responsive widths (`100%` / `calc(50% - 0.5rem)` / `33.333%`); added `.star-birthday-form`, `.star-birthday-form__field`, `.star-birthday-form__label`, `.star-birthday-form__datetime`, `.star-birthday-form__btn` styles; `.star-birthday-panel .city-search` override for full-width city search
+- Verification run: `npm run check` exits 0; 2 tests passing
+- Evidence captured: task_list.yaml status set to passing
+- Files updated: src/components/CitySearch.tsx, src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: commit changes

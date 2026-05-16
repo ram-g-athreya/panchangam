@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { library, findIconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { LocationData } from "../constants";
 import { LOCATION_KEY } from "../constants";
 import "../styles/CitySearch.css";
 
@@ -41,12 +42,20 @@ function formatSuggestion(props: PhotonProperties): string {
   return [props.name, props.state, props.country].filter(Boolean).join(", ");
 }
 
-export function CitySearch() {
-  const [inputValue, setInputValue] = useState<string>(getStoredDisplay);
+interface CitySearchProps {
+  saveToStorage?: boolean;
+  onLocationSelect?: (data: LocationData) => void;
+}
+
+export function CitySearch({ saveToStorage = true, onLocationSelect }: CitySearchProps = {}) {
+  const [inputValue, setInputValue] = useState<string>(() =>
+    saveToStorage ? getStoredDisplay() : "",
+  );
   const [suggestions, setSuggestions] = useState<PhotonFeature[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const selectedRef = useRef(false);
+  const displayValueRef = useRef<string>(saveToStorage ? getStoredDisplay() : "");
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   useEffect(() => {
@@ -95,25 +104,28 @@ export function CitySearch() {
   function handleSelect(feature: PhotonFeature) {
     const cityName = feature.properties.name;
     const country = feature.properties.country ?? "";
+    const displayStr = country ? `${cityName}, ${country}` : cityName;
     selectedRef.current = true;
-    setInputValue(country ? `${cityName}, ${country}` : cityName);
+    displayValueRef.current = displayStr;
+    setInputValue(displayStr);
     setSuggestions([]);
     setShowSuggestions(false);
-    localStorage.setItem(
-      LOCATION_KEY,
-      JSON.stringify({
-        city: cityName,
-        country,
-        latitude: feature.geometry.coordinates[1],
-        longitude: feature.geometry.coordinates[0],
-      }),
-    );
+    const locationData: LocationData = {
+      city: cityName,
+      country,
+      latitude: feature.geometry.coordinates[1],
+      longitude: feature.geometry.coordinates[0],
+    };
+    if (saveToStorage) {
+      localStorage.setItem(LOCATION_KEY, JSON.stringify(locationData));
+    }
+    onLocationSelect?.(locationData);
   }
 
   function handleBlur() {
     setTimeout(() => {
       if (!selectedRef.current) {
-        setInputValue(getStoredDisplay());
+        setInputValue(saveToStorage ? getStoredDisplay() : displayValueRef.current);
       }
       setShowSuggestions(false);
       setIsLoading(false);

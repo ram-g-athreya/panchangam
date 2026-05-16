@@ -50,7 +50,7 @@ A task is `done` only when all of the following are true:
 
 The `task_list.yaml` file is the source of truth for project progress:
 
-- Each task has a `status`: `"passing"`, `"failing"`, `"not-started"`.
+- Each task has a `status`: `"passing"`, `"blocked"`, `"in-progress"`, `"not-started"`.
 - When implementing a task, update its status to `"passing"` with evidence.
 - If a task is blocked, set status to `"blocked"` with a reason.
 - Never delete tasks from the list.

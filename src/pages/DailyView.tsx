@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { CitySearch } from "../components/CitySearch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faClock,
@@ -98,6 +99,41 @@ const RASHI: Record<string, { icon: IconDefinition; zodiacName: string }> = {
   Kumbha: { icon: faAquarius, zodiacName: "Aquarius" },
   Mīna: { icon: faPisces, zodiacName: "Pisces" },
 };
+
+function FindStarBirthdayPanel() {
+  const [birthDateTime, setBirthDateTime] = useState("");
+  const [birthLocation, setBirthLocation] = useState<LocationData | null>(null);
+
+  const allFilled = birthDateTime !== "" && birthLocation !== null;
+
+  return (
+    <section className="star-birthday-panel">
+      <h2 className="star-birthday-panel__title">Find My Star Birthday</h2>
+      <div className="star-birthday-form">
+        <div className="star-birthday-form__field">
+          <label className="star-birthday-form__label">Birth Date &amp; Time</label>
+          <input
+            type="datetime-local"
+            className="star-birthday-form__datetime"
+            value={birthDateTime}
+            onChange={(e) => setBirthDateTime(e.target.value)}
+          />
+        </div>
+        <div className="star-birthday-form__field">
+          <label className="star-birthday-form__label">Birth City</label>
+          <CitySearch saveToStorage={false} onLocationSelect={setBirthLocation} />
+        </div>
+        <div className="star-birthday-form__field">
+          <label className="star-birthday-form__label">Current City</label>
+          <CitySearch />
+        </div>
+        <button className="star-birthday-form__btn" disabled={!allFilled}>
+          <FontAwesomeIcon icon={faStar} /> Find Star Birthday
+        </button>
+      </div>
+    </section>
+  );
+}
 
 interface DailyViewProps {
   timeFormat: TimeFormat;
@@ -263,6 +299,7 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
           </div>
         </div>
       </section>
+      <FindStarBirthdayPanel />
     </main>
   );
 }

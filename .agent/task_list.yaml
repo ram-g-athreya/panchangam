@@ -12,6 +12,16 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: find-starbirth-day-ui
+    priority: 1
+    title: Create UI to find star birthday based on spec at `src/pages/ARCHITECTURE.md`
+    status: in_progress
+    evidence: >
+      npm run check exits 0 (tsc + lint + 2 tests passing).
+      FindStarBirthdayPanel renders as a sibling panel to panchang-panel at 100%/50%/33.333% responsive widths.
+      Fields: datetime-local input (Birth Date & Time), CitySearch saveToStorage=false (Birth City), CitySearch default (Current City, syncs global location).
+      Find Star Birthday button is disabled until all three fields are filled.
+      CitySearch extended with saveToStorage + onLocationSelect props; blur revert uses displayValueRef for non-storage instances.
   - id: add-lunar-system
     priority: 1
     title: Add lunar system based on spec in `src/components/ARCHITECTURE.md` and `src/core/ARCHITECTURE.md`

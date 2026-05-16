@@ -8,13 +8,13 @@ Specification for the `DailyView` page.
 
 - Derive the Panchangam by using the `computePanchangam` method for the current moment with the `latitude` and `longitude` if stored in localstorage.
 - Padding should be `1rem`
+- Background color for all panels should be the secondary background color
 
 ### Panchang for Today
 
 This panel gives the basic Panchang information for today.
 
 - Its width should span 33.333% in desktop, 50% in tablets and 100% in mobile
-- Background color for the panel should be the secondary background color
 - Information is presented as cards where information is grouped based on the context
 
 #### Information Cards
@@ -129,6 +129,19 @@ This panel gives the basic Panchang information for today.
       - Mīna: pisces
     - Center the text
 ```
+
+### Find Your Star Birthday
+
+This panel helps the user find their star birthday.
+
+- Its width should span 33.333% in desktop, 50% in tablets and 100% in mobile
+- Should have the title **Find My Star Birthday**. Add a gap of at least `0.5rem` between the title and subsequent components.
+- **Birth Date & Time**: Date Picker that asks for the user's birth date and time
+- **Birth City**: City Search component that user can use to enter their birth city
+- **Current City**: City Search component which should have the same value as the component in the header and from `localStorage`. Updating the city here should also update it globally
+- **Find Star Birthday** button. The button should be disabled until all the fields are filled
+  - Center the button
+  - The text should be prefixed by a `star` icon from FontAwesome
 
 ## Sankalpam
 
