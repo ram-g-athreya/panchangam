@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { CitySearch } from "../components/CitySearch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -103,6 +103,15 @@ const RASHI: Record<string, { icon: IconDefinition; zodiacName: string }> = {
 function FindStarBirthdayPanel() {
   const [birthDateTime, setBirthDateTime] = useState("");
   const [birthLocation, setBirthLocation] = useState<LocationData | null>(null);
+  const dateTimeInputRef = useRef<HTMLInputElement>(null);
+
+  function openDatePicker() {
+    try {
+      dateTimeInputRef.current?.showPicker();
+    } catch {
+      // showPicker unsupported — native click on input will handle it
+    }
+  }
 
   const allFilled = birthDateTime !== "" && birthLocation !== null;
 
@@ -112,12 +121,16 @@ function FindStarBirthdayPanel() {
       <div className="star-birthday-form">
         <div className="star-birthday-form__field">
           <label className="star-birthday-form__label">Birth Date &amp; Time</label>
-          <input
-            type="datetime-local"
-            className="star-birthday-form__datetime"
-            value={birthDateTime}
-            onChange={(e) => setBirthDateTime(e.target.value)}
-          />
+          <div className="star-birthday-form__datetime-wrapper" onClick={openDatePicker}>
+            <FontAwesomeIcon icon={faCalendarDays} className="star-birthday-form__datetime-icon" />
+            <input
+              ref={dateTimeInputRef}
+              type="datetime-local"
+              className="star-birthday-form__datetime"
+              value={birthDateTime}
+              onChange={(e) => setBirthDateTime(e.target.value)}
+            />
+          </div>
         </div>
         <div className="star-birthday-form__field">
           <label className="star-birthday-form__label">Birth City</label>

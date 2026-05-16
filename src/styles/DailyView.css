@@ -57,15 +57,36 @@
   letter-spacing: 0.05em;
 }
 
-.star-birthday-form__datetime {
+.star-birthday-form__datetime-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
   background-color: var(--color-bg-main);
+  border-radius: 0.4rem;
+}
+
+.star-birthday-form__datetime-icon {
+  position: absolute;
+  left: 0.6rem;
+  color: var(--color-accent);
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.star-birthday-form__datetime {
+  background: none;
   border: none;
   border-radius: 0.4rem;
-  padding: 0.4rem 0.6rem;
+  padding: 0.4rem 0.6rem 0.4rem 2rem;
   color: var(--color-text-primary);
   font-size: 1rem;
   width: 100%;
   color-scheme: light dark;
+  cursor: pointer;
+}
+
+.star-birthday-form__datetime::-webkit-calendar-picker-indicator {
+  display: none;
 }
 
 .star-birthday-panel .city-search {
