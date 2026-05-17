@@ -458,7 +458,13 @@ function computeMasaAtNewMoon(sunAtNewMoon: number): number {
   return (R_nm + 1) % 12;
 }
 
-function isNextMonthAdhikaMasa(elongation: number, currentDate: Date): boolean {
+function isNextMonthAdhikaMasa(
+  elongation: number,
+  currentDate: Date,
+): {
+  isAdhikaMasa: boolean;
+  masaIndex: number;
+} {
   const elongationToNext = mod360(360 - elongation);
   const daysToNextNewMoon = elongationToNext / SPEED_ELONGATION;
   const approxNextNmDate = shiftDay(currentDate, daysToNextNewMoon);
@@ -473,21 +479,10 @@ function isNextMonthAdhikaMasa(elongation: number, currentDate: Date): boolean {
   const S_next_next_nm = siderealSunLongitude(toJulianDay(approxNextNextNmDate));
   const R_next_next_nm = computeMasaAtNewMoon(S_next_next_nm);
 
-  console.log(R_next_nm === R_next_next_nm);
-  return R_next_nm === R_next_next_nm;
-
-  // const remainingElongationToNext = mod360(360 - elongation);
-  // const S_next_nm = mod360(sunSidereal + remainingElongationToNext * SUN_ELONGATION_RATIO);
-  // const R_next_nm = computeMasaAtNewMoon(S_next_nm);
-
-  // const elongationToNextNext = remainingElongationToNext + 360;
-  // const S_next_next_nm = mod360(sunSidereal + elongationToNextNext * SUN_ELONGATION_RATIO);
-  // const R_next_next_nm = computeMasaAtNewMoon(S_next_next_nm);
-
-  // console.log({ S_next_nm, S_next_next_nm, R_next_nm, R_next_next_nm });
-  // console.log("is next month adhika masa", R_next_nm, R_next_next_nm, R_next_nm === R_next_next_nm);
-
-  // return R_next_nm === R_next_next_nm;
+  return {
+    isAdhikaMasa: R_next_nm === R_next_next_nm,
+    masaIndex: R_next_nm,
+  };
 }
 
 function computeMasa(sunSidereal: number, elongation: number, lunarSystem: LunarSystem): string {
@@ -682,35 +677,27 @@ export function computeStarBirthday(
   const birthNakshatraName = birthPanchangam.nakshatras[0].name;
   const birthNakshatraIndex = NAKSHATRAS.indexOf(birthNakshatraName as (typeof NAKSHATRAS)[number]);
   const birthMonthName = birthPanchangam.masa;
-  // Decrement index by 1 since we add 1 in computeMasa
   const birthMonthIndex = MASAS.indexOf(birthMonthName as (typeof MASAS)[number]);
 
   let currentPanchangam = computePanchangam(currentDate, currentLatitude, currentLongitude);
   const startSunrise = currentPanchangam.sunRise as Date;
   let startJD = toJulianDay(startSunrise);
 
-  console.log("current panchangam masa", currentPanchangam.masa, currentDate);
-
   let daysToTravelSun = 0;
+  const adhikaMasaCheck = isNextMonthAdhikaMasa(currentPanchangam.meta.elongation, startSunrise);
 
   // Estimate days until the Sun enters the birth nakshatra zone
   if (
     currentPanchangam.masa !== birthMonthName &&
-    !isNextMonthAdhikaMasa(currentPanchangam.meta.elongation, startSunrise)
+    !(adhikaMasaCheck.isAdhikaMasa && adhikaMasaCheck.masaIndex === birthMonthIndex)
   ) {
     const birthZoneStartSun = birthMonthIndex * RASI_WIDTH;
     const degreesToTravelSun = mod360(birthZoneStartSun - currentPanchangam.meta.sunSidereal);
     daysToTravelSun = degreesToTravelSun / SPEED_SUN;
-    console.log("need to add daysToTravelSun", {
-      daysToTravelSun,
-      birthZoneStartSun,
-      startSunrise,
-      startJD,
-    });
   }
 
   // Estimate days until the Moon enters the birth nakshatra zone
-  const startMoonLong = siderealMoonLongitude(startJD);
+  const startMoonLong = siderealMoonLongitude(startJD + daysToTravelSun);
   const birthZoneStartMoon = birthNakshatraIndex * NAKSHATRA_WIDTH;
   const degreesToTravelMoon = mod360(birthZoneStartMoon - startMoonLong);
   const daysToTravelMoon = degreesToTravelMoon / SPEED_MOON;
@@ -726,22 +713,13 @@ export function computeStarBirthday(
 
     const first = currentPanchangam.nakshatras[0];
     const second = currentPanchangam.nakshatras[1];
-    console.log(
-      "in the for loop",
-      currentPanchangam.masa,
-      computePanchangam(checkDate, currentLatitude, currentLongitude, "purnimanta").masa,
-      currentPanchangam.tithi,
-      checkDate,
-    );
+
     if (currentPanchangam.masa === birthMonthName && first.name === birthNakshatraName) {
-      console.log("matches the first nakshatra");
       return { birthNakshatra: birthNakshatraName, starBirthday: checkDate };
     }
     if (currentPanchangam.masa === birthMonthName && second?.name === birthNakshatraName) {
-      console.log("matches the second nakshatra");
       return { birthNakshatra: birthNakshatraName, starBirthday: shiftDay(checkDate, 1) };
     }
-    console.log("\n\n");
   }
 
   return {

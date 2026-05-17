@@ -19,59 +19,67 @@ test_cases:
       longitude: -77.4874899
       lunar_system: amanta
     expected_output:
-      - tithi: Saptamī
-      - vara: Śukravāra
-      - nakshatras:
-          - name: Uttara Aṣāḍhā
-            endTime: Fri May 08 2026 11:50:00 GMT-0400 (Eastern Daylight Time)
-          - name: Śravaṇa
-      - yogas:
-          - name: Śubha
-            endTime: Fri May 08 2026 17:00:00 GMT-0400 (Eastern Daylight Time)
-          - name: Śukla
-      - karanas:
-          - name: Viṣṭi
-            endTime: Fri May 08 2026 15:46:00 GMT-0400 (Eastern Daylight Time)
-          - name: Bava
-      - samvatsara: Parābhava
-      - ayana: Uttarayana
-      - ritu: Vasanta
-      - masa: Vaiśākha
-      - sunRashi: Meṣa
-      - moonRashi: Makara
-      - sunRise: Fri May 08 2026 06:04:00 GMT-0400 (Eastern Daylight Time)
-      - sunSet: Thu May 07 2026 20:10:00 GMT-0400 (Eastern Daylight Time)
+      tithi: Saptamī
+      vara: Śukravāra
+      nakshatras:
+        - name: Uttara Aṣāḍhā
+          endTime: Fri May 08 2026 11:50:00 GMT-0400 (Eastern Daylight Time)
+        - name: Śravaṇa
+      yogas:
+        - name: Śubha
+          endTime: Fri May 08 2026 17:00:00 GMT-0400 (Eastern Daylight Time)
+        - name: Śukla
+      karanas:
+        - name: Viṣṭi
+          endTime: Fri May 08 2026 15:46:00 GMT-0400 (Eastern Daylight Time)
+        - name: Bava
+      samvatsara: Parābhava
+      ayana: Uttarayana
+      ritu: Vasanta
+      masa: Vaiśākha
+      sunRashi: Meṣa
+      moonRashi: Makara
+      sunRise: Fri May 08 2026 06:04:00 GMT-0400 (Eastern Daylight Time)
+      sunSet: Thu May 07 2026 20:10:00 GMT-0400 (Eastern Daylight Time)
+      meta:
+        sunSidereal: 23.60701389062405
+        moonSidereal: 277.08847648783467
+        elongation: 253.48146259721057
   - parameters:
       date: Fri May 08 2026 18:34:10 GMT-0400 (Eastern Daylight Time)
       latitude: 39.0437192
       longitude: -77.4874899
       lunar_system: purnimanta
     expected_output:
-      - tithi:
-          name: Saptamī
-          number: 7
-          paksha:
-      - vara: Śukravāra
-      - nakshatras:
-          - name: Uttara Aṣāḍhā
-            endTime: Fri May 08 2026 11:50:00 GMT-0400 (Eastern Daylight Time)
-          - name: Śravaṇa
-      - yogas:
-          - name: Śubha
-            endTime: Fri May 08 2026 17:00:00 GMT-0400 (Eastern Daylight Time)
-          - name: Śukla
-      - karanas:
-          - name: Viṣṭi
-            endTime: Fri May 08 2026 15:46:00 GMT-0400 (Eastern Daylight Time)
-          - name: Bava
-      - samvatsara: Parābhava
-      - ayana: Uttarayana
-      - ritu: Vasanta
-      - masa: Jyeṣṭha
-      - sunRashi: Meṣa
-      - moonRashi: Makara
-      - sunRise: Fri May 08 2026 06:04:00 GMT-0400 (Eastern Daylight Time)
-      - sunSet: Thu May 07 2026 20:10:00 GMT-0400 (Eastern Daylight Time)
+      tithi:
+        name: Saptamī
+        number: 7
+        paksha:
+      vara: Śukravāra
+      nakshatras:
+        - name: Uttara Aṣāḍhā
+          endTime: Fri May 08 2026 11:50:00 GMT-0400 (Eastern Daylight Time)
+        - name: Śravaṇa
+      yogas:
+        - name: Śubha
+          endTime: Fri May 08 2026 17:00:00 GMT-0400 (Eastern Daylight Time)
+        - name: Śukla
+      karanas:
+        - name: Viṣṭi
+          endTime: Fri May 08 2026 15:46:00 GMT-0400 (Eastern Daylight Time)
+        - name: Bava
+      samvatsara: Parābhava
+      ayana: Uttarayana
+      ritu: Vasanta
+      masa: Jyeṣṭha
+      sunRashi: Meṣa
+      moonRashi: Makara
+      sunRise: Fri May 08 2026 06:04:00 GMT-0400 (Eastern Daylight Time)
+      sunSet: Thu May 07 2026 20:10:00 GMT-0400 (Eastern Daylight Time)
+      meta:
+        sunSidereal: 23.60701389062405
+        moonSidereal: 277.08847648783467
+        elongation: 253.48146259721057
 ```
 
 ### Unit tests for the computeStarBirthday function
@@ -93,7 +101,7 @@ test_cases:
       currentLongitude: -77.4874899
     expected_output:
       birthNakshatra: Svātī
-      starBirthday: 2026-05-28 Thu May 28 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
+      starBirthday: Thu May 28 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
   - parameters:
       currentDate: Sun May 17 2026 01:33:00 GMT-0400 (Eastern Daylight Time)
       birthDate: 1990-10-06T07:20
@@ -103,5 +111,5 @@ test_cases:
       currentLongitude: -77.4874899
     expected_output:
       birthNakshatra: Aśvinī
-      starBirthday: 2026-10-28 Thu May 28 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
+      starBirthday: Thu May 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
 ```
