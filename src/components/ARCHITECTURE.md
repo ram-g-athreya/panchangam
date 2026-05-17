@@ -70,7 +70,7 @@ Create a city search text box with the following spec as a separate standalone c
 
 ## Header
 
-- The top panel has a padding of `1rem 0.5rem`
+- The top panel has a padding of `1rem 0.75rem`
 - The `City Search Text Box`
   - should have width no more than `25rem` on larger screens and should be on the right end of the screen
   - in smaller screens push the text box below the `Panchangam` text and have it span the entire row

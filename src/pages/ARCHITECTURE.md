@@ -139,9 +139,15 @@ This panel displays the Sankalpam and the user can find their star birthday.
 
 #### Sankalpam
 
+- Background for this section should be tertiary color
+- padding of `1rem`
+
 ##### Title
 
 - The title has the word `Sankalpam`
+- Center the text
+- Use `samarkan` font
+- Has `font-size` of `2rem`
 
 ##### Sankalpam Text
 
@@ -149,10 +155,9 @@ Based on the computed panchangam generate the Sankalpam based on the template be
 
 - Replace the variables between {{ }} with the corresponding attribute from the Panchangam object.
 - uses the `accent` color
-- has `font-size` of `1.5rem`
+- has `font-size` of `1.15rem`
 - `letter-spacing` of `0.025em`
-- ensure that the interpolated variables `{{ }}` are bold with `font-size` of `1.75` rem
-- give the background a parchment like feel that envelopes the text and has a padding of `4rem`
+- ensure that the interpolated variables `{{ }}` are bold with `font-size` of `1.25` rem
 
 ```
 {{ namasamvatsare }} Namasamvatsare, {{ ayane }}, {{ ritau }} Ritau, {{ mase }} Mase, {{ pakshe }} Pakshe, {{ tithi }} Tithau, {{ vara }} Vasare, {{ nakshatra }} Nakshatre, {{ yoga }} Yoge, {{ karana }} Karane
@@ -160,6 +165,7 @@ Based on the computed panchangam generate the Sankalpam based on the template be
 
 #### Find Your Star Birthday
 
+- Background for this section should be tertiary color
 - Should have the title **Find My Star Birthday**. Add a gap of at least `0.5rem` between the title and subsequent components.
 - **Name**: Name of the user
 - **Birth Date & Time**: Date Picker that asks for the user's birth date and time
@@ -172,7 +178,9 @@ Based on the computed panchangam generate the Sankalpam based on the template be
     - change the color of the background and text to indicate that the button was pressed
     - invoke the `computeStarBirthday` function with birthDate (with time), birth and current lat and long
   - Display the birth star and the star birthday based on the result of the compuation
+    - Should have secondary background color
   - save the name, birth date & time and birth city and repopulate on startup if it exists. Store as a single JSON object
   - Store as an array with maximum of 5 times most recently used first. Update entries based on the name
   - Display the stored data as pills with text as the name and a `x` button in the end. Clicking on a pill prepopulates the corresponding data. Clicking on the `x` deletes the data from localStorage
   - The pills are to be displayed below the title and above the text fields
+- background color should be tertiary

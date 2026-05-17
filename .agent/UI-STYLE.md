@@ -30,6 +30,7 @@ The app broadly has two themes, a sepia based light theme and a dark theme. The 
 
 # Header Tags Font Sizes
 - `<header>`: `2rem`
+- `<h1>`: `1.25rem`
 - `<h2>`: `1.15rem`
 
 # Panel Styling
