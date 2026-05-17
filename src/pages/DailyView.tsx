@@ -107,46 +107,49 @@ const RASHI: Record<string, { icon: IconDefinition; zodiacName: string }> = {
   Mīna: { icon: faPisces, zodiacName: "Pisces" },
 };
 
-interface StoredStarBirthday {
-  name?: string;
-  birthNakshatra: string;
-  starBirthday: string;
+interface StoredProfile {
+  name: string;
   birthDateTime: string;
   birthLocation: LocationData;
 }
 
-function getStoredStarBirthdayData(): StoredStarBirthday | null {
+function getStoredProfiles(): StoredProfile[] {
   try {
     const stored = localStorage.getItem(STAR_BIRTHDAY_KEY);
-    if (!stored) return null;
-    return JSON.parse(stored) as StoredStarBirthday;
+    if (!stored) return [];
+    const data = JSON.parse(stored);
+    return Array.isArray(data) ? (data as StoredProfile[]) : [];
   } catch {
-    return null;
+    return [];
   }
 }
 
+function saveProfiles(profiles: StoredProfile[]): void {
+  localStorage.setItem(STAR_BIRTHDAY_KEY, JSON.stringify(profiles));
+}
+
 function FindStarBirthdayPanel() {
-  const stored = getStoredStarBirthdayData();
-  const [name, setName] = useState(stored?.name ?? "");
-  const [birthDateTime, setBirthDateTime] = useState(stored?.birthDateTime ?? "");
-  const [birthLocation, setBirthLocation] = useState<LocationData | null>(
-    stored?.birthLocation ?? null,
-  );
+  const [profiles, setProfiles] = useState<StoredProfile[]>(getStoredProfiles);
+  const [name, setName] = useState("");
+  const [birthDateTime, setBirthDateTime] = useState("");
+  const [birthLocation, setBirthLocation] = useState<LocationData | null>(null);
+  const [birthCityKey, setBirthCityKey] = useState(0);
   const [currentLocation, setCurrentLocation] = useState<LocationData | null>(getLocation);
-  const [result, setResult] = useState<StarBirthdayResult | null>(
-    stored?.birthNakshatra
-      ? { birthNakshatra: stored.birthNakshatra, starBirthday: new Date(stored.starBirthday) }
-      : null,
-  );
+  const [result, setResult] = useState<StarBirthdayResult | null>(null);
   const dateTimeInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    const current = getStoredStarBirthdayData();
-    localStorage.setItem(
-      STAR_BIRTHDAY_KEY,
-      JSON.stringify({ ...current, name, birthDateTime, birthLocation }),
-    );
-  }, [name, birthDateTime, birthLocation]);
+  function loadProfile(profile: StoredProfile) {
+    setName(profile.name);
+    setBirthDateTime(profile.birthDateTime);
+    setBirthLocation(profile.birthLocation);
+    setBirthCityKey((k) => k + 1);
+  }
+
+  function removeProfile(profileName: string) {
+    const updated = profiles.filter((p) => p.name !== profileName);
+    setProfiles(updated);
+    saveProfiles(updated);
+  }
 
   function openDatePicker() {
     try {
@@ -157,7 +160,7 @@ function FindStarBirthdayPanel() {
   }
 
   function handleFind() {
-    if (!birthLocation || !currentLocation) return;
+    if (!birthLocation || !currentLocation || !name || !birthDateTime) return;
     const res = computeStarBirthday(
       new Date(),
       birthDateTime,
@@ -167,6 +170,10 @@ function FindStarBirthdayPanel() {
       currentLocation.longitude,
     );
     setResult(res);
+    const newProfile: StoredProfile = { name, birthDateTime, birthLocation };
+    const updated = [newProfile, ...profiles.filter((p) => p.name !== name)].slice(0, 5);
+    setProfiles(updated);
+    saveProfiles(updated);
   }
 
   const allFilled =
@@ -175,6 +182,23 @@ function FindStarBirthdayPanel() {
   return (
     <section className="star-birthday-panel">
       <h2 className="star-birthday-panel__title">Find My Star Birthday</h2>
+      {profiles.length > 0 && (
+        <div className="star-birthday-pills">
+          {profiles.map((profile) => (
+            <div key={profile.name} className="star-birthday-pill">
+              <button className="star-birthday-pill__name" onClick={() => loadProfile(profile)}>
+                {profile.name}
+              </button>
+              <button
+                className="star-birthday-pill__remove"
+                onClick={() => removeProfile(profile.name)}
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
       <div className="star-birthday-form">
         <div className="star-birthday-form__field">
           <label className="star-birthday-form__label">Name</label>
@@ -206,12 +230,11 @@ function FindStarBirthdayPanel() {
         <div className="star-birthday-form__field">
           <label className="star-birthday-form__label">Birth City</label>
           <CitySearch
+            key={birthCityKey}
             saveToStorage={false}
             onLocationSelect={setBirthLocation}
             initialValue={
-              stored?.birthLocation
-                ? `${stored.birthLocation.city}, ${stored.birthLocation.country}`
-                : undefined
+              birthLocation ? `${birthLocation.city}, ${birthLocation.country}` : undefined
             }
           />
         </div>

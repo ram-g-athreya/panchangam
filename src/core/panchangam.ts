@@ -262,7 +262,6 @@ const SPEED_SUN = 360 / 365.25636; // ~0.9856 degrees per day (Sidereal Year len
  * The ratio of Sun motion to Elongation motion is roughly 0.08085.
  */
 const SUN_ELONGATION_RATIO = 0.08085;
-const LUNAR_SYNODIC_PERIOD = 29.53059; // Average days from new moon to new moon
 
 /**
  * Average speeds in degrees per day
@@ -681,7 +680,7 @@ export function computeStarBirthday(
 
   let currentPanchangam = computePanchangam(currentDate, currentLatitude, currentLongitude);
   const startSunrise = currentPanchangam.sunRise as Date;
-  let startJD = toJulianDay(startSunrise);
+  const startJD = toJulianDay(startSunrise);
 
   let daysToTravelSun = 0;
   const adhikaMasaCheck = isNextMonthAdhikaMasa(currentPanchangam.meta.elongation, startSunrise);

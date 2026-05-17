@@ -15,7 +15,13 @@ tasks:
   - id: store-and-retrieve-names
     priority: 1
     title: Store, Display and prepopulate names and associated data for finding star birthday based on `src/pages/ARCHITECTURE.md`
-    status: not_started
+    status: passing
+    evidence: >
+      npm run check exits 0 (tsc + lint + 4 tests passing).
+      StoredStarBirthday replaced with StoredProfile[] array (max 5, most-recent-first, deduped by name).
+      Pills rendered below title, above form — each pill has a clickable name button (loads profile into form, remounts Birth City CitySearch via key) and an × remove button (filters array and writes to localStorage).
+      Profiles saved only on button click (not auto-save on every keystroke). Birth City CitySearch uses birthCityKey to force remount with correct initialValue when pill is clicked.
+      Two lint fixes in panchangam.ts also landed: removed unused LUNAR_SYNODIC_PERIOD constant and changed let→const for startJD.
   - id: find-starbirth-day-ui
     priority: 1
     title: Create UI to find star birthday based on spec at `src/pages/ARCHITECTURE.md`

@@ -34,7 +34,52 @@
 }
 
 .star-birthday-panel__title {
+  margin-bottom: 0.5rem;
+}
+
+.star-birthday-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin-bottom: 0.75rem;
+}
+
+.star-birthday-pill {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-bg-tertiary);
+  border: 1px solid var(--color-accent);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.star-birthday-pill__name {
+  background: none;
+  border: none;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  color: var(--color-text-primary);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.star-birthday-pill__name:hover {
+  color: var(--color-accent);
+}
+
+.star-birthday-pill__remove {
+  background: none;
+  border: none;
+  border-left: 1px solid var(--color-accent);
+  padding: 0.2rem 0.45rem;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.star-birthday-pill__remove:hover {
+  color: var(--color-text-primary);
 }
 
 .star-birthday-form {

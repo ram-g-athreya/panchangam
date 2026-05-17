@@ -3,7 +3,7 @@
 ## Current Verified State
 
 - Standard startup path: `./init.sh` — exits 0
-- Standard verification path: `npm run check` (tsc --noEmit) — exits 0
+- Standard verification path: `npm run check` — exits 0; 4 tests passing
 - Current highest-priority unfinished feature: none (all tasks passing)
 - Current blocker: none
 
@@ -132,3 +132,20 @@
 - Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, src/components/CitySearch.tsx, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: commit all find-starbirth-day-ui changes
+
+### Session 0042
+
+- Date: 2026-05-17
+- Goal: Add second star birthday test case, meta assertions, and implement `store-and-retrieve-names` task
+- Completed:
+  - panchangam.test.ts: added second `computeStarBirthday` test — birth 1990-10-06T07:20 in Thanjavur, current Virginia; asserts `birthNakshatra="Aśvinī"` and `starBirthday.toDateString()` equals "Wed Oct 28 2026"
+  - panchangam.test.ts: replaced `console.log({ meta })` in `assertCommon` with three `toBeCloseTo(…, 4)` assertions for `meta.sunSidereal`, `meta.moonSidereal`, `meta.elongation`; both computePanchangam test cases already had expected `meta` values populated
+  - DailyView.tsx: replaced `StoredStarBirthday` single-object pattern with `StoredProfile[]` array (max 5, most-recent-first, deduped by `name`); `getStoredProfiles()` + `saveProfiles()` helpers; removed auto-save `useEffect`; profiles saved only on button click in `handleFind`; added `birthCityKey` state (increments on pill load to force CitySearch remount with correct `initialValue`)
+  - DailyView.tsx: pills rendered between title and form — `star-birthday-pills` div with one `star-birthday-pill` per profile; name button calls `loadProfile` (sets name/birthDateTime/birthLocation + bumps key); × button calls `removeProfile` (filters array, writes localStorage); pills hidden when array empty
+  - DailyView.css: added `.star-birthday-pills`, `.star-birthday-pill`, `.star-birthday-pill__name`, `.star-birthday-pill__remove` styles (accent border, 999px radius, separator between name/remove, hover states); title margin-bottom reduced to 0.5rem
+  - panchangam.ts: removed unused `LUNAR_SYNODIC_PERIOD` constant; changed `let startJD` → `const startJD` (pre-existing lint errors)
+- Verification run: `npm run check` exits 0; 4 tests passing (up from 2)
+- Evidence captured: task_list.yaml `store-and-retrieve-names` status set to passing
+- Files updated: tests/unit-tests/src/core/panchangam.test.ts, src/pages/DailyView.tsx, src/styles/DailyView.css, src/core/panchangam.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: commit
