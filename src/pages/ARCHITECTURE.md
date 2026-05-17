@@ -130,11 +130,36 @@ This panel gives the basic Panchang information for today.
     - Center the text
 ```
 
-### Find Your Star Birthday
+### Sankalpam and Find Star Birthday Widgets
 
-This panel helps the user find their star birthday.
+This panel displays the Sankalpam and the user can find their star birthday.
 
 - Its width should span 33.333% in desktop, 50% in tablets and 100% in mobile
+- The height of the panel should be same as the panchang panel to be uniform
+
+#### Sankalpam
+
+### Title
+
+- The title has the word `Sankalpam`
+
+##### Sankalpam Text
+
+Based on the computed panchangam generate the Sankalpam based on the template below:
+
+- Replace the variables between {{ }} with the corresponding attribute from the Panchangam object.
+- uses the `accent` color
+- has `font-size` of `1.5rem`
+- `letter-spacing` of `0.025em`
+- ensure that the interpolated variables `{{ }}` are bold with `font-size` of `1.75` rem
+- give the background a parchment like feel that envelopes the text and has a padding of `4rem`
+
+```
+{{ namasamvatsare }} Namasamvatsare, {{ ayane }}, {{ ritau }} Ritau, {{ mase }} Mase, {{ pakshe }} Pakshe, {{ tithi }} Tithau, {{ vara }} Vasare, {{ nakshatra }} Nakshatre, {{ yoga }} Yoge, {{ karana }} Karane
+```
+
+#### Find Your Star Birthday
+
 - Should have the title **Find My Star Birthday**. Add a gap of at least `0.5rem` between the title and subsequent components.
 - **Name**: Name of the user
 - **Birth Date & Time**: Date Picker that asks for the user's birth date and time
@@ -151,32 +176,3 @@ This panel helps the user find their star birthday.
   - Store as an array with maximum of 5 times most recently used first. Update entries based on the name
   - Display the stored data as pills with text as the name and a `x` button in the end. Clicking on a pill prepopulates the corresponding data. Clicking on the `x` deletes the data from localStorage
   - The pills are to be displayed below the title and above the text fields
-
-## Sankalpam
-
-Specification for the `Sankalpam` page.
-
-- Derive the Panchangam by using the `computePanchangam` method for the current moment with the `latitude` and `longitude` if stored in localstorage.
-
-### Title
-
-- The title has the word `Sankalpam` and is centered
-- `font-family` should be `Samarkan`
-- uses the `primary` color
-- has `font-size` of `4rem`
-- `letter-spacing` of `0em`
-
-### Sankalpam Text
-
-Based on the computed panchangam generate the Sankalpam based on the template below:
-
-- Replace the variables between {{ }} with the corresponding attribute from the Panchangam object.
-- uses the `accent` color
-- has `font-size` of `1.5rem`
-- `letter-spacing` of `0.025em`
-- ensure that the interpolated variables `{{ }}` are bold with `font-size` of `1.75` rem
-- give the background a parchment like feel that envelopes the text and has a padding of `4rem`
-
-```
-{{ namasamvatsare }} Namasamvatsare, {{ ayane }}, {{ ritau }} Ritau, {{ mase }} Mase, {{ pakshe }} Pakshe, {{ tithi }} Tithau, {{ vara }} Vasare, {{ nakshatra }} Nakshatre, {{ yoga }} Yoge, {{ karana }} Karane
-```

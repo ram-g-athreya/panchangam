@@ -71,7 +71,6 @@ Create a city search text box with the following spec as a separate standalone c
 ## Header
 
 - The top panel has a padding of `1rem 0.5rem`
-- Has a button with the hamburger bars navigation icon followed by the `Panchangam` text.
 - The `City Search Text Box`
   - should have width no more than `25rem` on larger screens and should be on the right end of the screen
   - in smaller screens push the text box below the `Panchangam` text and have it span the entire row
@@ -99,7 +98,6 @@ Create a city search text box with the following spec as a separate standalone c
 The links are as follows:
 
 - **Home**: maps to `/` and has the home icon
-- **Sankalpam**: maps to `/sankalpam` and has the hands praying NOT person praying
 
 Styling should be as follows:
 

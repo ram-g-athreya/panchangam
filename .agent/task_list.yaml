@@ -12,6 +12,11 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: consolidate-ui
+    priority: 1
+    title: > 
+      Consolidate the UI by moving the Sankalpam to the home page. As a result remove the redundant Sankalpam page. Also remove the hamburger icon from the header since it is no longer necessary
+    status: not_started
   - id: store-and-retrieve-names
     priority: 1
     title: Store, Display and prepopulate names and associated data for finding star birthday based on `src/pages/ARCHITECTURE.md`
