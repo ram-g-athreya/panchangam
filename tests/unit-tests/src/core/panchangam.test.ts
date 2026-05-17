@@ -1,10 +1,18 @@
 import { describe, it, expect } from "vitest";
-import { computePanchangam, type Panchangam } from "../../../../src/core/panchangam";
+import {
+  computePanchangam,
+  computeStarBirthday,
+  type Panchangam,
+} from "../../../../src/core/panchangam";
 
 const SOLAR_EVENT_TOLERANCE_MS = 60_000;
 const END_TIME_TOLERANCE_MS = 60_000;
 
 function assertCommon(result: Panchangam, expected: Panchangam) {
+  expect(result.meta.sunSidereal).toBeCloseTo(expected.meta.sunSidereal, 4);
+  expect(result.meta.moonSidereal).toBeCloseTo(expected.meta.moonSidereal, 4);
+  expect(result.meta.elongation).toBeCloseTo(expected.meta.elongation, 4);
+
   expect(result.tithi.name).toBe(expected.tithi.name);
   expect(result.tithi.number).toBe(expected.tithi.number);
   expect(result.tithi.paksha).toBe(expected.tithi.paksha);
@@ -48,6 +56,38 @@ function assertCommon(result: Panchangam, expected: Panchangam) {
   );
 }
 
+describe("computeStarBirthday", () => {
+  it("returns Svātī and star birthday around May 28 2026 for birth 1990-06-05T01:22 in Thanjavur, current location Virginia", () => {
+    const result = computeStarBirthday(
+      new Date("Sun May 17 2026 01:33:39 GMT-0400 (Eastern Daylight Time)"),
+      "1990-06-05T01:22",
+      10.7860267,
+      79.1381497,
+      39.0437192,
+      -77.4874899,
+    );
+    expect(result.birthNakshatra).toBe("Svātī");
+
+    const expected = new Date("Thu May 28 2026 00:00:00 GMT-0400 (Eastern Daylight Time)");
+    expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
+  });
+
+  it("returns Aśvinī and star birthday around Oct 26 2026 for birth 1990-10-06T07:20 in Thanjavur, current location Virginia", () => {
+    const result = computeStarBirthday(
+      new Date("Sun May 17 2026 01:33:00 GMT-0400 (Eastern Daylight Time)"),
+      "1990-10-06T07:20",
+      10.7860267,
+      79.1381497,
+      39.0437192,
+      -77.4874899,
+    );
+    expect(result.birthNakshatra).toBe("Aśvinī");
+
+    const expected = new Date("Wed Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)");
+    expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
+  });
+});
+
 describe("computePanchangam", () => {
   const date = new Date("2026-05-08T22:34:10Z");
   const latitude = 39.0437192;
@@ -71,6 +111,11 @@ describe("computePanchangam", () => {
       moonRashi: "Makara",
       sunRise: new Date("2026-05-08T10:04:00Z"),
       sunSet: new Date("2026-05-08T00:10:00Z"),
+      meta: {
+        sunSidereal: 23.60701389062405,
+        moonSidereal: 277.08847648783467,
+        elongation: 253.48146259721057,
+      },
     });
   });
 
@@ -92,6 +137,11 @@ describe("computePanchangam", () => {
       moonRashi: "Makara",
       sunRise: new Date("2026-05-08T10:04:00Z"),
       sunSet: new Date("2026-05-08T00:10:00Z"),
+      meta: {
+        sunSidereal: 23.60701389062405,
+        moonSidereal: 277.08847648783467,
+        elongation: 253.48146259721057,
+      },
     });
   });
 });

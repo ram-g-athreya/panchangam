@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
+import { CitySearch } from "../components/CitySearch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faClock,
@@ -28,22 +29,29 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { SunriseFill, SunsetFill, EmojiSunglassesFill } from "react-bootstrap-icons";
-import { computePanchangam } from "../core/panchangam";
+import { computePanchangam, computeStarBirthday } from "../core/panchangam";
+import type { StarBirthdayResult } from "../core/panchangam";
 import type { TimeFormat, LocationData, LunarSystem } from "../constants";
-import { LOCATION_KEY } from "../constants";
+import { LOCATION_KEY, STAR_BIRTHDAY_KEY } from "../constants";
 import "../styles/DailyView.css";
+
+interface DailyViewProps {
+  timeFormat: TimeFormat;
+  lunarSystem: LunarSystem;
+}
 
 const getMoonPhaseImage = (number: number, paksha: string): string => {
   return encodeURI(`/images/moon-phases/${number}_${paksha}.webp`);
 };
 
-function getLocation(): { latitude: number; longitude: number } | null {
+function getLocation(): LocationData | null {
   const stored = localStorage.getItem(LOCATION_KEY);
-  if (stored) {
-    const data = JSON.parse(stored) as LocationData;
-    return { latitude: data.latitude, longitude: data.longitude };
+  if (!stored) return null;
+  try {
+    return JSON.parse(stored) as LocationData;
+  } catch {
+    return null;
   }
-  return null;
 }
 
 function formatTime(date: Date, format: TimeFormat): string {
@@ -99,9 +107,174 @@ const RASHI: Record<string, { icon: IconDefinition; zodiacName: string }> = {
   Mīna: { icon: faPisces, zodiacName: "Pisces" },
 };
 
-interface DailyViewProps {
-  timeFormat: TimeFormat;
-  lunarSystem: LunarSystem;
+interface StoredProfile {
+  name: string;
+  birthDateTime: string;
+  birthLocation: LocationData;
+}
+
+function getStoredProfiles(): StoredProfile[] {
+  try {
+    const stored = localStorage.getItem(STAR_BIRTHDAY_KEY);
+    if (!stored) return [];
+    const data = JSON.parse(stored);
+    return Array.isArray(data) ? (data as StoredProfile[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveProfiles(profiles: StoredProfile[]): void {
+  localStorage.setItem(STAR_BIRTHDAY_KEY, JSON.stringify(profiles));
+}
+
+function FindStarBirthdayPanel() {
+  const [profiles, setProfiles] = useState<StoredProfile[]>(getStoredProfiles);
+  const [name, setName] = useState("");
+  const [birthDateTime, setBirthDateTime] = useState("");
+  const [birthLocation, setBirthLocation] = useState<LocationData | null>(null);
+  const [birthCityKey, setBirthCityKey] = useState(0);
+  const [currentLocation, setCurrentLocation] = useState<LocationData | null>(getLocation);
+  const [result, setResult] = useState<StarBirthdayResult | null>(null);
+  const dateTimeInputRef = useRef<HTMLInputElement>(null);
+
+  function loadProfile(profile: StoredProfile) {
+    setName(profile.name);
+    setBirthDateTime(profile.birthDateTime);
+    setBirthLocation(profile.birthLocation);
+    setBirthCityKey((k) => k + 1);
+  }
+
+  function removeProfile(profileName: string) {
+    const updated = profiles.filter((p) => p.name !== profileName);
+    setProfiles(updated);
+    saveProfiles(updated);
+  }
+
+  function openDatePicker() {
+    try {
+      dateTimeInputRef.current?.showPicker();
+    } catch {
+      // showPicker unsupported — native click on input will handle it
+    }
+  }
+
+  function handleFind() {
+    if (!birthLocation || !currentLocation || !name || !birthDateTime) return;
+    const res = computeStarBirthday(
+      new Date(),
+      birthDateTime,
+      birthLocation.latitude,
+      birthLocation.longitude,
+      currentLocation.latitude,
+      currentLocation.longitude,
+    );
+    setResult(res);
+    const newProfile: StoredProfile = { name, birthDateTime, birthLocation };
+    const updated = [newProfile, ...profiles.filter((p) => p.name !== name)].slice(0, 5);
+    setProfiles(updated);
+    saveProfiles(updated);
+  }
+
+  const allFilled =
+    name !== "" && birthDateTime !== "" && birthLocation !== null && currentLocation !== null;
+
+  return (
+    <section className="star-birthday-panel">
+      <h2 className="star-birthday-panel__title">Find My Star Birthday</h2>
+      {profiles.length > 0 && (
+        <div className="star-birthday-pills">
+          {profiles.map((profile) => (
+            <div key={profile.name} className="star-birthday-pill">
+              <button className="star-birthday-pill__name" onClick={() => loadProfile(profile)}>
+                {profile.name}
+              </button>
+              <button
+                className="star-birthday-pill__remove"
+                onClick={() => removeProfile(profile.name)}
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+      <div className="star-birthday-form">
+        <div className="star-birthday-form__field">
+          <label className="star-birthday-form__label">Name</label>
+          <input
+            type="text"
+            className="star-birthday-form__text"
+            placeholder="Enter your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="star-birthday-form__field">
+          <label className="star-birthday-form__label">Birth Date &amp; Time</label>
+          <div className="star-birthday-form__datetime-wrapper">
+            <FontAwesomeIcon
+              icon={faCalendarDays}
+              className="star-birthday-form__datetime-icon"
+              onClick={openDatePicker}
+            />
+            <input
+              ref={dateTimeInputRef}
+              type="datetime-local"
+              className="star-birthday-form__datetime"
+              value={birthDateTime}
+              onChange={(e) => setBirthDateTime(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="star-birthday-form__field">
+          <label className="star-birthday-form__label">Birth City</label>
+          <CitySearch
+            key={birthCityKey}
+            saveToStorage={false}
+            onLocationSelect={setBirthLocation}
+            initialValue={
+              birthLocation ? `${birthLocation.city}, ${birthLocation.country}` : undefined
+            }
+          />
+        </div>
+        <div className="star-birthday-form__field">
+          <label className="star-birthday-form__label">Current City</label>
+          <CitySearch onLocationSelect={setCurrentLocation} />
+        </div>
+        <button className="star-birthday-form__btn" disabled={!allFilled} onClick={handleFind}>
+          <FontAwesomeIcon icon={faStar} /> Find Star Birthday
+        </button>
+        {result && (
+          <div className="star-birthday-result">
+            <div className="star-birthday-result__section">
+              <span className="anga-card__label">
+                <FontAwesomeIcon icon={faStar} />
+                BIRTH STAR
+              </span>
+              <span className="anga-card__value">{result.birthNakshatra}</span>
+            </div>
+            <div className="star-birthday-result__section">
+              <span className="anga-card__label">
+                <FontAwesomeIcon icon={faCalendarDays} />
+                STAR BIRTHDAY
+              </span>
+              <span className="anga-card__value">
+                {result.starBirthday.toLocaleDateString("en-IN", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </span>
+              <span className="anga-card__sub">
+                {result.starBirthday.toLocaleDateString("en-IN", { weekday: "long" })}
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
 }
 
 export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
@@ -263,6 +436,7 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
           </div>
         </div>
       </section>
+      <FindStarBirthdayPanel />
     </main>
   );
 }

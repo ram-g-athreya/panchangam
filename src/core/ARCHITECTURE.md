@@ -16,8 +16,16 @@
   - **moonRashi**: the Moon Rashi
   - **sunRise**: Date and time of Sunrise
   - **sunSet**: Date and time of Sunset
+  - **meta**: {
+    **sunSidereal**: number,
+    **moonSidereal**: number,
+    **elongation**: number
+    }
 
 - Write corresponding functions to calculate each component.
+
+### computePanchangam algorithm
+
 - Expose a function called `computePanchangam` that takes the following as parameters:
   - `date`
   - `latitude`
@@ -25,8 +33,6 @@
   - `lunarSystem` (values can be `amanta` or `purnimantha`)
   - `useSunrise` (default being `true`)
 - returns the corresponding Panchangam
-
-### Algorithm
 
 #### 1. Technical Implementation Requirements
 
@@ -144,3 +150,23 @@ The name of the year in the 60-year Jovian cycle.
 ##### K. Moon Sign (Moon Rashi)
 
 - **Moon Rashi Index**: `floor(moonSidereal % 30)`
+
+### computeStarBirthday algorithm
+
+- Expose a function called `computeStarBirthday` that takes the following as parameters:
+  - `currentDate`
+  - `birthDate`
+  - `birthLatitude`
+  - `birthLongitude`
+  - `currentLatitude`
+  - `currentLongitude`
+- get the timezone based on `birthLatitude` and `birthLongitude` using the `@photostructure/tz-lookup` and use the `birthDate` with the derived timezone
+- call the `computePanchangam` function with the `birthDate` (including appropriate timezone), `birthLatitude` and `birthLongitude`
+- acquire the birth `nakshatra` based on the `Panchangam`. If the first nakshatra for the day ends before the birth date, then choose the second nakshatra
+- acquire the birth `masa`
+- get the panchangam for the `current time - 1 day` based on `currentLatitude` and `currentLongitude`
+- derive the nakshatra index for the current day
+- if it is not the birth nakshatra then based on the index adjust the Julian Day until the earliest birth nakshatra is reached
+- The function should return the following:
+  - `birthNakshatra`: string representing the birth nakshatra
+  - `starBirthday`: date representing the star birthday

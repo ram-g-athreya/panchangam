@@ -12,6 +12,28 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: store-and-retrieve-names
+    priority: 1
+    title: Store, Display and prepopulate names and associated data for finding star birthday based on `src/pages/ARCHITECTURE.md`
+    status: passing
+    evidence: >
+      npm run check exits 0 (tsc + lint + 4 tests passing).
+      StoredStarBirthday replaced with StoredProfile[] array (max 5, most-recent-first, deduped by name).
+      Pills rendered below title, above form — each pill has a clickable name button (loads profile into form, remounts Birth City CitySearch via key) and an × remove button (filters array and writes to localStorage).
+      Profiles saved only on button click (not auto-save on every keystroke). Birth City CitySearch uses birthCityKey to force remount with correct initialValue when pill is clicked.
+      Two lint fixes in panchangam.ts also landed: removed unused LUNAR_SYNODIC_PERIOD constant and changed let→const for startJD.
+  - id: find-starbirth-day-ui
+    priority: 1
+    title: Create UI to find star birthday based on spec at `src/pages/ARCHITECTURE.md`
+    status: passing
+    evidence: >
+      npm run check exits 0 (tsc + lint + 2 tests passing).
+      FindStarBirthdayPanel renders as a sibling panel to panchang-panel at 100%/50%/33.333% responsive widths.
+      Fields: Name text input; datetime-local input with custom calendar icon (hides native indicator, showPicker() on icon click, typing works); Birth City CitySearch (saveToStorage=false); Current City CitySearch (syncs global location + local state); Find Star Birthday button centered with star icon (disabled until all filled, CSS :active lingering 1-second press effect).
+      computeStarBirthday implemented in panchangam.ts: parses birth datetime in birth timezone via @photostructure/tz-lookup + Intl.DateTimeFormat; gets birth nakshatra from computePanchangam; estimates days to reach birth nakshatra zone from yesterday's sunrise; verifies with offset loop; returns { birthNakshatra, starBirthday }.
+      Result displayed below button as a two-section card (birth nakshatra + star birthday date).
+      All form inputs (name, birthDateTime, birthLocation) persisted to localStorage on change; result (birthNakshatra, starBirthday) persisted on compute; all fields pre-populated on page load.
+      Button press: CSS-only 1-second lingering effect — transition:none on :active (instant color change), transition:1s on base (slow return).
   - id: add-lunar-system
     priority: 1
     title: Add lunar system based on spec in `src/components/ARCHITECTURE.md` and `src/core/ARCHITECTURE.md`

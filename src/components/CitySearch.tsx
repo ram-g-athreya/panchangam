@@ -2,11 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import { library, findIconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { LocationData } from "../constants";
 import { LOCATION_KEY } from "../constants";
 import "../styles/CitySearch.css";
 
 library.add(faLocationDot);
 
+const SUGGESTIONS_COUNT = 10;
 const locationIcon = findIconDefinition({ prefix: "fas", iconName: "location-dot" });
 
 interface PhotonProperties {
@@ -41,12 +43,25 @@ function formatSuggestion(props: PhotonProperties): string {
   return [props.name, props.state, props.country].filter(Boolean).join(", ");
 }
 
-export function CitySearch() {
-  const [inputValue, setInputValue] = useState<string>(getStoredDisplay);
+interface CitySearchProps {
+  saveToStorage?: boolean;
+  onLocationSelect?: (data: LocationData) => void;
+  initialValue?: string;
+}
+
+export function CitySearch({
+  saveToStorage = true,
+  onLocationSelect,
+  initialValue,
+}: CitySearchProps = {}) {
+  const getInitialDisplay = () =>
+    initialValue !== undefined ? initialValue : saveToStorage ? getStoredDisplay() : "";
+  const [inputValue, setInputValue] = useState<string>(getInitialDisplay);
   const [suggestions, setSuggestions] = useState<PhotonFeature[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const selectedRef = useRef(false);
+  const displayValueRef = useRef<string>(getInitialDisplay());
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   useEffect(() => {
@@ -74,7 +89,7 @@ export function CitySearch() {
         setIsLoading(true);
         try {
           const res = await fetch(
-            `https://photon.komoot.io/api/?q=${encodeURIComponent(value.trim())}&osm_tag=place:city&osm_tag=place:town&osm_tag=place:village&limit=7`,
+            `https://photon.komoot.io/api/?q=${encodeURIComponent(value.trim())}&osm_tag=place:city&osm_tag=place:town&osm_tag=place:village&limit=${SUGGESTIONS_COUNT}`,
           );
           const data = (await res.json()) as PhotonResponse;
           setSuggestions(data.features ?? []);
@@ -95,25 +110,28 @@ export function CitySearch() {
   function handleSelect(feature: PhotonFeature) {
     const cityName = feature.properties.name;
     const country = feature.properties.country ?? "";
+    const displayStr = country ? `${cityName}, ${country}` : cityName;
     selectedRef.current = true;
-    setInputValue(country ? `${cityName}, ${country}` : cityName);
+    displayValueRef.current = displayStr;
+    setInputValue(displayStr);
     setSuggestions([]);
     setShowSuggestions(false);
-    localStorage.setItem(
-      LOCATION_KEY,
-      JSON.stringify({
-        city: cityName,
-        country,
-        latitude: feature.geometry.coordinates[1],
-        longitude: feature.geometry.coordinates[0],
-      }),
-    );
+    const locationData: LocationData = {
+      city: cityName,
+      country,
+      latitude: feature.geometry.coordinates[1],
+      longitude: feature.geometry.coordinates[0],
+    };
+    if (saveToStorage) {
+      localStorage.setItem(LOCATION_KEY, JSON.stringify(locationData));
+    }
+    onLocationSelect?.(locationData);
   }
 
   function handleBlur() {
     setTimeout(() => {
       if (!selectedRef.current) {
-        setInputValue(getStoredDisplay());
+        setInputValue(saveToStorage ? getStoredDisplay() : displayValueRef.current);
       }
       setShowSuggestions(false);
       setIsLoading(false);
