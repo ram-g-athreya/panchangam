@@ -139,7 +139,7 @@ This panel displays the Sankalpam and the user can find their star birthday.
 
 #### Sankalpam
 
-### Title
+##### Title
 
 - The title has the word `Sankalpam`
 
