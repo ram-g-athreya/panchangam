@@ -146,8 +146,11 @@ This panel helps the user find their star birthday.
   - When the button is clicked then
     - change the color of the background and text to indicate that the button was pressed
     - invoke the `computeStarBirthday` function with birthDate (with time), birth and current lat and long
-  - Display the birth `nakshatra` and the star birthday based on the result of the compuation
+  - Display the birth star and the star birthday based on the result of the compuation
   - save the name, birth date & time and birth city and repopulate on startup if it exists. Store as a single JSON object
+  - Store as an array with maximum of 5 times most recently used first. Update entries based on the name
+  - Display the stored data as pills with text as the name and a `x` button in the end. Clicking on a pill prepopulates the corresponding data. Clicking on the `x` deletes the data from localStorage
+  - The pills are to be displayed below the title and above the text fields
 
 ## Sankalpam
 

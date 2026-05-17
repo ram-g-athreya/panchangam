@@ -227,11 +227,10 @@ function FindStarBirthdayPanel() {
             <div className="star-birthday-result__section">
               <span className="anga-card__label">
                 <FontAwesomeIcon icon={faStar} />
-                BIRTH NAKSHATRA
+                BIRTH STAR
               </span>
               <span className="anga-card__value">{result.birthNakshatra}</span>
             </div>
-            <div className="star-birthday-result__divider" />
             <div className="star-birthday-result__section">
               <span className="anga-card__label">
                 <FontAwesomeIcon icon={faCalendarDays} />

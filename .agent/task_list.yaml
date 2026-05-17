@@ -12,6 +12,10 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: store-and-retrieve-names
+    priority: 1
+    title: Store, Display and prepopulate names and associated data for finding star birthday based on `src/pages/ARCHITECTURE.md`
+    status: not_started
   - id: find-starbirth-day-ui
     priority: 1
     title: Create UI to find star birthday based on spec at `src/pages/ARCHITECTURE.md`
