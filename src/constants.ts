@@ -14,3 +14,5 @@ export interface LocationData {
   longitude: number;
 }
 export const LOCATION_KEY = "location";
+
+export const STAR_BIRTHDAY_KEY = "starBirthday";

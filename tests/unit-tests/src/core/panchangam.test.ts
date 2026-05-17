@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { computePanchangam, type Panchangam } from "../../../../src/core/panchangam";
+import {
+  computePanchangam,
+  computeStarBirthday,
+  type Panchangam,
+} from "../../../../src/core/panchangam";
 
 const SOLAR_EVENT_TOLERANCE_MS = 60_000;
 const END_TIME_TOLERANCE_MS = 60_000;
@@ -47,6 +51,23 @@ function assertCommon(result: Panchangam, expected: Panchangam) {
     SOLAR_EVENT_TOLERANCE_MS,
   );
 }
+
+describe("computeStarBirthday", () => {
+  it("returns Svātī and star birthday around May 28 2026 for birth 1990-06-05T01:22 in Thanjavur, current location Virginia", () => {
+    const result = computeStarBirthday(
+      new Date("Sun May 17 2026 01:33:39 GMT-0400 (Eastern Daylight Time)"),
+      "1990-06-05T01:22",
+      10.7860267,
+      79.1381497,
+      39.0437192,
+      -77.4874899,
+    );
+    expect(result.birthNakshatra).toBe("Svātī");
+
+    const expected = new Date("Thu May 28 2026 00:00:00 GMT-0400 (Eastern Daylight Time)");
+    expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
+  });
+});
 
 describe("computePanchangam", () => {
   const date = new Date("2026-05-08T22:34:10Z");

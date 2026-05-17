@@ -29,22 +29,29 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { SunriseFill, SunsetFill, EmojiSunglassesFill } from "react-bootstrap-icons";
-import { computePanchangam } from "../core/panchangam";
+import { computePanchangam, computeStarBirthday } from "../core/panchangam";
+import type { StarBirthdayResult } from "../core/panchangam";
 import type { TimeFormat, LocationData, LunarSystem } from "../constants";
-import { LOCATION_KEY } from "../constants";
+import { LOCATION_KEY, STAR_BIRTHDAY_KEY } from "../constants";
 import "../styles/DailyView.css";
+
+interface DailyViewProps {
+  timeFormat: TimeFormat;
+  lunarSystem: LunarSystem;
+}
 
 const getMoonPhaseImage = (number: number, paksha: string): string => {
   return encodeURI(`/images/moon-phases/${number}_${paksha}.webp`);
 };
 
-function getLocation(): { latitude: number; longitude: number } | null {
+function getLocation(): LocationData | null {
   const stored = localStorage.getItem(LOCATION_KEY);
-  if (stored) {
-    const data = JSON.parse(stored) as LocationData;
-    return { latitude: data.latitude, longitude: data.longitude };
+  if (!stored) return null;
+  try {
+    return JSON.parse(stored) as LocationData;
+  } catch {
+    return null;
   }
-  return null;
 }
 
 function formatTime(date: Date, format: TimeFormat): string {
@@ -100,10 +107,46 @@ const RASHI: Record<string, { icon: IconDefinition; zodiacName: string }> = {
   Mīna: { icon: faPisces, zodiacName: "Pisces" },
 };
 
+interface StoredStarBirthday {
+  name?: string;
+  birthNakshatra: string;
+  starBirthday: string;
+  birthDateTime: string;
+  birthLocation: LocationData;
+}
+
+function getStoredStarBirthdayData(): StoredStarBirthday | null {
+  try {
+    const stored = localStorage.getItem(STAR_BIRTHDAY_KEY);
+    if (!stored) return null;
+    return JSON.parse(stored) as StoredStarBirthday;
+  } catch {
+    return null;
+  }
+}
+
 function FindStarBirthdayPanel() {
-  const [birthDateTime, setBirthDateTime] = useState("");
-  const [birthLocation, setBirthLocation] = useState<LocationData | null>(null);
+  const stored = getStoredStarBirthdayData();
+  const [name, setName] = useState(stored?.name ?? "");
+  const [birthDateTime, setBirthDateTime] = useState(stored?.birthDateTime ?? "");
+  const [birthLocation, setBirthLocation] = useState<LocationData | null>(
+    stored?.birthLocation ?? null,
+  );
+  const [currentLocation, setCurrentLocation] = useState<LocationData | null>(getLocation);
+  const [result, setResult] = useState<StarBirthdayResult | null>(
+    stored?.birthNakshatra
+      ? { birthNakshatra: stored.birthNakshatra, starBirthday: new Date(stored.starBirthday) }
+      : null,
+  );
   const dateTimeInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const current = getStoredStarBirthdayData();
+    localStorage.setItem(
+      STAR_BIRTHDAY_KEY,
+      JSON.stringify({ ...current, name, birthDateTime, birthLocation }),
+    );
+  }, [name, birthDateTime, birthLocation]);
 
   function openDatePicker() {
     try {
@@ -113,16 +156,44 @@ function FindStarBirthdayPanel() {
     }
   }
 
-  const allFilled = birthDateTime !== "" && birthLocation !== null;
+  function handleFind() {
+    if (!birthLocation || !currentLocation) return;
+    const res = computeStarBirthday(
+      new Date(),
+      birthDateTime,
+      birthLocation.latitude,
+      birthLocation.longitude,
+      currentLocation.latitude,
+      currentLocation.longitude,
+    );
+    setResult(res);
+  }
+
+  const allFilled =
+    name !== "" && birthDateTime !== "" && birthLocation !== null && currentLocation !== null;
 
   return (
     <section className="star-birthday-panel">
       <h2 className="star-birthday-panel__title">Find My Star Birthday</h2>
       <div className="star-birthday-form">
         <div className="star-birthday-form__field">
+          <label className="star-birthday-form__label">Name</label>
+          <input
+            type="text"
+            className="star-birthday-form__text"
+            placeholder="Enter your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="star-birthday-form__field">
           <label className="star-birthday-form__label">Birth Date &amp; Time</label>
-          <div className="star-birthday-form__datetime-wrapper" onClick={openDatePicker}>
-            <FontAwesomeIcon icon={faCalendarDays} className="star-birthday-form__datetime-icon" />
+          <div className="star-birthday-form__datetime-wrapper">
+            <FontAwesomeIcon
+              icon={faCalendarDays}
+              className="star-birthday-form__datetime-icon"
+              onClick={openDatePicker}
+            />
             <input
               ref={dateTimeInputRef}
               type="datetime-local"
@@ -134,23 +205,54 @@ function FindStarBirthdayPanel() {
         </div>
         <div className="star-birthday-form__field">
           <label className="star-birthday-form__label">Birth City</label>
-          <CitySearch saveToStorage={false} onLocationSelect={setBirthLocation} />
+          <CitySearch
+            saveToStorage={false}
+            onLocationSelect={setBirthLocation}
+            initialValue={
+              stored?.birthLocation
+                ? `${stored.birthLocation.city}, ${stored.birthLocation.country}`
+                : undefined
+            }
+          />
         </div>
         <div className="star-birthday-form__field">
           <label className="star-birthday-form__label">Current City</label>
-          <CitySearch />
+          <CitySearch onLocationSelect={setCurrentLocation} />
         </div>
-        <button className="star-birthday-form__btn" disabled={!allFilled}>
+        <button className="star-birthday-form__btn" disabled={!allFilled} onClick={handleFind}>
           <FontAwesomeIcon icon={faStar} /> Find Star Birthday
         </button>
+        {result && (
+          <div className="star-birthday-result">
+            <div className="star-birthday-result__section">
+              <span className="anga-card__label">
+                <FontAwesomeIcon icon={faStar} />
+                BIRTH NAKSHATRA
+              </span>
+              <span className="anga-card__value">{result.birthNakshatra}</span>
+            </div>
+            <div className="star-birthday-result__divider" />
+            <div className="star-birthday-result__section">
+              <span className="anga-card__label">
+                <FontAwesomeIcon icon={faCalendarDays} />
+                STAR BIRTHDAY
+              </span>
+              <span className="anga-card__value">
+                {result.starBirthday.toLocaleDateString("en-IN", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </span>
+              <span className="anga-card__sub">
+                {result.starBirthday.toLocaleDateString("en-IN", { weekday: "long" })}
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
-}
-
-interface DailyViewProps {
-  timeFormat: TimeFormat;
-  lunarSystem: LunarSystem;
 }
 
 export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {

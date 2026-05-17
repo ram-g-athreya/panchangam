@@ -8,6 +8,7 @@ import "../styles/CitySearch.css";
 
 library.add(faLocationDot);
 
+const SUGGESTIONS_COUNT = 10;
 const locationIcon = findIconDefinition({ prefix: "fas", iconName: "location-dot" });
 
 interface PhotonProperties {
@@ -45,17 +46,22 @@ function formatSuggestion(props: PhotonProperties): string {
 interface CitySearchProps {
   saveToStorage?: boolean;
   onLocationSelect?: (data: LocationData) => void;
+  initialValue?: string;
 }
 
-export function CitySearch({ saveToStorage = true, onLocationSelect }: CitySearchProps = {}) {
-  const [inputValue, setInputValue] = useState<string>(() =>
-    saveToStorage ? getStoredDisplay() : "",
-  );
+export function CitySearch({
+  saveToStorage = true,
+  onLocationSelect,
+  initialValue,
+}: CitySearchProps = {}) {
+  const getInitialDisplay = () =>
+    initialValue !== undefined ? initialValue : saveToStorage ? getStoredDisplay() : "";
+  const [inputValue, setInputValue] = useState<string>(getInitialDisplay);
   const [suggestions, setSuggestions] = useState<PhotonFeature[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const selectedRef = useRef(false);
-  const displayValueRef = useRef<string>(saveToStorage ? getStoredDisplay() : "");
+  const displayValueRef = useRef<string>(getInitialDisplay());
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   useEffect(() => {
@@ -83,7 +89,7 @@ export function CitySearch({ saveToStorage = true, onLocationSelect }: CitySearc
         setIsLoading(true);
         try {
           const res = await fetch(
-            `https://photon.komoot.io/api/?q=${encodeURIComponent(value.trim())}&osm_tag=place:city&osm_tag=place:town&osm_tag=place:village&limit=7`,
+            `https://photon.komoot.io/api/?q=${encodeURIComponent(value.trim())}&osm_tag=place:city&osm_tag=place:town&osm_tag=place:village&limit=${SUGGESTIONS_COUNT}`,
           );
           const data = (await res.json()) as PhotonResponse;
           setSuggestions(data.features ?? []);

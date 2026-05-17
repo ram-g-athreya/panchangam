@@ -136,12 +136,18 @@ This panel helps the user find their star birthday.
 
 - Its width should span 33.333% in desktop, 50% in tablets and 100% in mobile
 - Should have the title **Find My Star Birthday**. Add a gap of at least `0.5rem` between the title and subsequent components.
+- **Name**: Name of the user
 - **Birth Date & Time**: Date Picker that asks for the user's birth date and time
 - **Birth City**: City Search component that user can use to enter their birth city
 - **Current City**: City Search component which should have the same value as the component in the header and from `localStorage`. Updating the city here should also update it globally
 - **Find Star Birthday** button. The button should be disabled until all the fields are filled
   - Center the button
   - The text should be prefixed by a `star` icon from FontAwesome
+  - When the button is clicked then
+    - change the color of the background and text to indicate that the button was pressed
+    - invoke the `computeStarBirthday` function with birthDate (with time), birth and current lat and long
+  - Display the birth `nakshatra` and the star birthday based on the result of the compuation
+  - save the name, birth date & time and birth city and repopulate on startup if it exists. Store as a single JSON object
 
 ## Sankalpam
 

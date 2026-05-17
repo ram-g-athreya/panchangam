@@ -102,3 +102,33 @@
 - Files updated: src/components/CitySearch.tsx, src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: commit changes
+
+### Session 0040
+
+- Date: 2026-05-16
+- Goal: Implement computeStarBirthday algorithm and wire it up in FindStarBirthdayPanel
+- Completed:
+  - Installed `@photostructure/tz-lookup` dependency
+  - panchangam.ts: added `StarBirthdayResult` interface; `parseZonedToUTC` helper (converts "YYYY-MM-DDTHH:mm" in a given IANA timezone to UTC using Intl.DateTimeFormat offset trick); `computeStarBirthday` — looks up birth timezone, parses birth datetime, computes birth panchangam, gets birth nakshatra, starts search from yesterday's sunrise at current location, estimates JD for moon reaching birth nakshatra zone (mod360 distance / SPEED_MOON), finds first calendar day with matching sunrise nakshatra (offset loop 0–2), returns { birthNakshatra, starBirthday }
+  - DailyView.tsx: imported computeStarBirthday + StarBirthdayResult; updated getLocation() to return full LocationData; added currentLocation state (initialized from localStorage) + setCurrentLocation callback for Current City CitySearch; handleFind() calls computeStarBirthday with both locations; result state renders a card below the button
+  - DailyView.css: added .star-birthday-result, .star-birthday-result__nakshatra, .star-birthday-result__date styles
+- Verification run: npm run check exits 0; 2 tests passing
+- Evidence captured: task_list.yaml updated
+- Files updated: src/core/panchangam.ts, src/pages/DailyView.tsx, src/styles/DailyView.css, package.json, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: commit changes
+
+### Session 0041
+
+- Date: 2026-05-16
+- Goal: Finalize find-starbirth-day-ui — name field, button styling, localStorage persistence, button press feedback
+- Completed:
+  - DailyView.tsx: added `name` state + text input field; `StoredStarBirthday` interface; `getStoredStarBirthdayData()` helper; `useEffect` persists `name`, `birthDateTime`, `birthLocation` on every change; `handleFind` merges computed result into stored JSON; all fields pre-populated from localStorage on mount; `dateTimeInputRef` + `openDatePicker()` via showPicker(); `allFilled` guard requires name non-empty
+  - DailyView.tsx: result card redesigned as two-section flex row (`star-birthday-result__section` + `star-birthday-result__divider`) using existing anga-card label/value/sub classes
+  - CitySearch.tsx: added `initialValue` prop; `getInitialDisplay()` returns initialValue if provided, else stored/empty; `displayValueRef` tracks confirmed display for blur-revert on non-storage instances
+  - DailyView.css: `.star-birthday-form__text` for name input; `.star-birthday-form__datetime-wrapper` relative container; icon `position: absolute; left: 0.6rem; z-index: 1; cursor: pointer`; input `padding-left: 2rem`; `::-webkit-calendar-picker-indicator { display: none }`; `.star-birthday-form__btn` with `align-self: center`; button `transition: background-color 1s ease, color 1s ease, transform 1s ease, opacity 0.2s ease`; `:active:not(:disabled)` sets pressed colors + `transition: none` for instant press + 1s release return; `.star-birthday-result` flex row; `.star-birthday-result__section` + `.star-birthday-result__divider`
+- Verification run: npm run check exits 0; 2 tests passing
+- Evidence captured: task_list.yaml status set to passing
+- Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, src/components/CitySearch.tsx, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: commit all find-starbirth-day-ui changes

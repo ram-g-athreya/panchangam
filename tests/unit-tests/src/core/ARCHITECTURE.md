@@ -73,3 +73,35 @@ test_cases:
       - sunRise: Fri May 08 2026 06:04:00 GMT-0400 (Eastern Daylight Time)
       - sunSet: Thu May 07 2026 20:10:00 GMT-0400 (Eastern Daylight Time)
 ```
+
+### Unit tests for the computeStarBirthday function
+
+Add test cases
+
+```yaml
+description:
+  - Allow an error of `1 minute` for `sunRise` or `sunSet`
+  - Keep all these error margins as constants at the top of the file and use them in the test
+  - Compare the date string and they should be exactly equal
+test_cases:
+  - parameters:
+      currentDate: Sun May 17 2026 01:33:00 GMT-0400 (Eastern Daylight Time)
+      birthDate: 1990-06-05T01:20
+      birthLatitude: 10.7860267
+      birthLongitude: 79.1381497
+      currentLatitude: 39.0437192
+      currentLongitude: -77.4874899
+    expected_output:
+      birthNakshatra: Svātī
+      starBirthday: 2026-05-28 Thu May 28 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
+  - parameters:
+      currentDate: Sun May 17 2026 01:33:00 GMT-0400 (Eastern Daylight Time)
+      birthDate: 1990-10-06T07:20
+      birthLatitude: 10.7860267
+      birthLongitude: 79.1381497
+      currentLatitude: 39.0437192
+      currentLongitude: -77.4874899
+    expected_output:
+      birthNakshatra: Aśvinī
+      starBirthday: 2026-10-28 Thu May 28 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
+```

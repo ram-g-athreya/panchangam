@@ -1,5 +1,8 @@
 // All angles in degrees unless noted. All final values use Nirayana (sidereal) longitudes.
 import { Astrosk, SE } from "astrosk-wasm";
+import { set } from "date-fns";
+import { fromZonedTime, toZonedTime } from "date-fns-tz";
+import tzlookup from "@photostructure/tz-lookup";
 import type { LunarSystem } from "../constants";
 
 const astrosk = await Astrosk.init();
@@ -44,6 +47,16 @@ export interface Panchangam {
   moonRashi: string;
   sunRise?: Date;
   sunSet?: Date;
+  meta: {
+    sunSidereal: number;
+    moonSidereal: number;
+    elongation: number;
+  };
+}
+
+export interface StarBirthdayResult {
+  birthNakshatra: string;
+  starBirthday: Date;
 }
 
 const TITHIS = [
@@ -242,6 +255,15 @@ const RITUS = ["Vasanta", "Grīṣma", "Varṣā", "Śarada", "Hemanta", "Śiśi
 const NAKSHATRA_WIDTH = 360 / 27;
 const ZENITH_UPPER_LIMB = 90.8333; // 90°50' — upper limb + atmospheric refraction
 
+const RASI_WIDTH = 30; // 12 Rasis * 30 degrees = 360 degrees
+const SPEED_SUN = 360 / 365.25636; // ~0.9856 degrees per day (Sidereal Year length)
+/**
+ * Elongation increases by ~12.19° per day, while the Sun moves ~0.98° per day.
+ * The ratio of Sun motion to Elongation motion is roughly 0.08085.
+ */
+const SUN_ELONGATION_RATIO = 0.08085;
+const LUNAR_SYNODIC_PERIOD = 29.53059; // Average days from new moon to new moon
+
 /**
  * Average speeds in degrees per day
  */
@@ -420,25 +442,61 @@ function computeRitu(sunSidereal: number): string {
   return RITUS[index];
 }
 
-function computeMasa(sunSidereal: number, elongation: number, lunarSystem: LunarSystem): string {
-  /**
-   * 1. Calculate Sun's position at the last New Moon.
-   * Elongation increases by ~12.19° per day, while the Sun moves ~0.98° per day.
-   * The ratio of Sun motion to Elongation motion is roughly 0.0808.
-   */
-  const S_nm = mod360(sunSidereal - elongation * 0.0808);
+const computeSunAtLastNewMoon = (sunSidereal: number, elongation: number): number =>
+  mod360(sunSidereal - elongation * SUN_ELONGATION_RATIO);
 
-  /**
-   * 2. Determine the Masa Index.
-   * In the standard mapping:
-   * Sun in Mesha (0°-30°) at New Moon = Vaishakha
-   * Sun in Meena (330°-360°) at New Moon = Chaitra
-   *
-   * Since the MASAS array starts with Chaitra (Index 0), we shift the index.
-   */
-  const R_nm = Math.floor(S_nm / 30); // 0 = Mesha, 11 = Meena
-  let masaIndex = (R_nm + 1) % 12;
-  if (lunarSystem === "purnimanta") masaIndex = (masaIndex + 1) % 12;
+/**
+ * Determine the Masa Index.
+ * In the standard mapping:
+ * Sun in Mesha (0°-30°) at New Moon = Vaishakha
+ * Sun in Meena (330°-360°) at New Moon = Chaitra
+ *
+ * Since the MASAS array starts with Chaitra (Index 0), we shift the index.
+ */
+function computeMasaAtNewMoon(sunAtNewMoon: number): number {
+  const R_nm = Math.floor(sunAtNewMoon / RASI_WIDTH); // 0 = Mesha, 11 = Meena
+  return (R_nm + 1) % 12;
+}
+
+function isNextMonthAdhikaMasa(elongation: number, currentDate: Date): boolean {
+  const elongationToNext = mod360(360 - elongation);
+  const daysToNextNewMoon = elongationToNext / SPEED_ELONGATION;
+  const approxNextNmDate = shiftDay(currentDate, daysToNextNewMoon);
+
+  const S_next_nm = siderealSunLongitude(toJulianDay(approxNextNmDate));
+  const R_next_nm = computeMasaAtNewMoon(S_next_nm);
+
+  const elongationToNextNext = elongationToNext + 360;
+  const daysToNextNextNewMoon = elongationToNextNext / SPEED_ELONGATION;
+  const approxNextNextNmDate = shiftDay(currentDate, daysToNextNextNewMoon);
+
+  const S_next_next_nm = siderealSunLongitude(toJulianDay(approxNextNextNmDate));
+  const R_next_next_nm = computeMasaAtNewMoon(S_next_next_nm);
+
+  console.log(R_next_nm === R_next_next_nm);
+  return R_next_nm === R_next_next_nm;
+
+  // const remainingElongationToNext = mod360(360 - elongation);
+  // const S_next_nm = mod360(sunSidereal + remainingElongationToNext * SUN_ELONGATION_RATIO);
+  // const R_next_nm = computeMasaAtNewMoon(S_next_nm);
+
+  // const elongationToNextNext = remainingElongationToNext + 360;
+  // const S_next_next_nm = mod360(sunSidereal + elongationToNextNext * SUN_ELONGATION_RATIO);
+  // const R_next_next_nm = computeMasaAtNewMoon(S_next_next_nm);
+
+  // console.log({ S_next_nm, S_next_next_nm, R_next_nm, R_next_next_nm });
+  // console.log("is next month adhika masa", R_next_nm, R_next_next_nm, R_next_nm === R_next_next_nm);
+
+  // return R_next_nm === R_next_next_nm;
+}
+
+function computeMasa(sunSidereal: number, elongation: number, lunarSystem: LunarSystem): string {
+  const S_nm = computeSunAtLastNewMoon(sunSidereal, elongation);
+  let masaIndex = computeMasaAtNewMoon(S_nm);
+
+  // Purnimanta is ONLY 1 month ahead of Amanta during Krishna Paksha (elongation > 180°)
+  const isKrishnaPaksha = elongation > 180;
+  if (lunarSystem === "purnimanta" && isKrishnaPaksha) masaIndex = (masaIndex + 1) % 12;
 
   return MASAS[masaIndex];
 }
@@ -518,8 +576,11 @@ function computeTithi(elongation: number): Tithi {
 }
 
 function computeRashi(siderealLongitude: number): string {
-  return RASHIS[Math.floor(siderealLongitude / 30) % 12];
+  return RASHIS[Math.floor(siderealLongitude / RASI_WIDTH) % 12];
 }
+
+const shiftDay = (date: Date, delta: number) =>
+  new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + delta));
 
 export function computePanchangam(
   date: Date,
@@ -538,7 +599,7 @@ export function computePanchangam(
   const moonSidereal = siderealMoonLongitude(jd);
 
   // Tithi: every 12° of elongation between sidereal moon and sun
-  const elongation = mod360(moonSidereal - sunSidereal);
+  const elongation = getPanchangSegment(jd, "TITHI");
 
   // Vasara derived from sunrise date so pre-sunrise inputs resolve to the previous solar day
   const vara = VARA[sunDate.getUTCDay()];
@@ -578,5 +639,113 @@ export function computePanchangam(
     moonRashi: computeRashi(moonSidereal),
     sunRise,
     sunSet,
+    meta: {
+      sunSidereal,
+      moonSidereal,
+      elongation,
+    },
+  };
+}
+
+export function computeStarBirthday(
+  currentDate: Date,
+  birthDate: string,
+  birthLatitude: number,
+  birthLongitude: number,
+  currentLatitude: number,
+  currentLongitude: number,
+): StarBirthdayResult {
+  // Interpret birth datetime in the birth location's local timezone
+  const birthTz = tzlookup(birthLatitude, birthLongitude);
+  let birthDateUTC = fromZonedTime(birthDate, birthTz);
+
+  // Get birth nakshatra from the birth panchangam
+  let birthPanchangam = computePanchangam(birthDateUTC, birthLatitude, birthLongitude);
+  const n0 = birthPanchangam.nakshatras[0];
+  const isSecond =
+    n0.endTime !== undefined && birthDateUTC >= n0.endTime && birthPanchangam.nakshatras.length > 1;
+
+  // If the nakshatra falls after the first part then its actually the nakshatra for the next day
+  // So we should move forward by sunRise for next day
+  if (isSecond) {
+    birthDateUTC = fromZonedTime(
+      set(toZonedTime(birthDate, birthTz), {
+        hours: 12,
+        minutes: 0,
+        seconds: 0,
+      }),
+      birthTz,
+    );
+    birthPanchangam = computePanchangam(birthDateUTC, birthLatitude, birthLongitude);
+  }
+
+  const birthNakshatraName = birthPanchangam.nakshatras[0].name;
+  const birthNakshatraIndex = NAKSHATRAS.indexOf(birthNakshatraName as (typeof NAKSHATRAS)[number]);
+  const birthMonthName = birthPanchangam.masa;
+  // Decrement index by 1 since we add 1 in computeMasa
+  const birthMonthIndex = MASAS.indexOf(birthMonthName as (typeof MASAS)[number]);
+
+  let currentPanchangam = computePanchangam(currentDate, currentLatitude, currentLongitude);
+  const startSunrise = currentPanchangam.sunRise as Date;
+  let startJD = toJulianDay(startSunrise);
+
+  console.log("current panchangam masa", currentPanchangam.masa, currentDate);
+
+  let daysToTravelSun = 0;
+
+  // Estimate days until the Sun enters the birth nakshatra zone
+  if (
+    currentPanchangam.masa !== birthMonthName &&
+    !isNextMonthAdhikaMasa(currentPanchangam.meta.elongation, startSunrise)
+  ) {
+    const birthZoneStartSun = birthMonthIndex * RASI_WIDTH;
+    const degreesToTravelSun = mod360(birthZoneStartSun - currentPanchangam.meta.sunSidereal);
+    daysToTravelSun = degreesToTravelSun / SPEED_SUN;
+    console.log("need to add daysToTravelSun", {
+      daysToTravelSun,
+      birthZoneStartSun,
+      startSunrise,
+      startJD,
+    });
+  }
+
+  // Estimate days until the Moon enters the birth nakshatra zone
+  const startMoonLong = siderealMoonLongitude(startJD);
+  const birthZoneStartMoon = birthNakshatraIndex * NAKSHATRA_WIDTH;
+  const degreesToTravelMoon = mod360(birthZoneStartMoon - startMoonLong);
+  const daysToTravelMoon = degreesToTravelMoon / SPEED_MOON;
+  const estimatedEntryDate = julianDayToDate(startJD + daysToTravelSun + daysToTravelMoon);
+
+  // Check each candidate day. For each, compute the panchangam and check whether the birth
+  // nakshatra is the first or second of that day in the current year:
+  // - first at sunrise → that day is the star birthday
+  // - second after sunrise → the following day is the star birthday
+  for (let offset = -1; offset <= 3; offset++) {
+    const checkDate = shiftDay(estimatedEntryDate, offset);
+    currentPanchangam = computePanchangam(checkDate, currentLatitude, currentLongitude);
+
+    const first = currentPanchangam.nakshatras[0];
+    const second = currentPanchangam.nakshatras[1];
+    console.log(
+      "in the for loop",
+      currentPanchangam.masa,
+      computePanchangam(checkDate, currentLatitude, currentLongitude, "purnimanta").masa,
+      currentPanchangam.tithi,
+      checkDate,
+    );
+    if (currentPanchangam.masa === birthMonthName && first.name === birthNakshatraName) {
+      console.log("matches the first nakshatra");
+      return { birthNakshatra: birthNakshatraName, starBirthday: checkDate };
+    }
+    if (currentPanchangam.masa === birthMonthName && second?.name === birthNakshatraName) {
+      console.log("matches the second nakshatra");
+      return { birthNakshatra: birthNakshatraName, starBirthday: shiftDay(checkDate, 1) };
+    }
+    console.log("\n\n");
+  }
+
+  return {
+    birthNakshatra: birthNakshatraName,
+    starBirthday: estimatedEntryDate,
   };
 }
