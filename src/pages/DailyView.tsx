@@ -54,17 +54,18 @@ function getLocation(): LocationData | null {
   }
 }
 
-function formatTime(date: Date, format: TimeFormat): string {
+function formatTime(date: Date, format: TimeFormat, displaySecond = true): string {
   const mm = String(date.getMinutes()).padStart(2, "0");
   const ss = String(date.getSeconds()).padStart(2, "0");
+
   if (format === "24h") {
     const hh = String(date.getHours()).padStart(2, "0");
-    return `${hh}:${mm}:${ss}`;
+    return `${hh}:${mm}` + (displaySecond ? `:${ss}` : "");
   }
   const raw = date.getHours();
   const ampm = raw >= 12 ? "PM" : "AM";
   const hh = String(raw % 12 || 12).padStart(2, "0");
-  return `${hh}:${mm}:${ss} ${ampm}`;
+  return `${hh}:${mm}` + (displaySecond ? `:${ss}` : "") + ` ${ampm}`;
 }
 
 type RituIconProps = { ritu: string };
@@ -81,6 +82,15 @@ function RituIcon({ ritu }: RituIconProps) {
             ? faWind
             : faSnowflake;
   return <FontAwesomeIcon icon={faIcon} />;
+}
+
+function formatTimeRange(
+  range: { start: Date; end: Date } | undefined,
+  format: TimeFormat,
+  displaySecond = true,
+): string {
+  if (!range) return "Set your city";
+  return `${formatTime(range.start, format, displaySecond)} to ${formatTime(range.end, format, displaySecond)}`;
 }
 
 function formatDate(date: Date): string {
@@ -448,6 +458,28 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
                   <FontAwesomeIcon icon={RASHI[p.moonRashi].icon} /> {p.moonRashi}
                 </span>
                 <span className="anga-card__sub">{RASHI[p.moonRashi].zodiacName}</span>
+              </div>
+            </div>
+          </div>
+          <div className="anga-card anga-card--full-row">
+            <div className="rashi-card__header kalam-card__header">
+              <div className="rashi-card__section">
+                <span className="anga-card__label">
+                  <span className="kalam-icon kalam-icon--snake" aria-hidden="true" />
+                  RAHU KALAM
+                </span>
+                <span className="anga-card__value">
+                  {formatTimeRange(p.rahuKalam, timeFormat, false)}
+                </span>
+              </div>
+              <div className="rashi-card__section">
+                <span className="anga-card__label">
+                  <span className="kalam-icon kalam-icon--bull" aria-hidden="true" />
+                  YAMA GANDAM
+                </span>
+                <span className="anga-card__value">
+                  {formatTimeRange(p.yamaKandam, timeFormat, false)}
+                </span>
               </div>
             </div>
           </div>

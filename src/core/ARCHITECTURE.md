@@ -16,11 +16,12 @@
   - **moonRashi**: the Moon Rashi
   - **sunRise**: Date and time of Sunrise
   - **sunSet**: Date and time of Sunset
-  - **meta**: {
+  - **rahuKalam**: Rahu Kalam for the day
+  - **yamaKandam**: Yama Kandam for the day
+  - **meta**:
     **sunSidereal**: number,
     **moonSidereal**: number,
     **elongation**: number
-    }
 
 - Write corresponding functions to calculate each component.
 
@@ -150,6 +151,24 @@ The name of the year in the 60-year Jovian cycle.
 ##### K. Moon Sign (Moon Rashi)
 
 - **Moon Rashi Index**: `floor(moonSidereal % 30)`
+
+##### L. Rahu Kalam & Yama Kandam
+
+- Determine the total time between sunrise and sunset, and convert it entirely into minutes.
+- Divide your total daylight minutes by 8 to find the length of a single part.
+
+Based on the day the following are the following parts are the Rahu Kalam and Yama Kandam. Calculate the date range for the relevant part and return the range (only the time, eg: 7:30 AM to 9:00 AM)
+
+```csv
+day,rahu kalam part,yama kandam part
+Monday,2,4
+Tuesday,7,3
+Wednesday,5,2
+Thursday,6,1
+Friday,4,7
+Saturday,3,6
+Sunday,8,5
+```
 
 ### computeStarBirthday algorithm
 

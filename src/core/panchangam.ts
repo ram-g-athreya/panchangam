@@ -33,6 +33,11 @@ interface Yoga {
   endTime?: Date;
 }
 
+interface TimeRange {
+  start: Date;
+  end: Date;
+}
+
 export interface Panchangam {
   tithi: Tithi;
   vara: string;
@@ -47,6 +52,8 @@ export interface Panchangam {
   moonRashi: string;
   sunRise?: Date;
   sunSet?: Date;
+  rahuKalam?: TimeRange;
+  yamaKandam?: TimeRange;
   meta: {
     sunSidereal: number;
     moonSidereal: number;
@@ -269,6 +276,10 @@ const SUN_ELONGATION_RATIO = 0.08085;
 const SPEED_MOON = 13.17639;
 const SPEED_ELONGATION = 12.19075; // Moon - Sun
 const SPEED_YOGA = 14.162; // Moon + Sun
+
+// Indexed by JS day-of-week (0=Sun … 6=Sat): which 1-based part (out of 8) is inauspicious
+const RAHU_KALAM_PART = [8, 2, 7, 5, 6, 4, 3];
+const YAMA_KANDAM_PART = [5, 4, 3, 2, 1, 7, 6];
 
 type PanchangElement = "TITHI" | "NAKSHATRA" | "YOGA" | "KARANA";
 
@@ -588,6 +599,24 @@ export function computePanchangam(
   const sunRise = hasCoords ? computeGoverningSunrise(date, latitude!, longitude!) : undefined;
   const sunSet = hasCoords ? computeSunsetDateForDay(date, latitude!, longitude!) : undefined;
 
+  let rahuKalam: TimeRange | undefined;
+  let yamaKandam: TimeRange | undefined;
+  if (sunRise && sunSet) {
+    const totalMs = sunSet.getTime() - sunRise.getTime();
+    const partMs = totalMs / 8;
+    const dayOfWeek = sunDate.getUTCDay();
+    const rahuPart = RAHU_KALAM_PART[dayOfWeek];
+    const yamaPart = YAMA_KANDAM_PART[dayOfWeek];
+    rahuKalam = {
+      start: new Date(sunRise.getTime() + (rahuPart - 1) * partMs),
+      end: new Date(sunRise.getTime() + rahuPart * partMs),
+    };
+    yamaKandam = {
+      start: new Date(sunRise.getTime() + (yamaPart - 1) * partMs),
+      end: new Date(sunRise.getTime() + yamaPart * partMs),
+    };
+  }
+
   const jd = toJulianDay(useSunrise ? (sunRise ?? date) : date);
   const sunSidereal = siderealSunLongitude(jd);
   const moonSidereal = siderealMoonLongitude(jd);
@@ -633,6 +662,8 @@ export function computePanchangam(
     moonRashi: computeRashi(moonSidereal),
     sunRise,
     sunSet,
+    rahuKalam,
+    yamaKandam,
     meta: {
       sunSidereal,
       moonSidereal,

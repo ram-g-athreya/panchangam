@@ -408,3 +408,31 @@
   gap: 0.25rem;
   font-size: 0.9rem;
 }
+
+.kalam-icon {
+  display: inline-block;
+  width: 1.2rem;
+  height: 1.2rem;
+  background-color: currentColor;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  flex-shrink: 0;
+}
+
+.kalam-icon--snake {
+  mask-image: url("/icons/snake.svg");
+  -webkit-mask-image: url("/icons/snake.svg");
+}
+
+.kalam-icon--bull {
+  mask-image: url("/icons/bull-horns.svg");
+  -webkit-mask-image: url("/icons/bull-horns.svg");
+}
+
+.kalam-card__header .anga-card__value {
+  font-size: 0.85rem;
+}

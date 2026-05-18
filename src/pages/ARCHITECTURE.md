@@ -128,6 +128,15 @@ This panel gives the basic Panchang information for today.
       - Kumbha: aquarius
       - Mīna: pisces
     - Center the text
+- label:
+    - width should be entire row
+    - label should be split into 2 sections each of 50% width
+    - First section is snake icon (`public/icons/snake.svg`) followed by the word RAHU KALAM
+    - Second sections is bull horns icon (`public/icons/bull-horns.svg`) followed by the word YAMA GANDAM
+  value: corresponding Rahu Kalam and Yama Gandam range
+  requirements:
+    - render the icons as SVG with colors same as the text
+    - value font-size should be 1 rem
 ```
 
 ### Sankalpam and Find Star Birthday Widgets

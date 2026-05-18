@@ -7,6 +7,7 @@ import {
 
 const SOLAR_EVENT_TOLERANCE_MS = 60_000;
 const END_TIME_TOLERANCE_MS = 60_000;
+const KALAM_TOLERANCE_MS = 60_000;
 
 function assertCommon(result: Panchangam, expected: Panchangam) {
   expect(result.meta.sunSidereal).toBeCloseTo(expected.meta.sunSidereal, 4);
@@ -54,6 +55,22 @@ function assertCommon(result: Panchangam, expected: Panchangam) {
   expect(Math.abs(result.sunSet!.getTime() - expected.sunSet!.getTime())).toBeLessThanOrEqual(
     SOLAR_EVENT_TOLERANCE_MS,
   );
+
+  expect(result.rahuKalam).toBeDefined();
+  expect(
+    Math.abs(result.rahuKalam!.start.getTime() - expected.rahuKalam!.start.getTime()),
+  ).toBeLessThanOrEqual(KALAM_TOLERANCE_MS);
+  expect(
+    Math.abs(result.rahuKalam!.end.getTime() - expected.rahuKalam!.end.getTime()),
+  ).toBeLessThanOrEqual(KALAM_TOLERANCE_MS);
+
+  expect(result.yamaKandam).toBeDefined();
+  expect(
+    Math.abs(result.yamaKandam!.start.getTime() - expected.yamaKandam!.start.getTime()),
+  ).toBeLessThanOrEqual(KALAM_TOLERANCE_MS);
+  expect(
+    Math.abs(result.yamaKandam!.end.getTime() - expected.yamaKandam!.end.getTime()),
+  ).toBeLessThanOrEqual(KALAM_TOLERANCE_MS);
 }
 
 describe("computeStarBirthday", () => {
@@ -111,6 +128,14 @@ describe("computePanchangam", () => {
       moonRashi: "Makara",
       sunRise: new Date("2026-05-08T10:04:00Z"),
       sunSet: new Date("2026-05-08T00:10:00Z"),
+      rahuKalam: {
+        start: new Date("2026-05-08T06:21:04.125Z"),
+        end: new Date("2026-05-08T05:06:42.500Z"),
+      },
+      yamaKandam: {
+        start: new Date("2026-05-08T02:37:59.250Z"),
+        end: new Date("2026-05-08T01:23:37.625Z"),
+      },
       meta: {
         sunSidereal: 23.60701389062405,
         moonSidereal: 277.08847648783467,
@@ -137,6 +162,14 @@ describe("computePanchangam", () => {
       moonRashi: "Makara",
       sunRise: new Date("2026-05-08T10:04:00Z"),
       sunSet: new Date("2026-05-08T00:10:00Z"),
+      rahuKalam: {
+        start: new Date("2026-05-08T06:21:04.125Z"),
+        end: new Date("2026-05-08T05:06:42.500Z"),
+      },
+      yamaKandam: {
+        start: new Date("2026-05-08T02:37:59.250Z"),
+        end: new Date("2026-05-08T01:23:37.625Z"),
+      },
       meta: {
         sunSidereal: 23.60701389062405,
         moonSidereal: 277.08847648783467,

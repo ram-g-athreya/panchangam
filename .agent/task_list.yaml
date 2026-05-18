@@ -12,6 +12,19 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: add-rahu-kalam-and-yama-kandam
+    priority: 1
+    title: Add rahu kalam and yama kandam based on the spec in `src/core/ARCHITECTURE.md` and `src/pages/ARCHITECTURE.md`
+    status: passing
+    evidence: >
+      npm run check exits 0 (tsc + lint + 4 tests passing).
+      TimeRange interface added to panchangam.ts; rahuKalam and yamaKandam optional fields on Panchangam.
+      RAHU_KALAM_PART and YAMA_KANDAM_PART lookup arrays indexed by day-of-week (0=Sun…6=Sat).
+      computePanchangam computes both ranges when sunRise/sunSet are available: divides daylight into 8 equal parts, picks part per day from tables.
+      DailyView renders a full-row card reusing rashi-card__header/rashi-card__section layout; kalam-card__header scopes 0.85rem value font-size override.
+      Icons use CSS mask-image referencing /icons/snake.svg (Rahu Kalam) and /icons/bull-horns.svg (Yama Gandam) from public/icons; background-color: currentColor so icons adapt to theme color.
+      Time range respects 12h/24h toggle (seconds shown/hidden via displaySecond param); shows "Set your city" when coordinates absent.
+      Tests: KALAM_TOLERANCE_MS=60_000 constant; assertCommon asserts rahuKalam and yamaKandam defined + start/end within tolerance for both amanta and purnimanta cases.
   - id: consolidate-ui
     priority: 1
     title: >
