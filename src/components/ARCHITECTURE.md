@@ -105,3 +105,11 @@ Styling should be as follows:
 - Depending upon the current page or if user hovers a link,
   - Change the background to secondary background color
   - Make the text `bold`
+
+## Footer
+
+Displays the following icons which when clicked open in a new tab:
+
+- `message`: (FontAwesome) links to https://forms.gle/p5isyKzeZi2XihNC6
+- `github`: (FontAwesome) links to https://github.com/ram-g-athreya/panchangam
+- `x-twitter`: (FontAwesome) links to https://x.com/TheButterThief

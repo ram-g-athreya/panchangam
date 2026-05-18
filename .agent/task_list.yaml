@@ -12,6 +12,16 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: add-footer
+    priority: 1
+    title: Add footer as per spec
+    status: passing
+    evidence: >
+      npm run check exits 0 (tsc + lint + 4 tests passing).
+      Installed @fortawesome/free-brands-svg-icons for faGithub and faXTwitter.
+      Footer.tsx renders three icon links (faMessage → feedback form, faGithub → GitHub repo, faXTwitter → X profile) each opening in a new tab with rel="noopener noreferrer".
+      Footer.css: flex row, centered, gap 1.5rem, secondary bg, accent color icons at 1.25rem, hover opacity 0.7.
+      App.tsx: Footer rendered between Routes and Analytics.
   - id: add-rahu-kalam-and-yama-kandam
     priority: 1
     title: Add rahu kalam and yama kandam based on the spec in `src/core/ARCHITECTURE.md` and `src/pages/ARCHITECTURE.md`
