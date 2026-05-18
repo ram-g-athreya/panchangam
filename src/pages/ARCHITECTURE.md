@@ -1,6 +1,6 @@
 # ARCHITECTURE.md
 
-All pages have the header component on top and the navigation sidebar initially hidden.
+All pages have the header component on top and footer at the bottom. The footer is not fixed, rather it is only visible when the user scrolls to the bottom of the screen
 
 ## DailyView
 

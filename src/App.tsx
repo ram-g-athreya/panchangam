@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
 import { DailyView } from "./pages/DailyView";
 import type { Theme, TimeFormat, LunarSystem } from "./constants";
 import { THEME_KEY, TIME_FORMAT_KEY, LUNAR_SYSTEM_KEY } from "./constants";
@@ -67,6 +68,7 @@ export function App() {
       <Routes>
         <Route path="/" element={<DailyView timeFormat={timeFormat} lunarSystem={lunarSystem} />} />
       </Routes>
+      <Footer />
       <Analytics />
     </BrowserRouter>
   );
