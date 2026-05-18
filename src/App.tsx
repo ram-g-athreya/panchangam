@@ -2,9 +2,7 @@ import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 import { Header } from "./components/Header";
-import { Sidebar } from "./components/Sidebar";
 import { DailyView } from "./pages/DailyView";
-import { Sankalpam } from "./pages/Sankalpam";
 import type { Theme, TimeFormat, LunarSystem } from "./constants";
 import { THEME_KEY, TIME_FORMAT_KEY, LUNAR_SYSTEM_KEY } from "./constants";
 
@@ -27,7 +25,6 @@ export function App() {
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
   const [timeFormat, setTimeFormat] = useState<TimeFormat>(getInitialTimeFormat);
   const [lunarSystem, setLunarSystem] = useState<LunarSystem>(getInitialLunarSystem);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -60,7 +57,6 @@ export function App() {
   return (
     <BrowserRouter>
       <Header
-        onOpenSidebar={() => setSidebarOpen(true)}
         theme={theme}
         onToggleTheme={toggleTheme}
         timeFormat={timeFormat}
@@ -68,10 +64,8 @@ export function App() {
         lunarSystem={lunarSystem}
         onToggleLunarSystem={toggleLunarSystem}
       />
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <Routes>
         <Route path="/" element={<DailyView timeFormat={timeFormat} lunarSystem={lunarSystem} />} />
-        <Route path="/sankalpam" element={<Sankalpam />} />
       </Routes>
       <Analytics />
     </BrowserRouter>

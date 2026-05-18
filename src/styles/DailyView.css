@@ -6,7 +6,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 .panchang-panel,
@@ -33,8 +33,46 @@
   }
 }
 
-.star-birthday-panel__title {
-  margin-bottom: 0.5rem;
+.sankalpam-section {
+  background-color: var(--color-bg-tertiary);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.sankalpam-section__title {
+  font-family: "Samarkan", serif;
+  font-size: 2rem;
+  text-align: center;
+  margin: 0 0 0.5rem 0;
+}
+
+.sankalpam-section__text {
+  font-size: 1.15rem;
+  letter-spacing: 0.025em;
+  color: var(--color-accent);
+  text-align: center;
+  margin: 0;
+  line-height: 1.8;
+}
+
+.sankalpam-section__text strong {
+  font-size: 1.25rem;
+}
+
+.find-birthday-section {
+  background-color: var(--color-bg-tertiary);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.find-birthday-section__title {
+  margin-bottom: 0.75rem;
 }
 
 .star-birthday-pills {
@@ -149,7 +187,7 @@
   display: none;
 }
 
-.star-birthday-panel .city-search {
+.find-birthday-section .city-search {
   width: 100%;
   max-width: 100%;
   margin-left: 0;
@@ -185,7 +223,7 @@
 }
 
 .star-birthday-result {
-  background-color: var(--color-bg-tertiary);
+  background-color: var(--color-bg-secondary);
   border-radius: 6px;
   padding: 0.75rem;
   display: flex;
@@ -369,4 +407,32 @@
   justify-content: center;
   gap: 0.25rem;
   font-size: 0.9rem;
+}
+
+.kalam-icon {
+  display: inline-block;
+  width: 1.2rem;
+  height: 1.2rem;
+  background-color: currentColor;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  flex-shrink: 0;
+}
+
+.kalam-icon--snake {
+  mask-image: url("/icons/snake.svg");
+  -webkit-mask-image: url("/icons/snake.svg");
+}
+
+.kalam-icon--bull {
+  mask-image: url("/icons/bull-horns.svg");
+  -webkit-mask-image: url("/icons/bull-horns.svg");
+}
+
+.kalam-card__header .anga-card__value {
+  font-size: 0.85rem;
 }

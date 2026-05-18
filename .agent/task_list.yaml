@@ -12,6 +12,33 @@ status_legend:
   passing: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: add-rahu-kalam-and-yama-kandam
+    priority: 1
+    title: Add rahu kalam and yama kandam based on the spec in `src/core/ARCHITECTURE.md` and `src/pages/ARCHITECTURE.md`
+    status: passing
+    evidence: >
+      npm run check exits 0 (tsc + lint + 4 tests passing).
+      TimeRange interface added to panchangam.ts; rahuKalam and yamaKandam optional fields on Panchangam.
+      RAHU_KALAM_PART and YAMA_KANDAM_PART lookup arrays indexed by day-of-week (0=Sun…6=Sat).
+      computePanchangam computes both ranges when sunRise/sunSet are available: divides daylight into 8 equal parts, picks part per day from tables.
+      DailyView renders a full-row card reusing rashi-card__header/rashi-card__section layout; kalam-card__header scopes 0.85rem value font-size override.
+      Icons use CSS mask-image referencing /icons/snake.svg (Rahu Kalam) and /icons/bull-horns.svg (Yama Gandam) from public/icons; background-color: currentColor so icons adapt to theme color.
+      Time range respects 12h/24h toggle (seconds shown/hidden via displaySecond param); shows "Set your city" when coordinates absent.
+      Tests: KALAM_TOLERANCE_MS=60_000 constant; assertCommon asserts rahuKalam and yamaKandam defined + start/end within tolerance for both amanta and purnimanta cases.
+  - id: consolidate-ui
+    priority: 1
+    title: >
+      Consolidate the UI by moving the Sankalpam to the home page. As a result remove the redundant Sankalpam page. Also remove the hamburger icon from the header since it is no longer necessary
+    status: passing
+    evidence: >
+      npm run check exits 0 (tsc + lint + 4 tests passing).
+      Sankalpam page + Sidebar deleted; hamburger removed from Header; /sankalpam route removed from App.
+      SidePanel (renamed from FindStarBirthdayPanel) renders sankalpam-section + find-birthday-section inside star-birthday-panel.
+      Sankalpam section: h1 with Samarkan font, centered; tertiary bg, 1rem padding, border-radius, shadow; text at 1.15rem accent color, 0.025em letter-spacing, 1.8 line-height; bold variables at 1.25rem.
+      Find Star Birthday section: wrapped in find-birthday-section div with tertiary bg, 1rem padding, border-radius, shadow; title is h2; gap: 0.5rem between children.
+      star-birthday-result uses secondary background to contrast against tertiary section bg.
+      daily-view uses align-items: stretch so both panels match height.
+      Sankalpam template includes "Vasare" after vara per spec.
   - id: store-and-retrieve-names
     priority: 1
     title: Store, Display and prepopulate names and associated data for finding star birthday based on `src/pages/ARCHITECTURE.md`

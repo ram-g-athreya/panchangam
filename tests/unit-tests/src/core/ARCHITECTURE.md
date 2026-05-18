@@ -41,6 +41,12 @@ test_cases:
       moonRashi: Makara
       sunRise: Fri May 08 2026 06:04:00 GMT-0400 (Eastern Daylight Time)
       sunSet: Thu May 07 2026 20:10:00 GMT-0400 (Eastern Daylight Time)
+      rahuKalam:
+        start: 2026-05-08T06:21:04.125Z
+        end: 2026-05-08T05:06:42.500Z
+      yamaKandam:
+        start: 2026-05-08T02:37:59.250Z
+        end: 2026-05-08T01:23:37.625Z
       meta:
         sunSidereal: 23.60701389062405
         moonSidereal: 277.08847648783467
@@ -76,6 +82,12 @@ test_cases:
       moonRashi: Makara
       sunRise: Fri May 08 2026 06:04:00 GMT-0400 (Eastern Daylight Time)
       sunSet: Thu May 07 2026 20:10:00 GMT-0400 (Eastern Daylight Time)
+      rahuKalam:
+        start: 2026-05-08T06:21:04.125Z
+        end: 2026-05-08T05:06:42.500Z
+      yamaKandam:
+        start: 2026-05-08T02:37:59.250Z
+        end: 2026-05-08T01:23:37.625Z
       meta:
         sunSidereal: 23.60701389062405
         moonSidereal: 277.08847648783467

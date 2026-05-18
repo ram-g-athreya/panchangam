@@ -4,7 +4,7 @@
 
 - Standard startup path: `./init.sh` — exits 0
 - Standard verification path: `npm run check` — exits 0; 4 tests passing
-- Current highest-priority unfinished feature: none (all tasks passing)
+- Current highest-priority unfinished feature: none (all 6 tasks passing)
 - Current blocker: none
 
 ## Session Log
@@ -133,6 +133,42 @@
 - Known risk or unresolved issue: none
 - Next best step: commit all find-starbirth-day-ui changes
 
+### Session 0044
+
+- Date: 2026-05-17
+- Goal: Styling refinements for `consolidate-ui` — align CSS with evolving spec and UI style guide
+- Completed:
+  - DailyView.css: `align-items: stretch` on `.daily-view` so both panels match height per spec
+  - DailyView.tsx: added "Vasare" after `{v(p.vara)}` to match spec template exactly
+  - Sankalpam title: changed from `h2` to `h1`, added `font-family: "Samarkan", serif` and `text-align: center`; section gets `padding: 1rem`
+  - Sankalpam text: `font-size: 1.15rem` (was 1rem → 1.5rem → 1rem through iterations), `letter-spacing: 0.025em`, `line-height: 1.8`; no per-element padding (section handles it)
+  - Sankalpam strong: `font-size: 1.25rem` (settled after spec updates from 1.75 → 1.15 → 1.25)
+  - Find Star Birthday: wrapped in `div.find-birthday-section` with tertiary bg, 1rem padding, border-radius 6px, shadow; city-search selector updated to `.find-birthday-section .city-search`
+  - `.star-birthday-result`: changed background from tertiary to secondary to contrast against tertiary section bg
+  - Removed intermediate parchment wrapper approach (`.sankalpam-section__parchment`) — spec was updated to use section-level bg instead
+- Verification run: `npm run check` exits 0; 4 tests passing
+- Evidence captured: task_list.yaml `consolidate-ui` evidence updated
+- Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: commit all changes since Session 0042
+
+### Session 0043
+
+- Date: 2026-05-17
+- Goal: Implement `consolidate-ui` task — move Sankalpam to home page, remove Sankalpam page, remove hamburger icon
+- Completed:
+  - DailyView.tsx: imported `Panchangam` type; renamed `FindStarBirthdayPanel` to `SidePanel` (accepts `panchangam` prop); added Sankalpam section at top of the panel using `p` (samvatsare, ayana, ritu, masa, tithi, vara, nakshatra, yoga, karana); `v()` helper renders bold strong tags
+  - DailyView.css: added `.sankalpam-section`, `.sankalpam-section__title`, `.sankalpam-section__text` (accent color, 1.5rem font, 4rem padding, parchment bg via tertiary, mobile override 1.5rem padding), `.sankalpam-section__text strong` (1.75rem)
+  - Header.tsx: removed `faBars` import, `barsIcon`, `library.add(faBars)`, `onOpenSidebar` prop, and hamburger button JSX; removed `FontAwesomeIcon` import (no longer needed)
+  - Header.css: removed `.header__hamburger` rule
+  - App.tsx: removed `Sidebar` and `Sankalpam` imports; removed `sidebarOpen` state and `setSidebarOpen`; removed `<Sidebar>` render; removed `/sankalpam` route; removed `onOpenSidebar` prop from Header
+  - Deleted: src/pages/Sankalpam.tsx, src/styles/Sankalpam.css, src/components/Sidebar.tsx, src/styles/Sidebar.css
+- Verification run: `npm run check` exits 0; 4 tests passing
+- Evidence captured: task_list.yaml `consolidate-ui` status set to passing
+- Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, src/components/Header.tsx, src/styles/Header.css, src/App.tsx, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: commit changes
+
 ### Session 0042
 
 - Date: 2026-05-17
@@ -149,3 +185,18 @@
 - Files updated: tests/unit-tests/src/core/panchangam.test.ts, src/pages/DailyView.tsx, src/styles/DailyView.css, src/core/panchangam.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: commit
+
+### Session 0045
+
+- Date: 2026-05-17
+- Goal: Implement `add-rahu-kalam-and-yama-kandam` task end-to-end
+- Completed:
+  - panchangam.ts: added `TimeRange` interface (`start`, `end: Date`); added optional `rahuKalam?: TimeRange` and `yamaKandam?: TimeRange` to `Panchangam` interface; added `RAHU_KALAM_PART = [8,2,7,5,6,4,3]` and `YAMA_KANDAM_PART = [5,4,3,2,1,7,6]` lookup arrays indexed by JS day-of-week (0=Sun…6=Sat); `computePanchangam` computes both ranges when sunRise/sunSet available: `partMs = (sunSet - sunRise) / 8`, picks 1-based part index per day table
+  - DailyView.tsx: added `formatTimeRange` helper (undefined → "Set your city"; uses `formatTime` with `displaySecond` param added by user for seconds toggle); added full-row Rahu Kalam / Yama Gandam card reusing `rashi-card__header` + `rashi-card__section` layout with `kalam-card__header` modifier; icon labels use `<span className="kalam-icon kalam-icon--snake|bull" />` (CSS mask-image spans, no inline SVG)
+  - DailyView.css: added `.kalam-icon` (mask-size/repeat/position, `background-color: currentColor`), `.kalam-icon--snake` (`mask-image: url("/icons/snake.svg")`), `.kalam-icon--bull` (`mask-image: url("/icons/bull-horns.svg")`); added `.kalam-card__header .anga-card__value { font-size: 0.85rem }` to prevent long time-range strings overflowing
+  - panchangam.test.ts: added `KALAM_TOLERANCE_MS = 60_000` constant; `assertCommon` now asserts `rahuKalam` and `yamaKandam` defined + `start`/`end` within tolerance; both amanta and purnimanta test cases include expected kalam values from spec
+- Verification run: `npm run check` exits 0; 4 tests passing
+- Evidence captured: task_list.yaml `add-rahu-kalam-and-yama-kandam` status set to passing with updated evidence
+- Files updated: src/core/panchangam.ts, src/pages/DailyView.tsx, src/styles/DailyView.css, tests/unit-tests/src/core/panchangam.test.ts, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: commit all changes
