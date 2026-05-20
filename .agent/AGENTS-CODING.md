@@ -55,9 +55,9 @@ The `task_list.yaml` file is the source of truth for project progress:
 - When you are finished with your changes: 
     - Run verification (`npm run check`) and see if everything works fine. If not, **fix the issues** and try again
     - If verification passes: 
-        - Log progress in `.agent/logs/CODING-PROGRESS.md` at the **end of the file**
-        - Evidence is recorded in `.agent/task_list.yaml` with status `ready_for_review`        
-        - The reviewer agent will look at the work done and provide review if any
+        1. Log progress in `.agent/logs/CODING-PROGRESS.md` at the **end of the file**
+        2. Evidence is recorded in `.agent/task_list.yaml` with status `ready_for_review`        
+        3. The reviewer agent will look at the work done and provide review if any
 - Never delete tasks from the list.
 - Never add new tasks or work on anything not specified in the list.
 

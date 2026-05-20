@@ -19,16 +19,16 @@ while true; do
 
     if has_not_started_task .agent/task_list.yaml; then
         log_info "Found tasks that have not started. Triggering Claude Code to start working on them..."
-        claude "you are a coding assistant. You will work on the new task specified in @/.agent/task_list.yaml based on @/.agent/AGENTS-CODING.md"
+        claude -p "you are a coding assistant. You will work on the new task specified in @\".agent/task_list.yaml\" based on @\".agent/AGENTS-CODING.md\""
     elif has_ready_for_review_task .agent/task_list.yaml; then
         log_info "Found tasks that are ready for review. Waiting for them to be approved..."
         sleep 5
     elif has_changes_requested_task .agent/task_list.yaml; then
         log_info "Found tasks with requested changes. Triggering Claude Code to start working on them..."
-        claude "you are a coding assistant. Work on the feedback provided for the task specified in @/.agent/task_list.yaml based on @/.agent/AGENTS-CODING.md"
+        claude -p "you are a coding assistant. Work on the feedback provided for the task specified in @\".agent/task_list.yaml\" based on @\".agent/AGENTS-CODING.md\""
     elif has_approved_task .agent/task_list.yaml; then
         log_info "Found approved tasks. Triggering Claude Code to mark them as done..."
-        claude "you are a coding assistant. Mark the approved task specified in @/.agent/task_list.yaml as done based on @/.agent/AGENTS-CODING.md"
+        claude -p "you are a coding assistant. Mark the approved task specified in @\".agent/task_list.yaml\" as done based on @\".agent/AGENTS-CODING.md\""
     else
         log_info "No active tasks found..."
         sleep 5

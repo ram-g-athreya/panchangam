@@ -25,7 +25,7 @@ while true; do
         sleep 5
     elif has_ready_for_review_task .agent/task_list.yaml; then
         log_info "Found tasks that are ready for review. Triggering Claude Code to review them..."
-        claude "you are a code reviewer. You will review the task submitted for review in @/.agent/task_list.yaml based on @/.agent/AGENTS-REVIEW.md"
+        claude -p "you are a code reviewer. You will review the task submitted for review in @\".agent/task_list.yaml\" based on @\".agent/AGENTS-REVIEW.md\""
     elif has_changes_requested_task .agent/task_list.yaml; then
         log_info "Found tasks with requested changes. Waiting for them to be addressed..."
         sleep 5

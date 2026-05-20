@@ -66,9 +66,10 @@ The `task_list.yaml` file is the source of truth for project progress:
 
 A task is done only when all of the following are true:
 
-- the target behavior is implemented
-- TypeScript compiles, linted and tests run without errors (`npm run check`).
-- the required verification actually ran
-- no console errors during normal operation.
-- the repository remains restartable from the standard startup path
-- at this point set the `status` of the task to `approved` in `.agent/task_list.yaml`
+1. the target behavior is implemented
+2. TypeScript compiles, linted and tests run without errors (`npm run check`).
+3. the required verification actually ran
+4. no console errors during normal operation.
+5. the repository remains restartable from the standard startup path
+6. log progress in `.agent/logs/REVIEW-PROGRESS.md` at the **end of the file**
+7. at this point set the `status` of the task to `approved` in `.agent/task_list.yaml`
