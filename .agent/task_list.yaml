@@ -2,22 +2,29 @@ project: Panchangam App
 
 rules:
   single_active_feature: true
-  passing_requires_evidence: true
+  done_requires_evidence: true
   do_not_skip_verification: true
 
 status_legend:
   not_started: Work has not begun.
   in_progress: The feature is the current active task.
-  blocked: Work cannot continue until a documented blocker is resolved.
-  passing: Required verification has passed and evidence is recorded.
+  ready_for_review: The feature is complete and ready for review.
+  under_review: The feature is under review.
+  changes_requested: The reviewer has requested changes before approval.
+  approved: The feature has been approved but not yet marked done.
+  done: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: setup-project
+    priority: 1
+    title: Dummy task to test harness
+    status: done
   - id: add-footer
     priority: 1
     title: Add footer as per spec
-    status: passing
+    status: done
     evidence: >
-      npm run check exits 0 (tsc + lint + 4 tests passing).
+      npm run check exits 0 (tsc + lint + 4 tests done).
       Installed @fortawesome/free-brands-svg-icons for faGithub and faXTwitter.
       Footer.tsx renders three icon links (faMessage → feedback form, faGithub → GitHub repo, faXTwitter → X profile) each opening in a new tab with rel="noopener noreferrer".
       Footer.css: flex row, centered, gap 1.5rem, secondary bg, accent color icons at 1.25rem, hover opacity 0.7.
@@ -25,9 +32,9 @@ tasks:
   - id: add-rahu-kalam-and-yama-kandam
     priority: 1
     title: Add rahu kalam and yama kandam based on the spec in `src/core/ARCHITECTURE.md` and `src/pages/ARCHITECTURE.md`
-    status: passing
+    status: done
     evidence: >
-      npm run check exits 0 (tsc + lint + 4 tests passing).
+      npm run check exits 0 (tsc + lint + 4 tests done).
       TimeRange interface added to panchangam.ts; rahuKalam and yamaKandam optional fields on Panchangam.
       RAHU_KALAM_PART and YAMA_KANDAM_PART lookup arrays indexed by day-of-week (0=Sun…6=Sat).
       computePanchangam computes both ranges when sunRise/sunSet are available: divides daylight into 8 equal parts, picks part per day from tables.
@@ -39,9 +46,9 @@ tasks:
     priority: 1
     title: >
       Consolidate the UI by moving the Sankalpam to the home page. As a result remove the redundant Sankalpam page. Also remove the hamburger icon from the header since it is no longer necessary
-    status: passing
+    status: done
     evidence: >
-      npm run check exits 0 (tsc + lint + 4 tests passing).
+      npm run check exits 0 (tsc + lint + 4 tests done).
       Sankalpam page + Sidebar deleted; hamburger removed from Header; /sankalpam route removed from App.
       SidePanel (renamed from FindStarBirthdayPanel) renders sankalpam-section + find-birthday-section inside star-birthday-panel.
       Sankalpam section: h1 with Samarkan font, centered; tertiary bg, 1rem padding, border-radius, shadow; text at 1.15rem accent color, 0.025em letter-spacing, 1.8 line-height; bold variables at 1.25rem.
@@ -52,9 +59,9 @@ tasks:
   - id: store-and-retrieve-names
     priority: 1
     title: Store, Display and prepopulate names and associated data for finding star birthday based on `src/pages/ARCHITECTURE.md`
-    status: passing
+    status: done
     evidence: >
-      npm run check exits 0 (tsc + lint + 4 tests passing).
+      npm run check exits 0 (tsc + lint + 4 tests done).
       StoredStarBirthday replaced with StoredProfile[] array (max 5, most-recent-first, deduped by name).
       Pills rendered below title, above form — each pill has a clickable name button (loads profile into form, remounts Birth City CitySearch via key) and an × remove button (filters array and writes to localStorage).
       Profiles saved only on button click (not auto-save on every keystroke). Birth City CitySearch uses birthCityKey to force remount with correct initialValue when pill is clicked.
@@ -62,9 +69,9 @@ tasks:
   - id: find-starbirth-day-ui
     priority: 1
     title: Create UI to find star birthday based on spec at `src/pages/ARCHITECTURE.md`
-    status: passing
+    status: done
     evidence: >
-      npm run check exits 0 (tsc + lint + 2 tests passing).
+      npm run check exits 0 (tsc + lint + 2 tests done).
       FindStarBirthdayPanel renders as a sibling panel to panchang-panel at 100%/50%/33.333% responsive widths.
       Fields: Name text input; datetime-local input with custom calendar icon (hides native indicator, showPicker() on icon click, typing works); Birth City CitySearch (saveToStorage=false); Current City CitySearch (syncs global location + local state); Find Star Birthday button centered with star icon (disabled until all filled, CSS :active lingering 1-second press effect).
       computeStarBirthday implemented in panchangam.ts: parses birth datetime in birth timezone via @photostructure/tz-lookup + Intl.DateTimeFormat; gets birth nakshatra from computePanchangam; estimates days to reach birth nakshatra zone from yesterday's sunrise; verifies with offset loop; returns { birthNakshatra, starBirthday }.
@@ -74,14 +81,14 @@ tasks:
   - id: add-lunar-system
     priority: 1
     title: Add lunar system based on spec in `src/components/ARCHITECTURE.md` and `src/core/ARCHITECTURE.md`
-    status: passing
+    status: done
     evidence: Build passes cleanly. LunarSystem type/key added to constants, state managed in App, passed through Header to Settings. Toggle renders between Time and Theme with separators, slider animates, localStorage persisted, defaults to Amānta.
   - id: add-sun-and-moon-sign
     priority: 1
     title: Add sun and moon sign based on spec in `src/pages/ARCHITECTURE.md` and `src/core/ARCHITECTURE.md`
-    status: passing
+    status: done
     evidence: >
-      Build and tests pass (npm run build + npm run test — 2 tests passing).
+      Build and tests pass (npm run build + npm run test — 2 tests done).
       Panchangam interface now has sunRashi and moonRashi fields computed from sidereal sun/moon longitudes via RASHIS lookup.
       DailyView renders a full-row Sun Rashi / Moon Rashi card with FA zodiac icons, Sanskrit name, and English subvalue.
       Tests assert sunRashi=Meṣa and moonRashi=Makara for the May 08 2026 Virginia reference case.

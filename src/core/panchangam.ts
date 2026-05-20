@@ -748,6 +748,8 @@ export function computeStarBirthday(
       return { birthNakshatra: birthNakshatraName, starBirthday: checkDate };
     }
     if (currentPanchangam.masa === birthMonthName && second?.name === birthNakshatraName) {
+      //Todo: maybe see if the nakshatra lasts for at least 96 minutes after sun rise of the second day
+      // if its less than that we should use the previous day
       return { birthNakshatra: birthNakshatraName, starBirthday: shiftDay(checkDate, 1) };
     }
   }
