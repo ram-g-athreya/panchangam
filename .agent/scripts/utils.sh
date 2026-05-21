@@ -16,14 +16,26 @@ log_info() {
     printf "${GREEN}[INFO] [%s] %b${NC}\n" "$(date +'%Y-%m-%d %H:%M:%S')" "$1"
 }
 
+log_info_inline() {
+    printf "\r${GREEN}[INFO] [%s] %b${NC}" "$(date +'%Y-%m-%d %H:%M:%S')" "$1"
+}
+
 # Log a warning message (Yellow)
 log_warn() {
     printf "${YELLOW}[WARN] [%s] %b${NC}\n" "$(date +'%Y-%m-%d %H:%M:%S')" "$1"
 }
 
+log_warn_inline() {
+    printf "\r${YELLOW}[WARN] [%s] %b${NC}" "$(date +'%Y-%m-%d %H:%M:%S')" "$1"
+}
+
 # Log an error message (Red)
 log_error() {
     printf "${RED}[ERROR] [%s] %b${NC}\n" "$(date +'%Y-%m-%d %H:%M:%S')" "$1"
+}
+
+log_error_inline() {
+    printf "\r${RED}[ERROR] [%s] %b${NC}" "$(date +'%Y-%m-%d %H:%M:%S')" "$1"
 }
 
 # Check if a specific command/program is installed

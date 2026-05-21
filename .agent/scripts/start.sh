@@ -66,6 +66,56 @@ done
 
 log_info "Harness started successfully. Monitor progress in the coding and code review panes"
 
+cleanup() {
+    log_info "Ctrl+C detected! Running closing functions..."
+    log_info "Stopping coding and review sessions..."
+    sleep 0.25
+    tmux send-keys -t $CODING_SESSION_NAME "exit 0" C-m 
+    tmux send-keys -t $CODE_REVIEW_SESSION_NAME "exit 0" C-m
+    sleep 0.25
+    tmux kill-session -t $CODING_SESSION_NAME
+    tmux kill-session -t $CODE_REVIEW_SESSION_NAME
+
+    osascript <<EOF
+    tell application "iTerm2"
+        tell current window
+            # 1. Talk to the current TAB, not the session
+            tell current tab
+                
+                # Get a reference to all split panes (sessions) in this tab
+                set allPanes to sessions
+                
+                # 2. Check if we have split panes to close
+                if (count of allPanes) ≥ 3 then
+                    
+                    # Close the bottom-right pane (3rd pane)
+                    set bottomRightPane to item 3 of allPanes
+                    tell bottomRightPane to close
+                    
+                    delay 0.25
+                    
+                    # Close the top-right pane (2nd pane)
+                    set topRightPane to item 2 of allPanes
+                    tell topRightPane to close
+                    
+                else if (count of allPanes) is 2 then
+                    # Fallback: If one was already closed, just kill the remaining split
+                    set remainingSplit to item 2 of allPanes
+                    tell remainingSplit to close
+                end if
+            end tell
+        end tell
+    end tell
+EOF
+
+    log_info "Ending harness..."
+    
+    log_info "Cleanup complete. Exiting safely."
+    exit 0
+}
+
+trap cleanup SIGINT
+
 CURRENT_STATE=""
 NOT_STARTED_PROMPT="You are a coding assistant. You will work on the new task specified in @\".agent/task_list.yaml\" based on @\".agent/AGENTS-CODING.md\""
 READY_FOR_REVIEW_PROMPT="You are a code review assistant. Review the completed task specified in @\".agent/task_list.yaml\" based on @\".agent/AGENTS-CODE-REVIEW.md\" and provide feedback or approval."
@@ -89,8 +139,7 @@ while true; do
     elif has_done_task .agent/task_list.yaml; then
         DETECTED_STATE="done"
     else
-        log_info "No active tasks found... Exiting harness loop."
-        break
+        log_info "No active tasks found..."
     fi
 
     # 2. Check if the state has changed since our last evaluation
@@ -139,8 +188,7 @@ while true; do
                 ;;
 
             "done")
-                log_info "Task is done. Exiting..."
-                break
+                log_info "Task is done. Waiting for any new tasks or completion..."                
                 ;;
         esac
     fi
@@ -149,44 +197,3 @@ while true; do
     sleep 5
 done
 
-log_info "All tasks are done. Stopping coding and review sessions..."
-sleep 0.25
-tmux send-keys -t $CODING_SESSION_NAME "exit 0" C-m 
-tmux send-keys -t $CODE_REVIEW_SESSION_NAME "exit 0" C-m
-sleep 0.25
-tmux kill-session -t $CODING_SESSION_NAME
-tmux kill-session -t $CODE_REVIEW_SESSION_NAME
-
-osascript <<EOF
-tell application "iTerm2"
-    tell current window
-        # 1. Talk to the current TAB, not the session
-        tell current tab
-            
-            # Get a reference to all split panes (sessions) in this tab
-            set allPanes to sessions
-            
-            # 2. Check if we have split panes to close
-            if (count of allPanes) ≥ 3 then
-                
-                # Close the bottom-right pane (3rd pane)
-                set bottomRightPane to item 3 of allPanes
-                tell bottomRightPane to close
-                
-                delay 0.25
-                
-                # Close the top-right pane (2nd pane)
-                set topRightPane to item 2 of allPanes
-                tell topRightPane to close
-                
-            else if (count of allPanes) is 2 then
-                # Fallback: If one was already closed, just kill the remaining split
-                set remainingSplit to item 2 of allPanes
-                tell remainingSplit to close
-            end if
-        end tell
-    end tell
-end tell
-EOF
-
-log_info "Ending harness..."
