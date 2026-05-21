@@ -67,6 +67,11 @@ done
 log_info "Harness started successfully. Monitor progress in the coding and code review panes"
 
 CURRENT_STATE=""
+NOT_STARTED_PROMPT="You are a coding assistant. You will work on the new task specified in @\".agent/task_list.yaml\" based on @\".agent/AGENTS-CODING.md\""
+READY_FOR_REVIEW_PROMPT="You are a code review assistant. Review the completed task specified in @\".agent/task_list.yaml\" based on @\".agent/AGENTS-CODE-REVIEW.md\" and provide feedback or approval."
+CHANGES_REQUESTED_PROMPT="You are a coding assistant. Work on the feedback provided for the task specified in @\".agent/task_list.yaml\" based on @\".agent/AGENTS-CODING.md\""
+APPROVED_PROMPT="You are a coding assistant. The task specified in @\".agent/task_list.yaml\" has been approved. Finalize the implementation and mark the task as done based on @\".agent/AGENTS-CODING.md\""
+
 while true; do
     # 1. Detect what state the task list is currently in
     if has_not_started_task .agent/task_list.yaml; then
@@ -99,9 +104,9 @@ while true; do
         case "$CURRENT_STATE" in
             "not_started")
                 log_info "Triggering Coding Agent to start working on new tasks..."        
-                tmux send-keys -t "$CODING_SESSION_NAME" "You are a coding assistant. You will work on the new task specified in @\".agent/task_list.yaml\" based on @\".agent/AGENTS-CODING.md\""
-                sleep 1
-                tmux send-keys -t "$CODING_SESSION_NAME" Enter
+                tmux send-keys -t "$CODING_SESSION_NAME" "${NOT_STARTED_PROMPT}" Enter
+                sleep 1.5
+                tmux send-keys -t "$CODING_SESSION_NAME" C-m
                 ;;
             
             "in_progress")
@@ -110,9 +115,9 @@ while true; do
 
             "ready_for_review")
                 log_info "Tasks are ready for review. Triggering Review Agent..."        
-                tmux send-keys -t "$CODE_REVIEW_SESSION_NAME" "You are a code reviewer. You will review the task submitted for review in @\".agent/task_list.yaml\" based on @\".agent/AGENTS-REVIEW.md\""
-                sleep 1
-                tmux send-keys -t "$CODE_REVIEW_SESSION_NAME" Enter
+                tmux send-keys -t "$CODE_REVIEW_SESSION_NAME" "${READY_FOR_REVIEW_PROMPT}" Enter
+                sleep 1.5
+                tmux send-keys -t "$CODE_REVIEW_SESSION_NAME" C-m
                 ;;
 
             "under_review")
@@ -121,16 +126,16 @@ while true; do
                 
             "changes_requested")
                 log_info "Feedback provided. Triggering Coding Agent to address changes..."
-                tmux send-keys -t "$CODING_SESSION_NAME" "You are a coding assistant. Work on the feedback provided for the task specified in @\".agent/task_list.yaml\" based on @\".agent/AGENTS-CODING.md\""
-                sleep 1
-                tmux send-keys -t "$CODING_SESSION_NAME" Enter
+                tmux send-keys -t "$CODING_SESSION_NAME" "${CHANGES_REQUESTED_PROMPT}" Enter
+                sleep 1.5
+                tmux send-keys -t "$CODING_SESSION_NAME" C-m
                 ;;
                 
             "approved")
                 log_info "Task approved! Triggering Coding Agent to finalize and mark as done..."
-                tmux send-keys -t "$CODING_SESSION_NAME" "You are a coding assistant. Mark the approved task specified in @\".agent/task_list.yaml\" as done based on @\".agent/AGENTS-CODING.md\""
-                sleep 1
-                tmux send-keys -t "$CODING_SESSION_NAME" Enter
+                tmux send-keys -t "$CODING_SESSION_NAME" "${APPROVED_PROMPT}" Enter
+                sleep 1.5
+                tmux send-keys -t "$CODING_SESSION_NAME" C-m
                 ;;
 
             "done")
