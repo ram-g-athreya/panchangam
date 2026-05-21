@@ -160,21 +160,22 @@ tmux kill-session -t $CODE_REVIEW_SESSION_NAME
 osascript <<EOF
 tell application "iTerm2"
     tell current window
-        tell current session
-            # 1. Get a reference to all split panes (sessions) in the current tab
-            set allPanes to sessions of current tab
+        # 1. Talk to the current TAB, not the session
+        tell current tab
+            
+            # Get a reference to all split panes (sessions) in this tab
+            set allPanes to sessions
             
             # 2. Check if we have split panes to close
-            # Your layout creates 3 panes total (Main, Top-Right, Bottom-Right)
             if (count of allPanes) ≥ 3 then
                 
-                # Close the bottom-right pane (the last pane created in the index)
+                # Close the bottom-right pane (3rd pane)
                 set bottomRightPane to item 3 of allPanes
                 tell bottomRightPane to close
                 
                 delay 0.25
                 
-                # Close the top-right pane (now the 2nd pane in the remaining index)
+                # Close the top-right pane (2nd pane)
                 set topRightPane to item 2 of allPanes
                 tell topRightPane to close
                 

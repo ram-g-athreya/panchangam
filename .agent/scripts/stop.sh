@@ -51,18 +51,37 @@ while true; do
     sleep 1
 done
 
-osascript -e 'tell application "iTerm2"
-    tell current tab of current window
-        set activeID to id of current session
-        set allSessions to every session
-        repeat with i from (count of allSessions) to 1 by -1
-            set aSession to item i of allSessions
-            if id of aSession is not activeID then
-                close aSession
+osascript <<EOF
+tell application "iTerm2"
+    tell current window
+        # 1. Talk to the current TAB, not the session
+        tell current tab
+            
+            # Get a reference to all split panes (sessions) in this tab
+            set allPanes to sessions
+            
+            # 2. Check if we have split panes to close
+            if (count of allPanes) ≥ 3 then
+                
+                # Close the bottom-right pane (3rd pane)
+                set bottomRightPane to item 3 of allPanes
+                tell bottomRightPane to close
+                
+                delay 0.25
+                
+                # Close the top-right pane (2nd pane)
+                set topRightPane to item 2 of allPanes
+                tell topRightPane to close
+                
+            else if (count of allPanes) is 2 then
+                # Fallback: If one was already closed, just kill the remaining split
+                set remainingSplit to item 2 of allPanes
+                tell remainingSplit to close
             end if
-        end repeat
+        end tell
     end tell
-end tell'
+end tell
+EOF
 
 sleep 0.25
 log_info "Harness stopped successfully..."
