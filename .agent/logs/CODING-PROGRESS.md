@@ -1,4 +1,4 @@
-# Progress Log
+# Coding Progress Log
 
 ## Current Verified State
 

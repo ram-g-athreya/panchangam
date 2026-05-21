@@ -78,7 +78,7 @@ Create a city search text box with the following spec as a separate standalone c
 
 ### Panchangam Text
 
-- The header has the word `Panchangam` on the left corner
+- The header has the word `Vedic Panchangam` on the left corner
 - uses the `accent` color
 - has `font-size` of `2rem`
 - `letter-spacing` of `0em`
