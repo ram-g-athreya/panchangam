@@ -15,10 +15,10 @@ status_legend:
   done: Required verification has passed and evidence is recorded.
 
 tasks:
-  - id: setup-project
+  - id: update-header-text
     priority: 1
-    title: Dummy task to test harness
-    status: done
+    title: Update header text to Vedic Panchangam
+    status: not_started
   - id: add-footer
     priority: 1
     title: Add footer as per spec

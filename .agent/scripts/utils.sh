@@ -90,10 +90,18 @@ has_ready_for_review_task() {
     _check_task_status "${1:-task_list.yaml}" "ready_for_review"
 }
 
+has_under_review_task() {
+    _check_task_status "${1:-task_list.yaml}" "under_review"
+}
+
 has_changes_requested_task() {
     _check_task_status "${1:-task_list.yaml}" "changes_requested"
 }
 
 has_approved_task() {
     _check_task_status "${1:-task_list.yaml}" "approved"
+}
+
+has_done_task() {
+    _check_task_status "${1:-task_list.yaml}" "done"
 }

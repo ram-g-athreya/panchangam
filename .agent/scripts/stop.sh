@@ -24,8 +24,11 @@ is_session_dead() {
 }
 
 log_info "Stopping Coding and Review Agents..."
-touch /tmp/panchangam_stop_coding_session
-touch /tmp/panchangam_stop_review_session
+tmux send-keys -t $CODING_SESSION_NAME "exit 0" C-m || true
+tmux send-keys -t $CODE_REVIEW_SESSION_NAME "exit 0" || true
+sleep 0.25
+tmux kill-session -t $CODING_SESSION_NAME 2>/dev/null || true
+tmux kill-session -t $CODE_REVIEW_SESSION_NAME 2>/dev/null || true
 
 while true; do
     coding_dead=false
@@ -33,13 +36,11 @@ while true; do
     
     if is_session_dead "$CODING_SESSION_NAME"; then
         coding_dead=true
-        rm -f /tmp/panchangam_stop_coding_session
         log_info "Coding Agent session has stopped..."
     fi
     
     if is_session_dead "$CODE_REVIEW_SESSION_NAME"; then
         review_dead=true
-        rm -f /tmp/panchangam_stop_review_session
         log_info "Review Agent session has stopped..."
     fi
     
