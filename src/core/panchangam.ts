@@ -417,6 +417,21 @@ function computeGoverningSunrise(date: Date, latitude: number, longitude: number
   return todaySunrise;
 }
 
+function computeGoverningSunset(date: Date, latitude: number, longitude: number): Date {
+  const todaySunset = computeSunsetDateForDay(date, latitude, longitude);
+
+  // If the current time has already passed today's sunset,
+  // the next relevant ("governing") sunset happens tomorrow.
+  if (date.getTime() > todaySunset.getTime()) {
+    const tomorrow = new Date(
+      Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + 1),
+    );
+    return computeSunsetDateForDay(tomorrow, latitude, longitude);
+  }
+
+  return todaySunset;
+}
+
 function computeSamvatsare(date: Date): string {
   const jd = toJulianDay(date);
   const T = toJulianCenturies(jd);
@@ -597,14 +612,15 @@ export function computePanchangam(
   const hasCoords = latitude !== undefined && longitude !== undefined;
   const sunDate = hasCoords ? computeGoverningSunrise(date, latitude, longitude) : date;
   const sunRise = hasCoords ? computeGoverningSunrise(date, latitude!, longitude!) : undefined;
-  const sunSet = hasCoords ? computeSunsetDateForDay(date, latitude!, longitude!) : undefined;
+  const sunSet = hasCoords ? computeGoverningSunset(date, latitude!, longitude!) : undefined;
 
   let rahuKalam: TimeRange | undefined;
   let yamaKandam: TimeRange | undefined;
   if (sunRise && sunSet) {
     const totalMs = sunSet.getTime() - sunRise.getTime();
     const partMs = totalMs / 8;
-    const dayOfWeek = sunDate.getUTCDay();
+    const dayOfWeek = sunRise.getUTCDay();
+
     const rahuPart = RAHU_KALAM_PART[dayOfWeek];
     const yamaPart = YAMA_KANDAM_PART[dayOfWeek];
     rahuKalam = {

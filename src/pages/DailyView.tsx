@@ -283,7 +283,7 @@ function SidePanel({ panchangam: p }: SidePanelProps) {
               <div className="star-birthday-result__section">
                 <span className="anga-card__label">
                   <FontAwesomeIcon icon={faCalendarDays} />
-                  STAR BIRTHDAY
+                  BIRTHDAY
                 </span>
                 <span className="anga-card__value">
                   {result.starBirthday.toLocaleDateString("en-IN", {
