@@ -190,6 +190,8 @@ Based on the computed panchangam generate the Sankalpam based on the template be
     - Should have secondary background color
   - save the name, birth date & time and birth city and repopulate on startup if it exists. Store as a single JSON object
   - Store as an array with maximum of 5 times most recently used first. Update entries based on the name
-  - Display the stored data as pills with text as the name and a `x` button in the end. Clicking on a pill prepopulates the corresponding data. Clicking on the `x` deletes the data from localStorage
-  - The pills are to be displayed below the title and above the text fields
+  - Display the stored data as pills with text as the name and a `x` button in the end
+    - Clicking on a pill prepopulates the corresponding data and auto submits displaying the results
+    - Clicking on the `x` deletes the data from localStorage
+    - The pills are to be displayed below the title and above the text fields
 - background color should be tertiary
