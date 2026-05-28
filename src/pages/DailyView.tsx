@@ -152,11 +152,35 @@ function SidePanel({ panchangam: p }: SidePanelProps) {
   const [result, setResult] = useState<StarBirthdayResult | null>(null);
   const dateTimeInputRef = useRef<HTMLInputElement>(null);
 
+  function compute(
+    n: string,
+    bdt: string,
+    bLoc: LocationData,
+    cLoc: LocationData,
+  ) {
+    const res = computeStarBirthday(
+      new Date(),
+      bdt,
+      bLoc.latitude,
+      bLoc.longitude,
+      cLoc.latitude,
+      cLoc.longitude,
+    );
+    setResult(res);
+    const newProfile: StoredProfile = { name: n, birthDateTime: bdt, birthLocation: bLoc };
+    const updated = [newProfile, ...profiles.filter((p) => p.name !== n)].slice(0, 5);
+    setProfiles(updated);
+    saveProfiles(updated);
+  }
+
   function loadProfile(profile: StoredProfile) {
     setName(profile.name);
     setBirthDateTime(profile.birthDateTime);
     setBirthLocation(profile.birthLocation);
     setBirthCityKey((k) => k + 1);
+    if (currentLocation) {
+      compute(profile.name, profile.birthDateTime, profile.birthLocation, currentLocation);
+    }
   }
 
   function removeProfile(profileName: string) {
@@ -175,19 +199,7 @@ function SidePanel({ panchangam: p }: SidePanelProps) {
 
   function handleFind() {
     if (!birthLocation || !currentLocation || !name || !birthDateTime) return;
-    const res = computeStarBirthday(
-      new Date(),
-      birthDateTime,
-      birthLocation.latitude,
-      birthLocation.longitude,
-      currentLocation.latitude,
-      currentLocation.longitude,
-    );
-    setResult(res);
-    const newProfile: StoredProfile = { name, birthDateTime, birthLocation };
-    const updated = [newProfile, ...profiles.filter((p) => p.name !== name)].slice(0, 5);
-    setProfiles(updated);
-    saveProfiles(updated);
+    compute(name, birthDateTime, birthLocation, currentLocation);
   }
 
   const allFilled =
@@ -283,7 +295,7 @@ function SidePanel({ panchangam: p }: SidePanelProps) {
               <div className="star-birthday-result__section">
                 <span className="anga-card__label">
                   <FontAwesomeIcon icon={faCalendarDays} />
-                  STAR BIRTHDAY
+                  BIRTHDAY
                 </span>
                 <span className="anga-card__value">
                   {result.starBirthday.toLocaleDateString("en-IN", {

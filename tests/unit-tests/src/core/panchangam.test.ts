@@ -127,14 +127,14 @@ describe("computePanchangam", () => {
       sunRashi: "Meṣa",
       moonRashi: "Makara",
       sunRise: new Date("2026-05-08T10:04:00Z"),
-      sunSet: new Date("2026-05-08T00:10:00Z"),
+      sunSet: new Date("2026-05-09T00:10:00Z"),
       rahuKalam: {
-        start: new Date("2026-05-08T06:21:04.125Z"),
-        end: new Date("2026-05-08T05:06:42.500Z"),
+        start: new Date("2026-05-08T15:21:25.500Z"),
+        end: new Date("2026-05-08T17:07:11.000Z"),
       },
       yamaKandam: {
-        start: new Date("2026-05-08T02:37:59.250Z"),
-        end: new Date("2026-05-08T01:23:37.625Z"),
+        start: new Date("2026-05-08T20:38:42.000Z"),
+        end: new Date("2026-05-08T22:24:27.500Z"),
       },
       meta: {
         sunSidereal: 23.60701389062405,
@@ -145,6 +145,8 @@ describe("computePanchangam", () => {
   });
 
   it("returns correct panchangam for purnimanta: Fri May 08 2026 18:34:10 GMT-0400, Virginia", () => {
+    console.log(computePanchangam(date, latitude, longitude, "purnimanta"));
+
     assertCommon(computePanchangam(date, latitude, longitude, "purnimanta"), {
       tithi: { number: 7, name: "Saptamī", paksha: "Kṛṣṇa" },
       vara: "Śukravāra",
@@ -161,14 +163,14 @@ describe("computePanchangam", () => {
       sunRashi: "Meṣa",
       moonRashi: "Makara",
       sunRise: new Date("2026-05-08T10:04:00Z"),
-      sunSet: new Date("2026-05-08T00:10:00Z"),
+      sunSet: new Date("2026-05-09T00:10:00Z"),
       rahuKalam: {
-        start: new Date("2026-05-08T06:21:04.125Z"),
-        end: new Date("2026-05-08T05:06:42.500Z"),
+        start: new Date("2026-05-08T15:21:25.500Z"),
+        end: new Date("2026-05-08T17:07:11.000Z"),
       },
       yamaKandam: {
-        start: new Date("2026-05-08T02:37:59.250Z"),
-        end: new Date("2026-05-08T01:23:37.625Z"),
+        start: new Date("2026-05-08T20:38:42.000Z"),
+        end: new Date("2026-05-08T22:24:27.500Z"),
       },
       meta: {
         sunSidereal: 23.60701389062405,

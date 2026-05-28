@@ -241,6 +241,10 @@
   text-align: center;
 }
 
+.star-birthday-result__section .anga-card__label {
+  gap: 0.25rem;
+}
+
 .anga-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
