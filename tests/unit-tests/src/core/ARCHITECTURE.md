@@ -184,4 +184,14 @@ test_cases:
     expected_output:
       birthNakshatra: Aśvinī
       starBirthday: Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
+  - parameters:
+      currentDate: Mon Oct 26 2026 22:40:59 GMT-0400 (Eastern Daylight Time)
+      birthDate: 1990-10-06T07:20
+      birthLatitude: 10.7860267
+      birthLongitude: 79.1381497
+      currentLatitude: 39.0437192
+      currentLongitude: -77.4874899
+    expected_output:
+      birthNakshatra: Aśvinī
+      starBirthday: Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
 ```
