@@ -60,7 +60,15 @@ export interface Panchangam {
     elongation: number;
   };
 }
-
+interface MasaSequence {
+  previousMasaIndex: number; // The month before the current one
+  currentMasaIndex: number; // The lunar month we are currently in
+  nextMasaIndex: number; // The upcoming lunar month
+  nextNextMasaIndex: number; // The lunar month after next
+  isPreviousMonthAdhika: boolean; // Whether the previous month was an Adhika Masa
+  isCurrentMonthAdhika: boolean;
+  isNextMonthAdhika: boolean;
+}
 export interface StarBirthdayResult {
   birthNakshatra: string;
   starBirthday: Date;
@@ -483,30 +491,68 @@ function computeMasaAtNewMoon(sunAtNewMoon: number): number {
   return (R_nm + 1) % 12;
 }
 
-function isNextMonthAdhikaMasa(
-  elongation: number,
-  currentDate: Date,
-): {
-  isAdhikaMasa: boolean;
-  masaIndex: number;
-} {
-  const elongationToNext = mod360(360 - elongation);
-  const daysToNextNewMoon = elongationToNext / SPEED_ELONGATION;
-  const approxNextNmDate = shiftDay(currentDate, daysToNextNewMoon);
+function getElongationAtJD(jd: number): number {
+  // 1. Fetch the absolute celestial longitudes of both bodies.
+  // Note: Whether you use sidereal or tropical coordinates doesn't matter here,
+  // because the ayanamsa cancels out when you subtract them.
+  const moonLong = siderealMoonLongitude(jd); // Substitute with your actual Moon function
+  const sunLong = siderealSunLongitude(jd);
 
-  const S_next_nm = siderealSunLongitude(toJulianDay(approxNextNmDate));
-  const R_next_nm = computeMasaAtNewMoon(S_next_nm);
+  // 2. Compute the difference and normalize it between 0 and 360 degrees
+  return mod360(moonLong - sunLong);
+}
 
-  const elongationToNextNext = elongationToNext + 360;
-  const daysToNextNextNewMoon = elongationToNextNext / SPEED_ELONGATION;
-  const approxNextNextNmDate = shiftDay(currentDate, daysToNextNextNewMoon);
+// Helper to find the exact Julian Day of a New Moon by searching near an approximate date
+function findExactNewMoonJD(approxDate: Date): number {
+  let jd = toJulianDay(approxDate);
+  // Iteratively find where elongation is 0 (New Moon)
+  for (let i = 0; i < 3; i++) {
+    // Standard astronomical libraries expose elongation or moon-sun longitude difference
+    // If your library calculates elongation at a Julian Day, use it here:
+    const currentElongation = getElongationAtJD(jd);
+    const diff = currentElongation > 180 ? currentElongation - 360 : currentElongation;
+    jd -= diff / SPEED_ELONGATION;
+  }
+  return jd;
+}
 
-  const S_next_next_nm = siderealSunLongitude(toJulianDay(approxNextNextNmDate));
-  const R_next_next_nm = computeMasaAtNewMoon(S_next_next_nm);
+function computeMasaSequence(elongation: number, currentDate: Date): MasaSequence {
+  // 1. Calculate time to the immediate past and immediate future New Moons
+  const daysSinceLastNM = elongation / SPEED_ELONGATION;
+  const daysToNextNM = (360 - elongation) / SPEED_ELONGATION;
+
+  // 2. Map out the accurate timeline relative to the current month
+  const approxNM_prev_prev = shiftDay(currentDate, -daysSinceLastNM - 30); // Starts previous month
+  const approxNM_prev = shiftDay(currentDate, -daysSinceLastNM); // Starts current month
+  const approxNM_next = shiftDay(currentDate, daysToNextNM); // Starts next month
+  const approxNM_next_next = shiftDay(currentDate, daysToNextNM + 30); // Starts next-next month
+
+  // 3. Lock onto the EXACT astronomical New Moon Julian Days
+  const jdNM_prev_prev = findExactNewMoonJD(approxNM_prev_prev);
+  const jdNM_prev = findExactNewMoonJD(approxNM_prev);
+  const jdNM_next = findExactNewMoonJD(approxNM_next);
+  const jdNM_next_next = findExactNewMoonJD(approxNM_next_next);
+
+  // 4. Compute the precise Solar Longitudes at those exact New Moon moments
+  const S_prev_prev = siderealSunLongitude(jdNM_prev_prev);
+  const S_prev = siderealSunLongitude(jdNM_prev);
+  const S_next = siderealSunLongitude(jdNM_next);
+  const S_next_next = siderealSunLongitude(jdNM_next_next);
+
+  // 5. Map to Masa Indices
+  const previousMasaIndex = computeMasaAtNewMoon(S_prev_prev);
+  const currentMasaIndex = computeMasaAtNewMoon(S_prev);
+  const nextMasaIndex = computeMasaAtNewMoon(S_next);
+  const nextNextMasaIndex = computeMasaAtNewMoon(S_next_next);
 
   return {
-    isAdhikaMasa: R_next_nm === R_next_next_nm,
-    masaIndex: R_next_nm,
+    previousMasaIndex,
+    currentMasaIndex,
+    nextMasaIndex,
+    nextNextMasaIndex,
+    isPreviousMonthAdhika: previousMasaIndex === currentMasaIndex,
+    isCurrentMonthAdhika: currentMasaIndex === nextMasaIndex,
+    isNextMonthAdhika: nextMasaIndex === nextNextMasaIndex,
   };
 }
 
@@ -725,29 +771,74 @@ export function computeStarBirthday(
   const birthMonthName = birthPanchangam.masa;
   const birthMonthIndex = MASAS.indexOf(birthMonthName as (typeof MASAS)[number]);
 
-  let currentPanchangam = computePanchangam(currentDate, currentLatitude, currentLongitude);
+  let adjustedCurrentDate = new Date(currentDate.getTime());
+  let currentPanchangam = computePanchangam(adjustedCurrentDate, currentLatitude, currentLongitude);
+
+  let masaSequence = computeMasaSequence(
+    currentPanchangam.meta.elongation,
+    currentPanchangam.sunRise as Date,
+  );
+
+  // If we are in the birth month, it's an Adhika Masa, and today is past the birthday...
+  if (currentPanchangam.masa === birthMonthName && masaSequence.isCurrentMonthAdhika) {
+    // Determine if the star birthday for this Adhika month already occurred.
+    // We check if the current Sun/Moon positions have already advanced past the target zones.
+    const currentMoonLong = currentPanchangam.meta.moonSidereal;
+    const birthZoneStartMoon = birthNakshatraIndex * NAKSHATRA_WIDTH;
+
+    // If the Moon has swept past the birth Nakshatra zone in this specific month loop
+    if (currentMoonLong > birthZoneStartMoon + NAKSHATRA_WIDTH) {
+      // Advance our processing anchor by ~10 lunar months (300 days) to target next year's occurrence of the birth month
+      adjustedCurrentDate = shiftDay(adjustedCurrentDate, 300);
+      currentPanchangam = computePanchangam(adjustedCurrentDate, currentLatitude, currentLongitude);
+      masaSequence = computeMasaSequence(
+        currentPanchangam.meta.elongation,
+        currentPanchangam.sunRise as Date,
+      );
+    }
+  }
+  // If we are in the birth month and the previous month was an Adhika Masa, we might be looking at the wrong cycle
+  else if (currentPanchangam.masa === birthMonthName && masaSequence.isPreviousMonthAdhika) {
+    // Advance our processing anchor by ~10 lunar months (300 days) to target next year's occurrence of the birth month
+    adjustedCurrentDate = shiftDay(adjustedCurrentDate, 300);
+    currentPanchangam = computePanchangam(adjustedCurrentDate, currentLatitude, currentLongitude);
+    masaSequence = computeMasaSequence(
+      currentPanchangam.meta.elongation,
+      currentPanchangam.sunRise as Date,
+    );
+  }
+
+  // Check if the current day at the current location already has the birth nakshatra as the first nakshatra then star birthday is today
+  if (
+    currentPanchangam.masa === birthMonthName &&
+    currentPanchangam.nakshatras[0].name === birthNakshatraName
+  ) {
+    return { birthNakshatra: birthNakshatraName, starBirthday: currentDate };
+  }
+
   const startSunrise = currentPanchangam.sunRise as Date;
-  const startJD = toJulianDay(startSunrise);
+  let startJD = toJulianDay(startSunrise);
 
-  let daysToTravelSun = 0;
-  const adhikaMasaCheck = isNextMonthAdhikaMasa(currentPanchangam.meta.elongation, startSunrise);
-
-  // Estimate days until the Sun enters the birth nakshatra zone
+  // Estimate days until the Sun enters the birth nakshatra zone. This should be done only if the next month is not an Adhika Masa of
+  // the birth month, otherwise we will overshoot by at least a month to the Nija Masa of the birth month
   if (
     currentPanchangam.masa !== birthMonthName &&
-    !(adhikaMasaCheck.isAdhikaMasa && adhikaMasaCheck.masaIndex === birthMonthIndex)
+    !(masaSequence.isNextMonthAdhika && masaSequence.nextMasaIndex === birthMonthIndex)
   ) {
     const birthZoneStartSun = birthMonthIndex * RASI_WIDTH;
     const degreesToTravelSun = mod360(birthZoneStartSun - currentPanchangam.meta.sunSidereal);
-    daysToTravelSun = degreesToTravelSun / SPEED_SUN;
+    const daysToTravelSun = degreesToTravelSun / SPEED_SUN;
+    startJD += daysToTravelSun;
   }
 
   // Estimate days until the Moon enters the birth nakshatra zone
-  const startMoonLong = siderealMoonLongitude(startJD + daysToTravelSun);
+  const startMoonLong = siderealMoonLongitude(startJD);
   const birthZoneStartMoon = birthNakshatraIndex * NAKSHATRA_WIDTH;
   const degreesToTravelMoon = mod360(birthZoneStartMoon - startMoonLong);
   const daysToTravelMoon = degreesToTravelMoon / SPEED_MOON;
-  const estimatedEntryDate = julianDayToDate(startJD + daysToTravelSun + daysToTravelMoon);
+  startJD += daysToTravelMoon;
+
+  const estimatedEntryDate = julianDayToDate(startJD);
 
   // Check each candidate day. For each, compute the panchangam and check whether the birth
   // nakshatra is the first or second of that day in the current year:

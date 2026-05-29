@@ -89,6 +89,51 @@ describe("computeStarBirthday", () => {
     expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
   });
 
+  it("returns Svātī and star birthday May 28 2026 when current date is already on May 28 2026 for birth 1990-06-05T01:20 in Thanjavur, current location Virginia", () => {
+    const result = computeStarBirthday(
+      new Date("Thu May 28 2026 18:40:59 GMT-0400 (Eastern Daylight Time)"),
+      "1990-06-05T01:20",
+      10.7860267,
+      79.1381497,
+      39.0437192,
+      -77.4874899,
+    );
+    expect(result.birthNakshatra).toBe("Svātī");
+
+    const expected = new Date("Thu May 28 2026 00:00:00 GMT-0400 (Eastern Daylight Time)");
+    expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
+  });
+
+  it("returns Svātī and star birthday Jun 15 2027 when current date is May 29 2026 (day after star birthday) for birth 1990-06-05T01:20 in Thanjavur, current location Virginia", () => {
+    const result = computeStarBirthday(
+      new Date("Thu May 29 2026 10:40:59 GMT-0400 (Eastern Daylight Time)"),
+      "1990-06-05T01:20",
+      10.7860267,
+      79.1381497,
+      39.0437192,
+      -77.4874899,
+    );
+    expect(result.birthNakshatra).toBe("Svātī");
+
+    const expected = new Date("Tue Jun 15 2027 00:00:00 GMT-0400 (Eastern Daylight Time)");
+    expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
+  });
+
+  it("returns Svātī and star birthday Jun 15 2027 when current date is Jun 20 2026 for birth 1990-06-05T01:20 in Thanjavur, current location Virginia", () => {
+    const result = computeStarBirthday(
+      new Date("Sat Jun 20 2026 10:40:59 GMT-0400 (Eastern Daylight Time)"),
+      "1990-06-05T01:20",
+      10.7860267,
+      79.1381497,
+      39.0437192,
+      -77.4874899,
+    );
+    expect(result.birthNakshatra).toBe("Svātī");
+
+    const expected = new Date("Tue Jun 15 2027 00:00:00 GMT-0400 (Eastern Daylight Time)");
+    expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
+  });
+
   it("returns Aśvinī and star birthday around Oct 26 2026 for birth 1990-10-06T07:20 in Thanjavur, current location Virginia", () => {
     const result = computeStarBirthday(
       new Date("Sun May 17 2026 01:33:00 GMT-0400 (Eastern Daylight Time)"),
@@ -100,7 +145,67 @@ describe("computeStarBirthday", () => {
     );
     expect(result.birthNakshatra).toBe("Aśvinī");
 
-    const expected = new Date("Wed Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)");
+    const expected = new Date("Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)");
+    expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
+  });
+
+  it("returns Aśvinī and star birthday Oct 26 2026 when current date is already on May 28 2026 for birth 1990-10-06T07:20 in Thanjavur, current location Virginia", () => {
+    const result = computeStarBirthday(
+      new Date("Thu May 28 2026 18:40:59 GMT-0400 (Eastern Daylight Time)"),
+      "1990-10-06T07:20",
+      10.7860267,
+      79.1381497,
+      39.0437192,
+      -77.4874899,
+    );
+    expect(result.birthNakshatra).toBe("Aśvinī");
+
+    const expected = new Date("Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)");
+    expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
+  });
+
+  it("returns Aśvinī and star birthday Oct 26 2026 when current date is May 29 2026 for birth 1990-10-06T07:20 in Thanjavur, current location Virginia", () => {
+    const result = computeStarBirthday(
+      new Date("Thu May 29 2026 10:40:59 GMT-0400 (Eastern Daylight Time)"),
+      "1990-10-06T07:20",
+      10.7860267,
+      79.1381497,
+      39.0437192,
+      -77.4874899,
+    );
+    expect(result.birthNakshatra).toBe("Aśvinī");
+
+    const expected = new Date("Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)");
+    expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
+  });
+
+  it("returns Aśvinī and star birthday Oct 26 2026 when current date is Jun 20 2026 for birth 1990-10-06T07:20 in Thanjavur, current location Virginia", () => {
+    const result = computeStarBirthday(
+      new Date("Sat Jun 20 2026 10:40:59 GMT-0400 (Eastern Daylight Time)"),
+      "1990-10-06T07:20",
+      10.7860267,
+      79.1381497,
+      39.0437192,
+      -77.4874899,
+    );
+    expect(result.birthNakshatra).toBe("Aśvinī");
+
+    const expected = new Date("Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)");
+    expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
+  });
+
+  it("returns Aśvinī and star birthday Oct 26 2026 when current date is already Oct 26 2026 for birth 1990-10-06T07:20 in Thanjavur, current location Virginia", () => {
+    const result = computeStarBirthday(
+      new Date("Mon Oct 26 2026 22:40:59 GMT-0400 (Eastern Daylight Time)"),
+      "1990-10-06T07:20",
+      10.7860267,
+      79.1381497,
+      39.0437192,
+      -77.4874899,
+    );
+    expect(result.birthNakshatra).toBe("Aśvinī");
+
+    const expected = new Date("Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)");
     expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
   });
 });
