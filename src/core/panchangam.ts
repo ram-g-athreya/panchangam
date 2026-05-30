@@ -72,6 +72,8 @@ interface MasaSequence {
 export interface StarBirthdayResult {
   birthNakshatra: string;
   starBirthday: Date;
+  birthMasa: string;
+  birthRashi: string;
 }
 
 const TITHIS = [
@@ -741,6 +743,7 @@ export function computeStarBirthday(
   birthLongitude: number,
   currentLatitude: number,
   currentLongitude: number,
+  lunarSystem: LunarSystem = "amanta",
 ): StarBirthdayResult {
   // Interpret birth datetime in the birth location's local timezone
   const birthTz = tzlookup(birthLatitude, birthLongitude);
@@ -813,7 +816,16 @@ export function computeStarBirthday(
     currentPanchangam.masa === birthMonthName &&
     currentPanchangam.nakshatras[0].name === birthNakshatraName
   ) {
-    return { birthNakshatra: birthNakshatraName, starBirthday: currentDate };
+    return {
+      birthNakshatra: birthNakshatraName,
+      starBirthday: currentDate,
+      birthMasa: computeMasa(
+        currentPanchangam.meta.sunSidereal,
+        currentPanchangam.meta.elongation,
+        lunarSystem,
+      ),
+      birthRashi: computeRashi(currentPanchangam.meta.moonSidereal),
+    };
   }
 
   const startSunrise = currentPanchangam.sunRise as Date;
@@ -845,24 +857,55 @@ export function computeStarBirthday(
   // - first at sunrise → that day is the star birthday
   // - second after sunrise → the following day is the star birthday
   for (let offset = -1; offset <= 3; offset++) {
-    const checkDate = shiftDay(estimatedEntryDate, offset);
+    let checkDate = shiftDay(estimatedEntryDate, offset);
     currentPanchangam = computePanchangam(checkDate, currentLatitude, currentLongitude);
 
     const first = currentPanchangam.nakshatras[0];
     const second = currentPanchangam.nakshatras[1];
 
     if (currentPanchangam.masa === birthMonthName && first.name === birthNakshatraName) {
-      return { birthNakshatra: birthNakshatraName, starBirthday: checkDate };
+      return {
+        birthNakshatra: birthNakshatraName,
+        starBirthday: checkDate,
+        birthMasa: computeMasa(
+          currentPanchangam.meta.sunSidereal,
+          currentPanchangam.meta.elongation,
+          lunarSystem,
+        ),
+        birthRashi: computeRashi(currentPanchangam.meta.moonSidereal),
+      };
     }
     if (currentPanchangam.masa === birthMonthName && second?.name === birthNakshatraName) {
       //Todo: maybe see if the nakshatra lasts for at least 96 minutes after sun rise of the second day
       // if its less than that we should use the previous day
-      return { birthNakshatra: birthNakshatraName, starBirthday: shiftDay(checkDate, 1) };
+      checkDate = shiftDay(checkDate, 1);
+      currentPanchangam = computePanchangam(
+        checkDate,
+        currentLatitude,
+        currentLongitude,
+        lunarSystem,
+      );
+      return {
+        birthNakshatra: birthNakshatraName,
+        starBirthday: checkDate,
+        birthMasa: computeMasa(
+          currentPanchangam.meta.sunSidereal,
+          currentPanchangam.meta.elongation,
+          lunarSystem,
+        ),
+        birthRashi: computeRashi(currentPanchangam.meta.moonSidereal),
+      };
     }
   }
 
   return {
     birthNakshatra: birthNakshatraName,
     starBirthday: estimatedEntryDate,
+    birthMasa: computeMasa(
+      currentPanchangam.meta.sunSidereal,
+      currentPanchangam.meta.elongation,
+      lunarSystem,
+    ),
+    birthRashi: computeRashi(currentPanchangam.meta.moonSidereal),
   };
 }

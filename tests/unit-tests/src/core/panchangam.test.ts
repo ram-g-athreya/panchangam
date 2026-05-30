@@ -250,8 +250,6 @@ describe("computePanchangam", () => {
   });
 
   it("returns correct panchangam for purnimanta: Fri May 08 2026 18:34:10 GMT-0400, Virginia", () => {
-    console.log(computePanchangam(date, latitude, longitude, "purnimanta"));
-
     assertCommon(computePanchangam(date, latitude, longitude, "purnimanta"), {
       tithi: { number: 7, name: "Saptamī", paksha: "Kṛṣṇa" },
       vara: "Śukravāra",

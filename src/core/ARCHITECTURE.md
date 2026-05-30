@@ -179,6 +179,7 @@ Sunday,8,5
   - `birthLongitude`
   - `currentLatitude`
   - `currentLongitude`
+  - `lunarSystem` defaults to `amanta`
 - get the timezone based on `birthLatitude` and `birthLongitude` using the `@photostructure/tz-lookup` and use the `birthDate` with the derived timezone
 - call the `computePanchangam` function with the `birthDate` (including appropriate timezone), `birthLatitude` and `birthLongitude`
 - acquire the birth `nakshatra` based on the `Panchangam`. If the first nakshatra for the day ends before the birth date, then choose the second nakshatra
@@ -189,3 +190,5 @@ Sunday,8,5
 - The function should return the following:
   - `birthNakshatra`: string representing the birth nakshatra
   - `starBirthday`: date representing the star birthday
+  - `birthMasa`: string representing the birth masa
+  - `birthRashi`: string representing the birth rashi
