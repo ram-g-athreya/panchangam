@@ -29,3 +29,9 @@ Following URL paths are supported in the application
 - Use named exports (no default exports).
 - For all functions ensure that the function parameters have proper types and the return type is explicitly defined.
 - Define all `consts` at the top of a file after imports.
+
+## SEO
+- Add meta description:
+`Get accurate daily Panchangam for your location. Check today's Tithi, Nakshatra, Vara, Shubh Muhurat, and Rahu Kalam timings. Calculate your Star Birthday (Janma Nakshatra) instantly. Enter your birth details to find your Vedic birth star, moon sign, and the exact date of your star birthday this year.`
+
+- Create a `sitemap.xml` file for all the pages on the website
