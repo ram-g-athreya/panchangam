@@ -180,7 +180,7 @@ Based on the computed panchangam generate the Sankalpam based on the template be
 - **Birth Date & Time**: Date Picker that asks for the user's birth date and time
 - **Birth City**: City Search component that user can use to enter their birth city
 - **Current City**: City Search component which should have the same value as the component in the header and from `localStorage`. Updating the city here should also update it globally
-- **Lunar System**: Implicitly use the lunar system from localStorage `amanta` by default
+- **Lunar System**: Use the Lunar System toggle switch component pre-populated with the value from localStorage. If there is no existing data it should be `Amānta` by default
 - **Find Star Birthday** button. The button should be disabled until all the fields are filled
   - Center the button
   - The text should be prefixed by a `star` icon from FontAwesome

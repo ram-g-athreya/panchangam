@@ -33,6 +33,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { SunriseFill, SunsetFill, EmojiSunglassesFill } from "react-bootstrap-icons";
+import { Moon, LunarPhase } from "lunarphase-js";
 import { computePanchangam, computeStarBirthday } from "../core/panchangam";
 import type { Panchangam, StarBirthdayResult } from "../core/panchangam";
 import type { TimeFormat, LocationData, LunarSystem } from "../constants";
@@ -46,6 +47,11 @@ interface DailyViewProps {
 
 const getMoonPhaseImage = (number: number, paksha: string): string => {
   return encodeURI(`/images/moon-phases/${number}_${paksha}.webp`);
+};
+
+const moonEmojiBySystem: Record<LunarSystem, string> = {
+  amanta: Moon.emojiForLunarPhase(LunarPhase.NEW),
+  purnimanta: Moon.emojiForLunarPhase(LunarPhase.FULL),
 };
 
 function getLocation(): LocationData | null {
@@ -206,15 +212,17 @@ function saveProfiles(profiles: StoredProfile[]): void {
 
 interface SidePanelProps {
   panchangam: Panchangam;
+  lunarSystem: LunarSystem;
 }
 
-function SidePanel({ panchangam: p }: SidePanelProps) {
+function SidePanel({ panchangam: p, lunarSystem }: SidePanelProps) {
   const [profiles, setProfiles] = useState<StoredProfile[]>(getStoredProfiles);
   const [name, setName] = useState("");
   const [birthDateTime, setBirthDateTime] = useState("");
   const [birthLocation, setBirthLocation] = useState<LocationData | null>(null);
   const [birthCityKey, setBirthCityKey] = useState(0);
   const [currentLocation, setCurrentLocation] = useState<LocationData | null>(getLocation);
+  const [formLunarSystem, setFormLunarSystem] = useState<LunarSystem>(lunarSystem);
   const [result, setResult] = useState<StarBirthdayResult | null>(null);
   const [showCalendarOptions, setShowCalendarOptions] = useState(false);
   const dateTimeInputRef = useRef<HTMLInputElement>(null);
@@ -239,6 +247,7 @@ function SidePanel({ panchangam: p }: SidePanelProps) {
       bLoc.longitude,
       cLoc.latitude,
       cLoc.longitude,
+      formLunarSystem,
     );
     setResult(res);
     setShowCalendarOptions(false);
@@ -356,6 +365,21 @@ function SidePanel({ panchangam: p }: SidePanelProps) {
           <div className="star-birthday-form__field">
             <label className="star-birthday-form__label">Current City</label>
             <CitySearch onLocationSelect={setCurrentLocation} />
+          </div>
+          <div className="star-birthday-form__field">
+            <label className="star-birthday-form__label">Lunar System</label>
+            <button
+              className={`lunar-system-toggle lunar-system-toggle--${formLunarSystem}`}
+              onClick={() => setFormLunarSystem((s) => (s === "amanta" ? "purnimanta" : "amanta"))}
+              aria-label="Toggle lunar system"
+            >
+              <span className="lunar-system-toggle__thumb">
+                {moonEmojiBySystem[formLunarSystem]}
+              </span>
+              <span className="lunar-system-toggle__label">
+                {formLunarSystem === "amanta" ? "Amānta" : "Pūrṇimānta"}
+              </span>
+            </button>
           </div>
           <button className="star-birthday-form__btn" disabled={!allFilled} onClick={handleFind}>
             <FontAwesomeIcon icon={faStar} /> Find Star Birthday
@@ -647,7 +671,7 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
           </div>
         </div>
       </section>
-      <SidePanel panchangam={p} />
+      <SidePanel panchangam={p} lunarSystem={lunarSystem} />
     </main>
   );
 }

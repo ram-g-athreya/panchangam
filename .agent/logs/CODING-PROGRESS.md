@@ -263,6 +263,36 @@
 - Known risk or unresolved issue: none
 - Next best step: reviewer approves, then commit
 
+### Session 0052
+
+- Date: 2026-05-30
+- Goal: Implement `star-birthday-lunar-system-enhancement` — add Lunar System toggle to Find My Star Birthday form
+- Completed:
+  - DailyView.tsx: imported `Moon` and `LunarPhase` from `lunarphase-js`
+  - DailyView.tsx: added `moonEmojiBySystem` const mapping amanta→new moon emoji, purnimanta→full moon emoji
+  - SidePanel: added `formLunarSystem` state (initialized from prop); `compute()` uses `formLunarSystem`
+  - Form: added "Lunar System" `star-birthday-form__field` between Current City and Find button; reuses existing `lunar-system-toggle` CSS classes from index.css (same as Settings toggle)
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review
+- Files updated: src/pages/DailyView.tsx, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit
+
+### Session 0051
+
+- Date: 2026-05-30
+- Goal: Fix `star-birthday-enhancement-bug` — star birthday calculation ignores lunarSystem
+- Root cause: SidePanel.compute() called computeStarBirthday without the lunarSystem argument (defaults to "amanta"); DailyView never passed lunarSystem down to SidePanel
+- Fix:
+  - SidePanelProps: added `lunarSystem: LunarSystem`
+  - SidePanel: destructures `lunarSystem`; `compute()` passes it as 7th arg to `computeStarBirthday`
+  - DailyView render: `<SidePanel panchangam={p} lunarSystem={lunarSystem} />`
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review
+- Files updated: src/pages/DailyView.tsx, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit
+
 ### Session 0049
 
 - Date: 2026-05-30

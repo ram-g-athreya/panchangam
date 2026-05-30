@@ -15,6 +15,28 @@ status_legend:
   done: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: star-birthday-lunar-system-enhancement
+    priority: 1
+    title: Add lunar system toggle as per the spec in `src/components/ARCHITECTURE.md` and `src/pages/ARCHITECTURE.md`
+    status: done
+    evidence: >
+      npm run check exits 0 (tsc + lint + 11 tests passing).
+      DailyView.tsx: imported Moon + LunarPhase from lunarphase-js; added moonEmojiBySystem const.
+      SidePanel: added formLunarSystem state (initialized from lunarSystem prop); compute() passes formLunarSystem to computeStarBirthday.
+      Form JSX: added "Lunar System" field between Current City and Find button — renders same lunar-system-toggle button as Settings, using lunar-system-toggle--amanta/purnimanta CSS classes from index.css.
+      Toggle label shows "Amānta" or "Pūrṇimānta" with corresponding moon emoji; clicking toggles formLunarSystem locally.
+  - id: star-birthday-enhancement-bug
+    priority: 1
+    title: The star birthday calculation from `DailyView.tsx` does not use the lunar system
+    description: >
+      The star birthday calculation in `DailyView.tsx` currently does not take into account the lunar system (Amānta vs Purnimānta) which can lead to incorrect results for some users. The calculation should be updated to use the correct lunar system based on the user's settings.
+    status: done
+    evidence: >
+      npm run check exits 0 (tsc + lint + 11 tests passing).
+      SidePanelProps: added lunarSystem: LunarSystem field.
+      SidePanel: destructures lunarSystem from props; compute() passes it as 7th argument to computeStarBirthday.
+      DailyView: passes lunarSystem prop to <SidePanel lunarSystem={lunarSystem} />.
+      Result: star birthday now respects the user's Amānta/Purnimānta setting from App state.
   - id: star-birthday-enhancements
     priority: 1
     title: Star Birthday Enhancements based on spec in `src/pages/ARCHITECTURE.md` and `src/core/ARCHITECTURE.md`. Also add tests based on the spec in `tests/unit-tests/src/core/panchangam.test.ts`
