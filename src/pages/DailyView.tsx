@@ -7,6 +7,9 @@ import {
   faInfinity,
   faScaleBalanced,
   faCalendarDays,
+  faCalendarPlus,
+  faChevronDown,
+  faDownload,
   faSeedling,
   faCloudBolt,
   faLeaf,
@@ -102,6 +105,68 @@ function formatDate(date: Date): string {
   });
 }
 
+function toICSDateString(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}${m}${d}`;
+}
+
+function toISO8601Date(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+function nextDay(date: Date): Date {
+  const d = new Date(date);
+  d.setDate(d.getDate() + 1);
+  return d;
+}
+
+function buildGoogleCalendarUrl(title: string, date: Date): string {
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: title,
+    dates: `${toICSDateString(date)}/${toICSDateString(nextDay(date))}`,
+  });
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
+function buildOutlookUrl(title: string, date: Date): string {
+  const params = new URLSearchParams({
+    subject: title,
+    startdt: toISO8601Date(date),
+    enddt: toISO8601Date(date),
+    allday: "true",
+  });
+  return `https://outlook.live.com/calendar/0/deeplink/compose?${params.toString()}`;
+}
+
+function downloadICS(title: string, date: Date): void {
+  const start = toICSDateString(date);
+  const end = toICSDateString(nextDay(date));
+  const ics = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Panchangam//EN",
+    "BEGIN:VEVENT",
+    `DTSTART;VALUE=DATE:${start}`,
+    `DTEND;VALUE=DATE:${end}`,
+    `SUMMARY:${title}`,
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ].join("\r\n");
+  const blob = new Blob([ics], { type: "text/calendar" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${title}.ics`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 const RASHI: Record<string, { icon: IconDefinition; zodiacName: string }> = {
   Meṣa: { icon: faAries, zodiacName: "Aries" },
   Vṛṣabha: { icon: faTaurus, zodiacName: "Taurus" },
@@ -150,14 +215,22 @@ function SidePanel({ panchangam: p }: SidePanelProps) {
   const [birthCityKey, setBirthCityKey] = useState(0);
   const [currentLocation, setCurrentLocation] = useState<LocationData | null>(getLocation);
   const [result, setResult] = useState<StarBirthdayResult | null>(null);
+  const [showCalendarOptions, setShowCalendarOptions] = useState(false);
   const dateTimeInputRef = useRef<HTMLInputElement>(null);
+  const calendarRef = useRef<HTMLDivElement>(null);
 
-  function compute(
-    n: string,
-    bdt: string,
-    bLoc: LocationData,
-    cLoc: LocationData,
-  ) {
+  useEffect(() => {
+    if (!showCalendarOptions) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (calendarRef.current && !calendarRef.current.contains(e.target as Node)) {
+        setShowCalendarOptions(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showCalendarOptions]);
+
+  function compute(n: string, bdt: string, bLoc: LocationData, cLoc: LocationData) {
     const res = computeStarBirthday(
       new Date(),
       bdt,
@@ -167,6 +240,7 @@ function SidePanel({ panchangam: p }: SidePanelProps) {
       cLoc.longitude,
     );
     setResult(res);
+    setShowCalendarOptions(false);
     const newProfile: StoredProfile = { name: n, birthDateTime: bdt, birthLocation: bLoc };
     const updated = [newProfile, ...profiles.filter((p) => p.name !== n)].slice(0, 5);
     setProfiles(updated);
@@ -204,6 +278,8 @@ function SidePanel({ panchangam: p }: SidePanelProps) {
 
   const allFilled =
     name !== "" && birthDateTime !== "" && birthLocation !== null && currentLocation !== null;
+
+  const eventTitle = `${name}'s Nakshatra Birthday`;
 
   const v = (s: string): React.ReactNode => <strong>{s}</strong>;
 
@@ -284,31 +360,83 @@ function SidePanel({ panchangam: p }: SidePanelProps) {
             <FontAwesomeIcon icon={faStar} /> Find Star Birthday
           </button>
           {result && (
-            <div className="star-birthday-result">
-              <div className="star-birthday-result__section">
-                <span className="anga-card__label">
-                  <FontAwesomeIcon icon={faStar} />
-                  BIRTH STAR
-                </span>
-                <span className="anga-card__value">{result.birthNakshatra}</span>
+            <>
+              <div className="star-birthday-result">
+                <div className="star-birthday-result__section">
+                  <span className="anga-card__label">
+                    <FontAwesomeIcon icon={faStar} />
+                    BIRTH STAR
+                  </span>
+                  <span className="anga-card__value">{result.birthNakshatra}</span>
+                </div>
+                <div className="star-birthday-result__section">
+                  <span className="anga-card__label">
+                    <FontAwesomeIcon icon={faCalendarDays} />
+                    BIRTHDAY
+                  </span>
+                  <span className="anga-card__value">
+                    {result.starBirthday.toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </span>
+                  <span className="anga-card__sub">
+                    {result.starBirthday.toLocaleDateString("en-IN", { weekday: "long" })}
+                  </span>
+                </div>
               </div>
-              <div className="star-birthday-result__section">
-                <span className="anga-card__label">
-                  <FontAwesomeIcon icon={faCalendarDays} />
-                  BIRTHDAY
-                </span>
-                <span className="anga-card__value">
-                  {result.starBirthday.toLocaleDateString("en-IN", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </span>
-                <span className="anga-card__sub">
-                  {result.starBirthday.toLocaleDateString("en-IN", { weekday: "long" })}
-                </span>
+              <div className="add-to-calendar" ref={calendarRef}>
+                <div className="add-to-calendar__split-btn">
+                  <a
+                    href={buildGoogleCalendarUrl(eventTitle, result.starBirthday)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="add-to-calendar__primary"
+                  >
+                    <FontAwesomeIcon icon={faCalendarPlus} /> Add to Google Calendar
+                  </a>
+                  <button
+                    className="add-to-calendar__chevron"
+                    onClick={() => setShowCalendarOptions((o) => !o)}
+                    aria-label="More calendar options"
+                  >
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </button>
+                </div>
+                {showCalendarOptions && (
+                  <div className="add-to-calendar__dropdown">
+                    <a
+                      href={buildGoogleCalendarUrl(eventTitle, result.starBirthday)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="add-to-calendar__option"
+                      onClick={() => setShowCalendarOptions(false)}
+                    >
+                      <FontAwesomeIcon icon={faCalendarDays} /> Add to Google Calendar
+                    </a>
+                    <a
+                      href={buildOutlookUrl(eventTitle, result.starBirthday)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="add-to-calendar__option"
+                      onClick={() => setShowCalendarOptions(false)}
+                    >
+                      <FontAwesomeIcon icon={faCalendarDays} /> Add to Outlook
+                    </a>
+                    <button
+                      className="add-to-calendar__option"
+                      onClick={() => {
+                        downloadICS(eventTitle, result.starBirthday);
+                        setShowCalendarOptions(false);
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faDownload} /> Download .ics
+                    </button>
+                  </div>
+                )}
               </div>
-            </div>
+            </>
           )}
         </div>
       </div>
