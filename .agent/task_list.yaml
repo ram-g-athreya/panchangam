@@ -15,6 +15,16 @@ status_legend:
   done: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: star-birthday-lunar-system-enhancement-2
+    priority: 1
+    title: Auto submit if data is already present as per the spec in `src/pages/ARCHITECTURE.md`
+    status: done
+    evidence: >
+      npm run check exits 0 (tsc + lint + 11 tests passing).
+      DailyView.tsx SidePanel: name/birthDateTime/birthLocation now initialize from getStoredProfiles()[0] (first/most-recent profile) instead of empty state.
+      Startup auto-submit: useEffect with [] deps reads first stored profile + current location; if both present, calls computeStarBirthday and setResult once (didAutoSubmit ref prevents repeat).
+      compute() signature: added optional `ls: LunarSystem = formLunarSystem` 5th param so callers can pass a new value before state update settles.
+      Lunar System toggle onClick: computes newLs, calls setFormLunarSystem(newLs), then calls compute() with newLs if allFilled — satisfies spec "if toggled and all other info filled then auto-submit".
   - id: star-birthday-lunar-system-enhancement
     priority: 1
     title: Add lunar system toggle as per the spec in `src/components/ARCHITECTURE.md` and `src/pages/ARCHITECTURE.md`

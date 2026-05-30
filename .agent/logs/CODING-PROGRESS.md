@@ -263,6 +263,21 @@
 - Known risk or unresolved issue: none
 - Next best step: reviewer approves, then commit
 
+### Session 0053
+
+- Date: 2026-05-30
+- Goal: Implement `star-birthday-lunar-system-enhancement-2` — auto-submit when data is already present
+- Completed:
+  - SidePanel: initialized `name`, `birthDateTime`, `birthLocation` from `getStoredProfiles()[0]` (lazy initializers) so form pre-populates on startup with the most recent profile
+  - Startup auto-submit: `useEffect` with `[]` reads first stored profile + current location; calls `computeStarBirthday` and `setResult` once on mount (guarded by `didAutoSubmit` ref); eslint-disable comment on `[]` deps
+  - `compute()`: added optional `ls: LunarSystem = formLunarSystem` parameter so callers can pass the toggled value before React state settles
+  - Lunar System toggle `onClick`: computes `newLs`, calls `setFormLunarSystem(newLs)`, then calls `compute(…, newLs)` if `allFilled` — satisfies spec "if toggled and all other info filled then auto-submit"
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review
+- Files updated: src/pages/DailyView.tsx, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit
+
 ### Session 0052
 
 - Date: 2026-05-30

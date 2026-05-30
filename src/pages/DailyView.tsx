@@ -217,9 +217,13 @@ interface SidePanelProps {
 
 function SidePanel({ panchangam: p, lunarSystem }: SidePanelProps) {
   const [profiles, setProfiles] = useState<StoredProfile[]>(getStoredProfiles);
-  const [name, setName] = useState("");
-  const [birthDateTime, setBirthDateTime] = useState("");
-  const [birthLocation, setBirthLocation] = useState<LocationData | null>(null);
+  const [name, setName] = useState<string>(() => getStoredProfiles()[0]?.name ?? "");
+  const [birthDateTime, setBirthDateTime] = useState<string>(
+    () => getStoredProfiles()[0]?.birthDateTime ?? "",
+  );
+  const [birthLocation, setBirthLocation] = useState<LocationData | null>(
+    () => getStoredProfiles()[0]?.birthLocation ?? null,
+  );
   const [birthCityKey, setBirthCityKey] = useState(0);
   const [currentLocation, setCurrentLocation] = useState<LocationData | null>(getLocation);
   const [formLunarSystem, setFormLunarSystem] = useState<LunarSystem>(lunarSystem);
@@ -227,6 +231,28 @@ function SidePanel({ panchangam: p, lunarSystem }: SidePanelProps) {
   const [showCalendarOptions, setShowCalendarOptions] = useState(false);
   const dateTimeInputRef = useRef<HTMLInputElement>(null);
   const calendarRef = useRef<HTMLDivElement>(null);
+  const didAutoSubmit = useRef(false);
+
+  // Auto-submit on mount if the most recent profile and current location are available
+  useEffect(() => {
+    const firstProfile = getStoredProfiles()[0];
+    const cLoc = getLocation();
+    if (!didAutoSubmit.current && firstProfile && cLoc) {
+      didAutoSubmit.current = true;
+      setResult(
+        computeStarBirthday(
+          new Date(),
+          firstProfile.birthDateTime,
+          firstProfile.birthLocation.latitude,
+          firstProfile.birthLocation.longitude,
+          cLoc.latitude,
+          cLoc.longitude,
+          lunarSystem,
+        ),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!showCalendarOptions) return;
@@ -239,7 +265,13 @@ function SidePanel({ panchangam: p, lunarSystem }: SidePanelProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showCalendarOptions]);
 
-  function compute(n: string, bdt: string, bLoc: LocationData, cLoc: LocationData) {
+  function compute(
+    n: string,
+    bdt: string,
+    bLoc: LocationData,
+    cLoc: LocationData,
+    ls: LunarSystem = formLunarSystem,
+  ) {
     const res = computeStarBirthday(
       new Date(),
       bdt,
@@ -247,7 +279,7 @@ function SidePanel({ panchangam: p, lunarSystem }: SidePanelProps) {
       bLoc.longitude,
       cLoc.latitude,
       cLoc.longitude,
-      formLunarSystem,
+      ls,
     );
     setResult(res);
     setShowCalendarOptions(false);
@@ -370,7 +402,13 @@ function SidePanel({ panchangam: p, lunarSystem }: SidePanelProps) {
             <label className="star-birthday-form__label">Lunar System</label>
             <button
               className={`lunar-system-toggle lunar-system-toggle--${formLunarSystem}`}
-              onClick={() => setFormLunarSystem((s) => (s === "amanta" ? "purnimanta" : "amanta"))}
+              onClick={() => {
+                const newLs: LunarSystem = formLunarSystem === "amanta" ? "purnimanta" : "amanta";
+                setFormLunarSystem(newLs);
+                if (allFilled) {
+                  compute(name, birthDateTime, birthLocation!, currentLocation!, newLs);
+                }
+              }}
               aria-label="Toggle lunar system"
             >
               <span className="lunar-system-toggle__thumb">
