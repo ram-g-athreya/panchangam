@@ -111,9 +111,12 @@ test_cases:
       birthLongitude: 79.1381497
       currentLatitude: 39.0437192
       currentLongitude: -77.4874899
+      lunar_system: amanta
     expected_output:
       birthNakshatra: Svātī
       starBirthday: Thu May 28 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
+      birthMasa: Jyeṣṭha
+      birthRashi: Tulā
   - parameters:
       currentDate: Thu May 28 2026 18:40:59 GMT-0400 (Eastern Daylight Time)
       birthDate: 1990-06-05T01:20
@@ -121,9 +124,12 @@ test_cases:
       birthLongitude: 79.1381497
       currentLatitude: 39.0437192
       currentLongitude: -77.4874899
+      lunar_system: amanta
     expected_output:
       birthNakshatra: Svātī
       starBirthday: Thu May 28 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
+      birthMasa: Jyeṣṭha
+      birthRashi: Tulā
   - parameters:
       currentDate: Thu May 29 2026 10:40:59 GMT-0400 (Eastern Daylight Time)
       birthDate: 1990-06-05T01:20
@@ -131,9 +137,12 @@ test_cases:
       birthLongitude: 79.1381497
       currentLatitude: 39.0437192
       currentLongitude: -77.4874899
+      lunar_system: amanta
     expected_output:
       birthNakshatra: Svātī
       starBirthday: Tue June 15 2027 00:00:00 GMT-0400 (Eastern Daylight Time)
+      birthMasa: Jyeṣṭha
+      birthRashi: Tulā
   - parameters:
       currentDate: Sat June 20 2026 10:40:59 GMT-0400 (Eastern Daylight Time)
       birthDate: 1990-06-05T01:20
@@ -141,9 +150,12 @@ test_cases:
       birthLongitude: 79.1381497
       currentLatitude: 39.0437192
       currentLongitude: -77.4874899
+      lunar_system: amanta
     expected_output:
       birthNakshatra: Svātī
       starBirthday: Tue June 15 2027 00:00:00 GMT-0400 (Eastern Daylight Time)
+      birthMasa: Jyeṣṭha
+      birthRashi: Tulā
   - parameters:
       currentDate: Sun May 17 2026 01:33:00 GMT-0400 (Eastern Daylight Time)
       birthDate: 1990-10-06T07:20
@@ -151,9 +163,12 @@ test_cases:
       birthLongitude: 79.1381497
       currentLatitude: 39.0437192
       currentLongitude: -77.4874899
+      lunar_system: amanta
     expected_output:
       birthNakshatra: Aśvinī
       starBirthday: Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
+      birthMasa: Āśvina
+      birthRashi: Meṣa
   - parameters:
       currentDate: Thu May 28 2026 18:40:59 GMT-0400 (Eastern Daylight Time)
       birthDate: 1990-10-06T07:20
@@ -161,9 +176,12 @@ test_cases:
       birthLongitude: 79.1381497
       currentLatitude: 39.0437192
       currentLongitude: -77.4874899
+      lunar_system: amanta
     expected_output:
       birthNakshatra: Aśvinī
       starBirthday: Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
+      birthMasa: Āśvina
+      birthRashi: Meṣa
   - parameters:
       currentDate: Thu May 29 2026 10:40:59 GMT-0400 (Eastern Daylight Time)
       birthDate: 1990-10-06T07:20
@@ -171,9 +189,12 @@ test_cases:
       birthLongitude: 79.1381497
       currentLatitude: 39.0437192
       currentLongitude: -77.4874899
+      lunar_system: amanta
     expected_output:
       birthNakshatra: Aśvinī
       starBirthday: Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
+      birthMasa: Āśvina
+      birthRashi: Meṣa
   - parameters:
       currentDate: Sat June 20 2026 10:40:59 GMT-0400 (Eastern Daylight Time)
       birthDate: 1990-10-06T07:20
@@ -181,9 +202,12 @@ test_cases:
       birthLongitude: 79.1381497
       currentLatitude: 39.0437192
       currentLongitude: -77.4874899
+      lunar_system: amanta
     expected_output:
       birthNakshatra: Aśvinī
       starBirthday: Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
+      birthMasa: Āśvina
+      birthRashi: Meṣa
   - parameters:
       currentDate: Mon Oct 26 2026 22:40:59 GMT-0400 (Eastern Daylight Time)
       birthDate: 1990-10-06T07:20
@@ -191,7 +215,62 @@ test_cases:
       birthLongitude: 79.1381497
       currentLatitude: 39.0437192
       currentLongitude: -77.4874899
+      lunar_system: amanta
     expected_output:
       birthNakshatra: Aśvinī
       starBirthday: Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
+      birthMasa: Āśvina
+      birthRashi: Meṣa
+  - parameters:
+      currentDate: Thu May 28 2026 18:40:59 GMT-0400 (Eastern Daylight Time)
+      birthDate: 1990-10-06T07:20
+      birthLatitude: 10.7860267
+      birthLongitude: 79.1381497
+      currentLatitude: 39.0437192
+      currentLongitude: -77.4874899
+      lunar_system: purnimanta
+    expected_output:
+      birthNakshatra: Aśvinī
+      starBirthday: Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
+      birthMasa: Kārttika
+      birthRashi: Meṣa
+  - parameters:
+      currentDate: Thu May 29 2026 10:40:59 GMT-0400 (Eastern Daylight Time)
+      birthDate: 1990-10-06T07:20
+      birthLatitude: 10.7860267
+      birthLongitude: 79.1381497
+      currentLatitude: 39.0437192
+      currentLongitude: -77.4874899
+      lunar_system: purnimanta
+    expected_output:
+      birthNakshatra: Aśvinī
+      starBirthday: Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
+      birthMasa: Kārttika
+      birthRashi: Meṣa
+  - parameters:
+      currentDate: Sat June 20 2026 10:40:59 GMT-0400 (Eastern Daylight Time)
+      birthDate: 1990-10-06T07:20
+      birthLatitude: 10.7860267
+      birthLongitude: 79.1381497
+      currentLatitude: 39.0437192
+      currentLongitude: -77.4874899
+      lunar_system: purnimanta
+    expected_output:
+      birthNakshatra: Aśvinī
+      starBirthday: Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
+      birthMasa: Kārttika
+      birthRashi: Meṣa
+  - parameters:
+      currentDate: Mon Oct 26 2026 22:40:59 GMT-0400 (Eastern Daylight Time)
+      birthDate: 1990-10-06T07:20
+      birthLatitude: 10.7860267
+      birthLongitude: 79.1381497
+      currentLatitude: 39.0437192
+      currentLongitude: -77.4874899
+      lunar_system: purnimanta
+    expected_output:
+      birthNakshatra: Aśvinī
+      starBirthday: Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)
+      birthMasa: Kārttika
+      birthRashi: Meṣa
 ```

@@ -15,6 +15,61 @@ status_legend:
   done: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: reorganize-sankalpam
+    priority: 1
+    title: Reorganize Sankalpam based on spec in `src/pages/ARCHITECTURE.md` to be in the panchangam panel
+    status: done
+    evidence: >
+      npm run check exits 0 (tsc + lint + 11 tests passing).
+      DailyView.tsx: removed Panchangam from import (no longer used in SidePanelProps); removed panchangam prop from SidePanelProps and SidePanel; removed v helper and sankalpam-section from SidePanel return.
+      DailyView DailyView(): added v helper; added sankalpam-section div after anga-grid closing tag and before panchang-panel section close — renders identical Sankalpam template using p.* from the existing panchangam useMemo.
+      DailyView render: <SidePanel lunarSystem={lunarSystem} /> (no panchangam prop).
+      DailyView.css: sankalpam-section margin changed from margin-bottom:1.5rem to margin-top:1rem (last element in panel, no sibling below).
+  - id: star-birthday-lunar-system-enhancement-2
+    priority: 1
+    title: Auto submit if data is already present as per the spec in `src/pages/ARCHITECTURE.md`
+    status: done
+    evidence: >
+      npm run check exits 0 (tsc + lint + 11 tests passing).
+      DailyView.tsx SidePanel: name/birthDateTime/birthLocation now initialize from getStoredProfiles()[0] (first/most-recent profile) instead of empty state.
+      Startup auto-submit: useEffect with [] deps reads first stored profile + current location; if both present, calls computeStarBirthday and setResult once (didAutoSubmit ref prevents repeat).
+      compute() signature: added optional `ls: LunarSystem = formLunarSystem` 5th param so callers can pass a new value before state update settles.
+      Lunar System toggle onClick: computes newLs, calls setFormLunarSystem(newLs), then calls compute() with newLs if allFilled — satisfies spec "if toggled and all other info filled then auto-submit".
+  - id: star-birthday-lunar-system-enhancement
+    priority: 1
+    title: Add lunar system toggle as per the spec in `src/components/ARCHITECTURE.md` and `src/pages/ARCHITECTURE.md`
+    status: done
+    evidence: >
+      npm run check exits 0 (tsc + lint + 11 tests passing).
+      DailyView.tsx: imported Moon + LunarPhase from lunarphase-js; added moonEmojiBySystem const.
+      SidePanel: added formLunarSystem state (initialized from lunarSystem prop); compute() passes formLunarSystem to computeStarBirthday.
+      Form JSX: added "Lunar System" field between Current City and Find button — renders same lunar-system-toggle button as Settings, using lunar-system-toggle--amanta/purnimanta CSS classes from index.css.
+      Toggle label shows "Amānta" or "Pūrṇimānta" with corresponding moon emoji; clicking toggles formLunarSystem locally.
+  - id: star-birthday-enhancement-bug
+    priority: 1
+    title: The star birthday calculation from `DailyView.tsx` does not use the lunar system
+    description: >
+      The star birthday calculation in `DailyView.tsx` currently does not take into account the lunar system (Amānta vs Purnimānta) which can lead to incorrect results for some users. The calculation should be updated to use the correct lunar system based on the user's settings.
+    status: done
+    evidence: >
+      npm run check exits 0 (tsc + lint + 11 tests passing).
+      SidePanelProps: added lunarSystem: LunarSystem field.
+      SidePanel: destructures lunarSystem from props; compute() passes it as 7th argument to computeStarBirthday.
+      DailyView: passes lunarSystem prop to <SidePanel lunarSystem={lunarSystem} />.
+      Result: star birthday now respects the user's Amānta/Purnimānta setting from App state.
+  - id: star-birthday-enhancements
+    priority: 1
+    title: Star Birthday Enhancements based on spec in `src/pages/ARCHITECTURE.md` and `src/core/ARCHITECTURE.md`. Also add tests based on the spec in `tests/unit-tests/src/core/panchangam.test.ts`
+    status: done
+    evidence: >
+      npm run check exits 0 (tsc + lint + 11 tests passing).
+      DailyView.tsx: imported faCakeCandles; restructured star-birthday-result from a single row to two rows.
+      Row 1: NAKSHATRA (faStar icon + birthNakshatra) | BIRTHDAY (faCakeCandles icon + formatted date + weekday sub).
+      Row 2: MASA (faCalendarDays icon + birthMasa) | RASHI (faMoon icon + zodiac icon + birthRashi + english zodiac name sub) — reuses existing RASHI lookup map.
+      DailyView.css: .star-birthday-result changed to flex-direction column; added .star-birthday-result__row (row flex) and .star-birthday-result__row--divider (top border + margin/padding for visual separation between rows).
+      Tests: all 9 computeStarBirthday tests assert birthMasa and birthRashi in addition to birthNakshatra and starBirthday.
+      Svātī (4 tests, May 28 2026 and Jun 15 2027): birthMasa="Jyeṣṭha", birthRashi="Tulā".
+      Aśvinī (5 tests, Oct 26 2026): birthMasa="Āśvina", birthRashi="Meṣa".
   - id: save-star-birthday-to-calendar
     priority: 1
     title: Save Star Birthday to Calendar based on spec in `src/pages/ARCHITECTURE.md`

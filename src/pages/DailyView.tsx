@@ -8,6 +8,7 @@ import {
   faScaleBalanced,
   faCalendarDays,
   faCalendarPlus,
+  faCakeCandles,
   faChevronDown,
   faDownload,
   faSeedling,
@@ -32,8 +33,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { SunriseFill, SunsetFill, EmojiSunglassesFill } from "react-bootstrap-icons";
+import { Moon, LunarPhase } from "lunarphase-js";
 import { computePanchangam, computeStarBirthday } from "../core/panchangam";
-import type { Panchangam, StarBirthdayResult } from "../core/panchangam";
+import type { StarBirthdayResult } from "../core/panchangam";
 import type { TimeFormat, LocationData, LunarSystem } from "../constants";
 import { LOCATION_KEY, STAR_BIRTHDAY_KEY } from "../constants";
 import "../styles/DailyView.css";
@@ -45,6 +47,11 @@ interface DailyViewProps {
 
 const getMoonPhaseImage = (number: number, paksha: string): string => {
   return encodeURI(`/images/moon-phases/${number}_${paksha}.webp`);
+};
+
+const moonEmojiBySystem: Record<LunarSystem, string> = {
+  amanta: Moon.emojiForLunarPhase(LunarPhase.NEW),
+  purnimanta: Moon.emojiForLunarPhase(LunarPhase.FULL),
 };
 
 function getLocation(): LocationData | null {
@@ -204,20 +211,47 @@ function saveProfiles(profiles: StoredProfile[]): void {
 }
 
 interface SidePanelProps {
-  panchangam: Panchangam;
+  lunarSystem: LunarSystem;
 }
 
-function SidePanel({ panchangam: p }: SidePanelProps) {
+function SidePanel({ lunarSystem }: SidePanelProps) {
   const [profiles, setProfiles] = useState<StoredProfile[]>(getStoredProfiles);
-  const [name, setName] = useState("");
-  const [birthDateTime, setBirthDateTime] = useState("");
-  const [birthLocation, setBirthLocation] = useState<LocationData | null>(null);
+  const [name, setName] = useState<string>(() => getStoredProfiles()[0]?.name ?? "");
+  const [birthDateTime, setBirthDateTime] = useState<string>(
+    () => getStoredProfiles()[0]?.birthDateTime ?? "",
+  );
+  const [birthLocation, setBirthLocation] = useState<LocationData | null>(
+    () => getStoredProfiles()[0]?.birthLocation ?? null,
+  );
   const [birthCityKey, setBirthCityKey] = useState(0);
   const [currentLocation, setCurrentLocation] = useState<LocationData | null>(getLocation);
+  const [formLunarSystem, setFormLunarSystem] = useState<LunarSystem>(lunarSystem);
   const [result, setResult] = useState<StarBirthdayResult | null>(null);
   const [showCalendarOptions, setShowCalendarOptions] = useState(false);
   const dateTimeInputRef = useRef<HTMLInputElement>(null);
   const calendarRef = useRef<HTMLDivElement>(null);
+  const didAutoSubmit = useRef(false);
+
+  // Auto-submit on mount if the most recent profile and current location are available
+  useEffect(() => {
+    const firstProfile = getStoredProfiles()[0];
+    const cLoc = getLocation();
+    if (!didAutoSubmit.current && firstProfile && cLoc) {
+      didAutoSubmit.current = true;
+      setResult(
+        computeStarBirthday(
+          new Date(),
+          firstProfile.birthDateTime,
+          firstProfile.birthLocation.latitude,
+          firstProfile.birthLocation.longitude,
+          cLoc.latitude,
+          cLoc.longitude,
+          lunarSystem,
+        ),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!showCalendarOptions) return;
@@ -230,7 +264,13 @@ function SidePanel({ panchangam: p }: SidePanelProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showCalendarOptions]);
 
-  function compute(n: string, bdt: string, bLoc: LocationData, cLoc: LocationData) {
+  function compute(
+    n: string,
+    bdt: string,
+    bLoc: LocationData,
+    cLoc: LocationData,
+    ls: LunarSystem = formLunarSystem,
+  ) {
     const res = computeStarBirthday(
       new Date(),
       bdt,
@@ -238,6 +278,7 @@ function SidePanel({ panchangam: p }: SidePanelProps) {
       bLoc.longitude,
       cLoc.latitude,
       cLoc.longitude,
+      ls,
     );
     setResult(res);
     setShowCalendarOptions(false);
@@ -281,19 +322,8 @@ function SidePanel({ panchangam: p }: SidePanelProps) {
 
   const eventTitle = `${name}'s Nakshatra Birthday`;
 
-  const v = (s: string): React.ReactNode => <strong>{s}</strong>;
-
   return (
     <section className="star-birthday-panel">
-      <div className="sankalpam-section">
-        <h1 className="sankalpam-section__title">Sankalpam</h1>
-        <p className="sankalpam-section__text">
-          {v(p.samvatsare)} Namasamvatsare, {v(p.ayana)}, {v(p.ritu)} Ritau, {v(p.masa)} Mase,{" "}
-          {v(p.tithi.paksha)} Pakshe, {v(p.tithi.name)} Tithau, {v(p.vara)} Vasare,{" "}
-          {v(p.nakshatras[0].name)} Nakshatre, {v(p.yogas[0].name)} Yoge, {v(p.karanas[0].name)}{" "}
-          Karane
-        </p>
-      </div>
       <div className="find-birthday-section">
         <h2 className="find-birthday-section__title">Find My Star Birthday</h2>
         {profiles.length > 0 && (
@@ -356,34 +386,76 @@ function SidePanel({ panchangam: p }: SidePanelProps) {
             <label className="star-birthday-form__label">Current City</label>
             <CitySearch onLocationSelect={setCurrentLocation} />
           </div>
+          <div className="star-birthday-form__field">
+            <label className="star-birthday-form__label">Lunar System</label>
+            <button
+              className={`lunar-system-toggle lunar-system-toggle--${formLunarSystem}`}
+              onClick={() => {
+                const newLs: LunarSystem = formLunarSystem === "amanta" ? "purnimanta" : "amanta";
+                setFormLunarSystem(newLs);
+                if (allFilled) {
+                  compute(name, birthDateTime, birthLocation!, currentLocation!, newLs);
+                }
+              }}
+              aria-label="Toggle lunar system"
+            >
+              <span className="lunar-system-toggle__thumb">
+                {moonEmojiBySystem[formLunarSystem]}
+              </span>
+              <span className="lunar-system-toggle__label">
+                {formLunarSystem === "amanta" ? "Amānta" : "Pūrṇimānta"}
+              </span>
+            </button>
+          </div>
           <button className="star-birthday-form__btn" disabled={!allFilled} onClick={handleFind}>
             <FontAwesomeIcon icon={faStar} /> Find Star Birthday
           </button>
           {result && (
             <>
               <div className="star-birthday-result">
-                <div className="star-birthday-result__section">
-                  <span className="anga-card__label">
-                    <FontAwesomeIcon icon={faStar} />
-                    BIRTH STAR
-                  </span>
-                  <span className="anga-card__value">{result.birthNakshatra}</span>
+                <div className="star-birthday-result__row">
+                  <div className="star-birthday-result__section">
+                    <span className="anga-card__label">
+                      <FontAwesomeIcon icon={faStar} />
+                      NAKSHATRA
+                    </span>
+                    <span className="anga-card__value">{result.birthNakshatra}</span>
+                  </div>
+                  <div className="star-birthday-result__section">
+                    <span className="anga-card__label">
+                      <FontAwesomeIcon icon={faCakeCandles} />
+                      BIRTHDAY
+                    </span>
+                    <span className="anga-card__value">
+                      {result.starBirthday.toLocaleDateString("en-IN", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <span className="anga-card__sub">
+                      {result.starBirthday.toLocaleDateString("en-IN", { weekday: "long" })}
+                    </span>
+                  </div>
                 </div>
-                <div className="star-birthday-result__section">
-                  <span className="anga-card__label">
-                    <FontAwesomeIcon icon={faCalendarDays} />
-                    BIRTHDAY
-                  </span>
-                  <span className="anga-card__value">
-                    {result.starBirthday.toLocaleDateString("en-IN", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </span>
-                  <span className="anga-card__sub">
-                    {result.starBirthday.toLocaleDateString("en-IN", { weekday: "long" })}
-                  </span>
+                <div className="star-birthday-result__row star-birthday-result__row--divider">
+                  <div className="star-birthday-result__section">
+                    <span className="anga-card__label">
+                      <FontAwesomeIcon icon={faCalendarDays} />
+                      MASA
+                    </span>
+                    <span className="anga-card__value">{result.birthMasa}</span>
+                  </div>
+                  <div className="star-birthday-result__section">
+                    <span className="anga-card__label">
+                      <FontAwesomeIcon icon={faMoon} />
+                      RASHI
+                    </span>
+                    <span className="anga-card__value">
+                      <FontAwesomeIcon icon={RASHI[result.birthRashi].icon} /> {result.birthRashi}
+                    </span>
+                    <span className="anga-card__sub">{RASHI[result.birthRashi].zodiacName}</span>
+                  </div>
                 </div>
               </div>
               <div className="add-to-calendar" ref={calendarRef}>
@@ -460,6 +532,8 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [minuteKey, location?.latitude, location?.longitude, lunarSystem],
   );
+
+  const v = (s: string): React.ReactNode => <strong>{s}</strong>;
 
   return (
     <main className="daily-view">
@@ -624,8 +698,17 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
             </div>
           </div>
         </div>
+        <div className="sankalpam-section">
+          <h1 className="sankalpam-section__title">Sankalpam</h1>
+          <p className="sankalpam-section__text">
+            {v(p.samvatsare)} Namasamvatsare, {v(p.ayana)}, {v(p.ritu)} Ritau, {v(p.masa)} Mase,{" "}
+            {v(p.tithi.paksha)} Pakshe, {v(p.tithi.name)} Tithau, {v(p.vara)} Vasare,{" "}
+            {v(p.nakshatras[0].name)} Nakshatre, {v(p.yogas[0].name)} Yoge, {v(p.karanas[0].name)}{" "}
+            Karane
+          </p>
+        </div>
       </section>
-      <SidePanel panchangam={p} />
+      <SidePanel lunarSystem={lunarSystem} />
     </main>
   );
 }

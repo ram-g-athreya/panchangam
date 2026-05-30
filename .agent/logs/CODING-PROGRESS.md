@@ -247,3 +247,93 @@
 - Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: reviewer approves, then commit
+
+### Session 0050
+
+- Date: 2026-05-30
+- Goal: Address `changes_requested` feedback for `star-birthday-enhancements` — add birthMasa/birthRashi assertions to all 9 computeStarBirthday tests
+- Completed:
+  - Probed actual computed values for both canonical star birthday dates
+  - Svātī star birthday (May 28 2026 and Jun 15 2027): birthMasa="Jyeṣṭha", birthRashi="Tulā"
+  - Aśvinī star birthday (Oct 26 2026): birthMasa="Āśvina", birthRashi="Meṣa"
+  - Added `expect(result.birthMasa).toBe(...)` and `expect(result.birthRashi).toBe(...)` assertions to all 9 computeStarBirthday tests
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review with updated evidence
+- Files updated: tests/unit-tests/src/core/panchangam.test.ts, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit
+
+### Session 0054
+
+- Date: 2026-05-30
+- Goal: Implement `reorganize-sankalpam` — move Sankalpam from side panel to panchang panel per updated spec
+- Completed:
+  - DailyView.tsx: removed `Panchangam` from import; removed `panchangam: Panchangam` from `SidePanelProps` and destructuring; removed `v` helper and `sankalpam-section` JSX from `SidePanel`
+  - DailyView.tsx `DailyView()`: added `v` helper; inserted `sankalpam-section` div after `anga-grid` close and before `panchang-panel` section close; updated `<SidePanel>` to drop `panchangam` prop
+  - DailyView.css: `.sankalpam-section` margin changed from `margin-bottom: 1.5rem` to `margin-top: 1rem` (now last element in panchang panel)
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review
+- Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit
+
+### Session 0053
+
+- Date: 2026-05-30
+- Goal: Implement `star-birthday-lunar-system-enhancement-2` — auto-submit when data is already present
+- Completed:
+  - SidePanel: initialized `name`, `birthDateTime`, `birthLocation` from `getStoredProfiles()[0]` (lazy initializers) so form pre-populates on startup with the most recent profile
+  - Startup auto-submit: `useEffect` with `[]` reads first stored profile + current location; calls `computeStarBirthday` and `setResult` once on mount (guarded by `didAutoSubmit` ref); eslint-disable comment on `[]` deps
+  - `compute()`: added optional `ls: LunarSystem = formLunarSystem` parameter so callers can pass the toggled value before React state settles
+  - Lunar System toggle `onClick`: computes `newLs`, calls `setFormLunarSystem(newLs)`, then calls `compute(…, newLs)` if `allFilled` — satisfies spec "if toggled and all other info filled then auto-submit"
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review
+- Files updated: src/pages/DailyView.tsx, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit
+
+### Session 0052
+
+- Date: 2026-05-30
+- Goal: Implement `star-birthday-lunar-system-enhancement` — add Lunar System toggle to Find My Star Birthday form
+- Completed:
+  - DailyView.tsx: imported `Moon` and `LunarPhase` from `lunarphase-js`
+  - DailyView.tsx: added `moonEmojiBySystem` const mapping amanta→new moon emoji, purnimanta→full moon emoji
+  - SidePanel: added `formLunarSystem` state (initialized from prop); `compute()` uses `formLunarSystem`
+  - Form: added "Lunar System" `star-birthday-form__field` between Current City and Find button; reuses existing `lunar-system-toggle` CSS classes from index.css (same as Settings toggle)
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review
+- Files updated: src/pages/DailyView.tsx, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit
+
+### Session 0051
+
+- Date: 2026-05-30
+- Goal: Fix `star-birthday-enhancement-bug` — star birthday calculation ignores lunarSystem
+- Root cause: SidePanel.compute() called computeStarBirthday without the lunarSystem argument (defaults to "amanta"); DailyView never passed lunarSystem down to SidePanel
+- Fix:
+  - SidePanelProps: added `lunarSystem: LunarSystem`
+  - SidePanel: destructures `lunarSystem`; `compute()` passes it as 7th arg to `computeStarBirthday`
+  - DailyView render: `<SidePanel panchangam={p} lunarSystem={lunarSystem} />`
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review
+- Files updated: src/pages/DailyView.tsx, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit
+
+### Session 0049
+
+- Date: 2026-05-30
+- Goal: Implement `star-birthday-enhancements` task — add two-row result card with BIRTH MASA and MOON RASHI
+- Completed:
+  - DailyView.tsx: imported `faCakeCandles`; restructured `star-birthday-result` from single-row to two-row layout
+  - Row 1: NAKSHATRA (faStar + birthNakshatra) | BIRTHDAY (faCakeCandles + formatted date + weekday sub)
+  - Row 2: BIRTH MASA (faCalendarDays + birthMasa) | MOON RASHI (faMoon + zodiac icon + birthRashi + english name sub) — reuses existing RASHI lookup map
+  - DailyView.css: `.star-birthday-result` changed to `flex-direction: column`; added `.star-birthday-result__row` (row flex) and `.star-birthday-result__row--divider` (top border + margin/padding)
+  - Tests: all 11 tests (9 computeStarBirthday + 2 computePanchangam) were already present in the spec test file and pass
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review
+- Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit

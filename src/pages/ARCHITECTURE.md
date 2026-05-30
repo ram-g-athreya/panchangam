@@ -139,13 +139,6 @@ This panel gives the basic Panchang information for today.
     - value font-size should be 1 rem
 ```
 
-### Sankalpam and Find Star Birthday Widgets
-
-This panel displays the Sankalpam and the user can find their star birthday.
-
-- Its width should span 33.333% in desktop, 50% in tablets and 100% in mobile
-- The height of the panel should be same as the panchang panel to be uniform
-
 #### Sankalpam
 
 - Background for this section should be tertiary color
@@ -172,6 +165,13 @@ Based on the computed panchangam generate the Sankalpam based on the template be
 {{ namasamvatsare }} Namasamvatsare, {{ ayane }}, {{ ritau }} Ritau, {{ mase }} Mase, {{ pakshe }} Pakshe, {{ tithi }} Tithau, {{ vara }} Vasare, {{ nakshatra }} Nakshatre, {{ yoga }} Yoge, {{ karana }} Karane
 ```
 
+### Find Star Birthday Widget
+
+In This panel user can find their star birthday.
+
+- Its width should span 33.333% in desktop, 50% in tablets and 100% in mobile
+- The height of the panel should be same as the panchang panel to be uniform
+
 #### Find Your Star Birthday
 
 - Background for this section should be tertiary color
@@ -180,13 +180,18 @@ Based on the computed panchangam generate the Sankalpam based on the template be
 - **Birth Date & Time**: Date Picker that asks for the user's birth date and time
 - **Birth City**: City Search component that user can use to enter their birth city
 - **Current City**: City Search component which should have the same value as the component in the header and from `localStorage`. Updating the city here should also update it globally
+- **Lunar System**: Use the Lunar System toggle switch component pre-populated with the value from localStorage. If there is no existing data it should be `Amānta` by default
+  - If the value is toggled and all other information is already filled then auto-submit
 - **Find Star Birthday** button. The button should be disabled until all the fields are filled
   - Center the button
   - The text should be prefixed by a `star` icon from FontAwesome
   - When the button is clicked then
     - change the color of the background and text to indicate that the button was pressed
     - invoke the `computeStarBirthday` function with birthDate (with time), birth and current lat and long
-  - Display the birth star and the star birthday based on the result of the compuation
+  - Display the results in two rows based on the result of the compuation
+    - first row display birth star with title `Nakshatra` and the star birthday with title `Birthday` with `cake` icon
+    - second row display the birth month with title `Masa` and the birth rashi as `Rashi`
+    - For the Rashi also include the appropriate zodiac icon before the name and include the corresponding english name below similar to `Sun Rashi` and `Moon Rashi` cards in the `Panchangam` section
     - Should have secondary background color
   - save the name, birth date & time and birth city and repopulate on startup if it exists. Store as a single JSON object
   - Store as an array with maximum of 5 times most recently used first. Update entries based on the name
