@@ -15,6 +15,16 @@ status_legend:
   done: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: reorganize-sankalpam
+    priority: 1
+    title: Reorganize Sankalpam based on spec in `src/pages/ARCHITECTURE.md` to be in the panchangam panel
+    status: done
+    evidence: >
+      npm run check exits 0 (tsc + lint + 11 tests passing).
+      DailyView.tsx: removed Panchangam from import (no longer used in SidePanelProps); removed panchangam prop from SidePanelProps and SidePanel; removed v helper and sankalpam-section from SidePanel return.
+      DailyView DailyView(): added v helper; added sankalpam-section div after anga-grid closing tag and before panchang-panel section close — renders identical Sankalpam template using p.* from the existing panchangam useMemo.
+      DailyView render: <SidePanel lunarSystem={lunarSystem} /> (no panchangam prop).
+      DailyView.css: sankalpam-section margin changed from margin-bottom:1.5rem to margin-top:1rem (last element in panel, no sibling below).
   - id: star-birthday-lunar-system-enhancement-2
     priority: 1
     title: Auto submit if data is already present as per the spec in `src/pages/ARCHITECTURE.md`

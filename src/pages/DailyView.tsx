@@ -35,7 +35,7 @@ import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { SunriseFill, SunsetFill, EmojiSunglassesFill } from "react-bootstrap-icons";
 import { Moon, LunarPhase } from "lunarphase-js";
 import { computePanchangam, computeStarBirthday } from "../core/panchangam";
-import type { Panchangam, StarBirthdayResult } from "../core/panchangam";
+import type { StarBirthdayResult } from "../core/panchangam";
 import type { TimeFormat, LocationData, LunarSystem } from "../constants";
 import { LOCATION_KEY, STAR_BIRTHDAY_KEY } from "../constants";
 import "../styles/DailyView.css";
@@ -211,11 +211,10 @@ function saveProfiles(profiles: StoredProfile[]): void {
 }
 
 interface SidePanelProps {
-  panchangam: Panchangam;
   lunarSystem: LunarSystem;
 }
 
-function SidePanel({ panchangam: p, lunarSystem }: SidePanelProps) {
+function SidePanel({ lunarSystem }: SidePanelProps) {
   const [profiles, setProfiles] = useState<StoredProfile[]>(getStoredProfiles);
   const [name, setName] = useState<string>(() => getStoredProfiles()[0]?.name ?? "");
   const [birthDateTime, setBirthDateTime] = useState<string>(
@@ -323,19 +322,8 @@ function SidePanel({ panchangam: p, lunarSystem }: SidePanelProps) {
 
   const eventTitle = `${name}'s Nakshatra Birthday`;
 
-  const v = (s: string): React.ReactNode => <strong>{s}</strong>;
-
   return (
     <section className="star-birthday-panel">
-      <div className="sankalpam-section">
-        <h1 className="sankalpam-section__title">Sankalpam</h1>
-        <p className="sankalpam-section__text">
-          {v(p.samvatsare)} Namasamvatsare, {v(p.ayana)}, {v(p.ritu)} Ritau, {v(p.masa)} Mase,{" "}
-          {v(p.tithi.paksha)} Pakshe, {v(p.tithi.name)} Tithau, {v(p.vara)} Vasare,{" "}
-          {v(p.nakshatras[0].name)} Nakshatre, {v(p.yogas[0].name)} Yoge, {v(p.karanas[0].name)}{" "}
-          Karane
-        </p>
-      </div>
       <div className="find-birthday-section">
         <h2 className="find-birthday-section__title">Find My Star Birthday</h2>
         {profiles.length > 0 && (
@@ -545,6 +533,8 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
     [minuteKey, location?.latitude, location?.longitude, lunarSystem],
   );
 
+  const v = (s: string): React.ReactNode => <strong>{s}</strong>;
+
   return (
     <main className="daily-view">
       <section className="panchang-panel">
@@ -708,8 +698,17 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
             </div>
           </div>
         </div>
+        <div className="sankalpam-section">
+          <h1 className="sankalpam-section__title">Sankalpam</h1>
+          <p className="sankalpam-section__text">
+            {v(p.samvatsare)} Namasamvatsare, {v(p.ayana)}, {v(p.ritu)} Ritau, {v(p.masa)} Mase,{" "}
+            {v(p.tithi.paksha)} Pakshe, {v(p.tithi.name)} Tithau, {v(p.vara)} Vasare,{" "}
+            {v(p.nakshatras[0].name)} Nakshatre, {v(p.yogas[0].name)} Yoge, {v(p.karanas[0].name)}{" "}
+            Karane
+          </p>
+        </div>
       </section>
-      <SidePanel panchangam={p} lunarSystem={lunarSystem} />
+      <SidePanel lunarSystem={lunarSystem} />
     </main>
   );
 }

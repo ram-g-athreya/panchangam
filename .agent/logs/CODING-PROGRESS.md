@@ -263,6 +263,20 @@
 - Known risk or unresolved issue: none
 - Next best step: reviewer approves, then commit
 
+### Session 0054
+
+- Date: 2026-05-30
+- Goal: Implement `reorganize-sankalpam` — move Sankalpam from side panel to panchang panel per updated spec
+- Completed:
+  - DailyView.tsx: removed `Panchangam` from import; removed `panchangam: Panchangam` from `SidePanelProps` and destructuring; removed `v` helper and `sankalpam-section` JSX from `SidePanel`
+  - DailyView.tsx `DailyView()`: added `v` helper; inserted `sankalpam-section` div after `anga-grid` close and before `panchang-panel` section close; updated `<SidePanel>` to drop `panchangam` prop
+  - DailyView.css: `.sankalpam-section` margin changed from `margin-bottom: 1.5rem` to `margin-top: 1rem` (now last element in panchang panel)
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review
+- Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit
+
 ### Session 0053
 
 - Date: 2026-05-30

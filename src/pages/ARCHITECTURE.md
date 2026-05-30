@@ -139,13 +139,6 @@ This panel gives the basic Panchang information for today.
     - value font-size should be 1 rem
 ```
 
-### Sankalpam and Find Star Birthday Widgets
-
-This panel displays the Sankalpam and the user can find their star birthday.
-
-- Its width should span 33.333% in desktop, 50% in tablets and 100% in mobile
-- The height of the panel should be same as the panchang panel to be uniform
-
 #### Sankalpam
 
 - Background for this section should be tertiary color
@@ -171,6 +164,13 @@ Based on the computed panchangam generate the Sankalpam based on the template be
 ```
 {{ namasamvatsare }} Namasamvatsare, {{ ayane }}, {{ ritau }} Ritau, {{ mase }} Mase, {{ pakshe }} Pakshe, {{ tithi }} Tithau, {{ vara }} Vasare, {{ nakshatra }} Nakshatre, {{ yoga }} Yoge, {{ karana }} Karane
 ```
+
+### Find Star Birthday Widget
+
+In This panel user can find their star birthday.
+
+- Its width should span 33.333% in desktop, 50% in tablets and 100% in mobile
+- The height of the panel should be same as the panchang panel to be uniform
 
 #### Find Your Star Birthday
 

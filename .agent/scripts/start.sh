@@ -152,7 +152,7 @@ while true; do
         # 3. Route the unique send-keys payload based on the fresh state
         case "$CURRENT_STATE" in
             "not_started")
-                log_info "Triggering Coding Agent to start working on new tasks..."        
+                log_info "Triggering Coding Agent to start working on new task..."        
                 tmux send-keys -t "$CODING_SESSION_NAME" "${NOT_STARTED_PROMPT}" Enter
                 sleep 1.5
                 tmux send-keys -t "$CODING_SESSION_NAME" C-m
@@ -163,7 +163,7 @@ while true; do
                 ;;
 
             "ready_for_review")
-                log_info "Tasks are ready for review. Triggering Review Agent..."        
+                log_info "Task is ready for review. Triggering Review Agent..."        
                 tmux send-keys -t "$CODE_REVIEW_SESSION_NAME" "${READY_FOR_REVIEW_PROMPT}" Enter
                 sleep 1.5
                 tmux send-keys -t "$CODE_REVIEW_SESSION_NAME" C-m
@@ -188,7 +188,7 @@ while true; do
                 ;;
 
             "done")
-                log_info "Task is done. Waiting for any new tasks or completion..."                
+                log_info "Task is done. Waiting for any new task..."                
                 ;;
         esac
     fi
