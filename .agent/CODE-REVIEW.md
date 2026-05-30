@@ -12,3 +12,4 @@
 - **Data Validation**: Verify that incoming untrusted data (from user inputs or external APIs) is properly sanitized or validated before processing.
 - **Crisp Actionable Feedback**: Ensure that the feedback is short and actionable. Reference specific files or functions that need to be changed wherever possible and provide actionable feedback
 - **DRY (Don't Repeat Yourself)**: If there are repeating or refactorable code blocks then provide appropriate feedback to do so.
+- **Test Completeness and Spec Compliance**: Verify that the implemented tests use only the exact parameters defined in the specification. Ensure that every single expected result outlines in the spec is explicitly asserted, with zero missing or extraneous checks.

@@ -15,6 +15,19 @@ status_legend:
   done: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: star-birthday-enhancements
+    priority: 1
+    title: Star Birthday Enhancements based on spec in `src/pages/ARCHITECTURE.md` and `src/core/ARCHITECTURE.md`. Also add tests based on the spec in `tests/unit-tests/src/core/panchangam.test.ts`
+    status: done
+    evidence: >
+      npm run check exits 0 (tsc + lint + 11 tests passing).
+      DailyView.tsx: imported faCakeCandles; restructured star-birthday-result from a single row to two rows.
+      Row 1: NAKSHATRA (faStar icon + birthNakshatra) | BIRTHDAY (faCakeCandles icon + formatted date + weekday sub).
+      Row 2: MASA (faCalendarDays icon + birthMasa) | RASHI (faMoon icon + zodiac icon + birthRashi + english zodiac name sub) — reuses existing RASHI lookup map.
+      DailyView.css: .star-birthday-result changed to flex-direction column; added .star-birthday-result__row (row flex) and .star-birthday-result__row--divider (top border + margin/padding for visual separation between rows).
+      Tests: all 9 computeStarBirthday tests assert birthMasa and birthRashi in addition to birthNakshatra and starBirthday.
+      Svātī (4 tests, May 28 2026 and Jun 15 2027): birthMasa="Jyeṣṭha", birthRashi="Tulā".
+      Aśvinī (5 tests, Oct 26 2026): birthMasa="Āśvina", birthRashi="Meṣa".
   - id: save-star-birthday-to-calendar
     priority: 1
     title: Save Star Birthday to Calendar based on spec in `src/pages/ARCHITECTURE.md`

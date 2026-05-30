@@ -8,6 +8,7 @@ import {
   faScaleBalanced,
   faCalendarDays,
   faCalendarPlus,
+  faCakeCandles,
   faChevronDown,
   faDownload,
   faSeedling,
@@ -362,28 +363,49 @@ function SidePanel({ panchangam: p }: SidePanelProps) {
           {result && (
             <>
               <div className="star-birthday-result">
-                <div className="star-birthday-result__section">
-                  <span className="anga-card__label">
-                    <FontAwesomeIcon icon={faStar} />
-                    BIRTH STAR
-                  </span>
-                  <span className="anga-card__value">{result.birthNakshatra}</span>
+                <div className="star-birthday-result__row">
+                  <div className="star-birthday-result__section">
+                    <span className="anga-card__label">
+                      <FontAwesomeIcon icon={faStar} />
+                      NAKSHATRA
+                    </span>
+                    <span className="anga-card__value">{result.birthNakshatra}</span>
+                  </div>
+                  <div className="star-birthday-result__section">
+                    <span className="anga-card__label">
+                      <FontAwesomeIcon icon={faCakeCandles} />
+                      BIRTHDAY
+                    </span>
+                    <span className="anga-card__value">
+                      {result.starBirthday.toLocaleDateString("en-IN", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <span className="anga-card__sub">
+                      {result.starBirthday.toLocaleDateString("en-IN", { weekday: "long" })}
+                    </span>
+                  </div>
                 </div>
-                <div className="star-birthday-result__section">
-                  <span className="anga-card__label">
-                    <FontAwesomeIcon icon={faCalendarDays} />
-                    BIRTHDAY
-                  </span>
-                  <span className="anga-card__value">
-                    {result.starBirthday.toLocaleDateString("en-IN", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </span>
-                  <span className="anga-card__sub">
-                    {result.starBirthday.toLocaleDateString("en-IN", { weekday: "long" })}
-                  </span>
+                <div className="star-birthday-result__row star-birthday-result__row--divider">
+                  <div className="star-birthday-result__section">
+                    <span className="anga-card__label">
+                      <FontAwesomeIcon icon={faCalendarDays} />
+                      MASA
+                    </span>
+                    <span className="anga-card__value">{result.birthMasa}</span>
+                  </div>
+                  <div className="star-birthday-result__section">
+                    <span className="anga-card__label">
+                      <FontAwesomeIcon icon={faMoon} />
+                      RASHI
+                    </span>
+                    <span className="anga-card__value">
+                      <FontAwesomeIcon icon={RASHI[result.birthRashi].icon} /> {result.birthRashi}
+                    </span>
+                    <span className="anga-card__sub">{RASHI[result.birthRashi].zodiacName}</span>
+                  </div>
                 </div>
               </div>
               <div className="add-to-calendar" ref={calendarRef}>

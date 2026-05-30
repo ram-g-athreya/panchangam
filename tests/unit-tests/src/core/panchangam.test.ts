@@ -84,6 +84,8 @@ describe("computeStarBirthday", () => {
       -77.4874899,
     );
     expect(result.birthNakshatra).toBe("Svātī");
+    expect(result.birthMasa).toBe("Jyeṣṭha");
+    expect(result.birthRashi).toBe("Tulā");
 
     const expected = new Date("Thu May 28 2026 00:00:00 GMT-0400 (Eastern Daylight Time)");
     expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
@@ -99,6 +101,8 @@ describe("computeStarBirthday", () => {
       -77.4874899,
     );
     expect(result.birthNakshatra).toBe("Svātī");
+    expect(result.birthMasa).toBe("Jyeṣṭha");
+    expect(result.birthRashi).toBe("Tulā");
 
     const expected = new Date("Thu May 28 2026 00:00:00 GMT-0400 (Eastern Daylight Time)");
     expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
@@ -114,6 +118,8 @@ describe("computeStarBirthday", () => {
       -77.4874899,
     );
     expect(result.birthNakshatra).toBe("Svātī");
+    expect(result.birthMasa).toBe("Jyeṣṭha");
+    expect(result.birthRashi).toBe("Tulā");
 
     const expected = new Date("Tue Jun 15 2027 00:00:00 GMT-0400 (Eastern Daylight Time)");
     expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
@@ -129,6 +135,8 @@ describe("computeStarBirthday", () => {
       -77.4874899,
     );
     expect(result.birthNakshatra).toBe("Svātī");
+    expect(result.birthMasa).toBe("Jyeṣṭha");
+    expect(result.birthRashi).toBe("Tulā");
 
     const expected = new Date("Tue Jun 15 2027 00:00:00 GMT-0400 (Eastern Daylight Time)");
     expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
@@ -144,6 +152,8 @@ describe("computeStarBirthday", () => {
       -77.4874899,
     );
     expect(result.birthNakshatra).toBe("Aśvinī");
+    expect(result.birthMasa).toBe("Āśvina");
+    expect(result.birthRashi).toBe("Meṣa");
 
     const expected = new Date("Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)");
     expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
@@ -159,6 +169,8 @@ describe("computeStarBirthday", () => {
       -77.4874899,
     );
     expect(result.birthNakshatra).toBe("Aśvinī");
+    expect(result.birthMasa).toBe("Āśvina");
+    expect(result.birthRashi).toBe("Meṣa");
 
     const expected = new Date("Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)");
     expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
@@ -174,6 +186,8 @@ describe("computeStarBirthday", () => {
       -77.4874899,
     );
     expect(result.birthNakshatra).toBe("Aśvinī");
+    expect(result.birthMasa).toBe("Āśvina");
+    expect(result.birthRashi).toBe("Meṣa");
 
     const expected = new Date("Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)");
     expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
@@ -189,6 +203,8 @@ describe("computeStarBirthday", () => {
       -77.4874899,
     );
     expect(result.birthNakshatra).toBe("Aśvinī");
+    expect(result.birthMasa).toBe("Āśvina");
+    expect(result.birthRashi).toBe("Meṣa");
 
     const expected = new Date("Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)");
     expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());
@@ -204,6 +220,8 @@ describe("computeStarBirthday", () => {
       -77.4874899,
     );
     expect(result.birthNakshatra).toBe("Aśvinī");
+    expect(result.birthMasa).toBe("Āśvina");
+    expect(result.birthRashi).toBe("Meṣa");
 
     const expected = new Date("Mon Oct 26 2026 00:00:00 GMT-0400 (Eastern Daylight Time)");
     expect(result.starBirthday.toDateString()).toEqual(expected.toDateString());

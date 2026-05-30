@@ -247,3 +247,34 @@
 - Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: reviewer approves, then commit
+
+### Session 0050
+
+- Date: 2026-05-30
+- Goal: Address `changes_requested` feedback for `star-birthday-enhancements` — add birthMasa/birthRashi assertions to all 9 computeStarBirthday tests
+- Completed:
+  - Probed actual computed values for both canonical star birthday dates
+  - Svātī star birthday (May 28 2026 and Jun 15 2027): birthMasa="Jyeṣṭha", birthRashi="Tulā"
+  - Aśvinī star birthday (Oct 26 2026): birthMasa="Āśvina", birthRashi="Meṣa"
+  - Added `expect(result.birthMasa).toBe(...)` and `expect(result.birthRashi).toBe(...)` assertions to all 9 computeStarBirthday tests
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review with updated evidence
+- Files updated: tests/unit-tests/src/core/panchangam.test.ts, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit
+
+### Session 0049
+
+- Date: 2026-05-30
+- Goal: Implement `star-birthday-enhancements` task — add two-row result card with BIRTH MASA and MOON RASHI
+- Completed:
+  - DailyView.tsx: imported `faCakeCandles`; restructured `star-birthday-result` from single-row to two-row layout
+  - Row 1: NAKSHATRA (faStar + birthNakshatra) | BIRTHDAY (faCakeCandles + formatted date + weekday sub)
+  - Row 2: BIRTH MASA (faCalendarDays + birthMasa) | MOON RASHI (faMoon + zodiac icon + birthRashi + english name sub) — reuses existing RASHI lookup map
+  - DailyView.css: `.star-birthday-result` changed to `flex-direction: column`; added `.star-birthday-result__row` (row flex) and `.star-birthday-result__row--divider` (top border + margin/padding)
+  - Tests: all 11 tests (9 computeStarBirthday + 2 computePanchangam) were already present in the spec test file and pass
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review
+- Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit

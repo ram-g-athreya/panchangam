@@ -189,7 +189,7 @@ Based on the computed panchangam generate the Sankalpam based on the template be
     - invoke the `computeStarBirthday` function with birthDate (with time), birth and current lat and long
   - Display the results in two rows based on the result of the compuation
     - first row display birth star with title `Nakshatra` and the star birthday with title `Birthday` with `cake` icon
-    - second row display the birth month with title `Birth Masa` and the birth rashi as `Moon Rashi`
+    - second row display the birth month with title `Masa` and the birth rashi as `Rashi`
     - For the Rashi also include the appropriate zodiac icon before the name and include the corresponding english name below similar to `Sun Rashi` and `Moon Rashi` cards in the `Panchangam` section
     - Should have secondary background color
   - save the name, birth date & time and birth city and repopulate on startup if it exists. Store as a single JSON object
