@@ -194,4 +194,10 @@ Based on the computed panchangam generate the Sankalpam based on the template be
     - Clicking on a pill prepopulates the corresponding data and auto submits displaying the results
     - Clicking on the `x` deletes the data from localStorage
     - The pills are to be displayed below the title and above the text fields
+  - below the results provide a split button dropdown with a downward facing arrow towards the end
+    - clicking the arrow produces a menu with the following options:
+      - `Add to Google Calendar` being a Google calendar link
+      - `Add to Outlook` being a link to Outlook
+      - `Download .ics` being a link to download an .ics file
+    - `Add to Google Calendar` should be the default
 - background color should be tertiary

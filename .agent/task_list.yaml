@@ -15,6 +15,20 @@ status_legend:
   done: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: save-star-birthday-to-calendar
+    priority: 1
+    title: Save Star Birthday to Calendar based on spec in `src/pages/ARCHITECTURE.md`
+    status: done
+    evidence: >
+      npm run check exits 0 (tsc + lint + 11 tests passing).
+      Added toICSDateString, toISO8601Date, nextDay, buildGoogleCalendarUrl, buildOutlookUrl, downloadICS helper functions in DailyView.tsx.
+      SidePanel: showCalendarOptions state + calendarRef + click-outside useEffect (closes dropdown on mousedown outside); reset to false in compute() on each new result.
+      After the star-birthday-result card: split button — left half is an <a> link that directly opens Google Calendar (default action); right half is a chevron-down button (faChevronDown) that toggles the dropdown. Divider between halves via border-left.
+      Dropdown (add-to-calendar__dropdown): position absolute, z-index 10, centered below split button via translateX(-50%); options: "Add to Google Calendar", "Add to Outlook", "Download .ics"; each option closes the dropdown on click.
+      Event title const eventTitle = `${name}'s Nakshatra Birthday` referenced at all call sites.
+      DailyView.css: .add-to-calendar (position relative), .add-to-calendar__split-btn (flex, overflow hidden, border-radius), .add-to-calendar__primary (left half, <a> styled as button), .add-to-calendar__chevron (right half, border-left separator), .add-to-calendar__dropdown (absolute positioned, shadow, z-index 10), .add-to-calendar__option (shared row style, white-space nowrap).
+    user_feedback: >
+      - Updated the UI requirements to be a split drop down button could you please re-implement based on the updated spec
   - id: add-footer
     priority: 1
     title: Add footer as per spec

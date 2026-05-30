@@ -215,3 +215,35 @@
 - Files updated: src/components/Footer.tsx, src/styles/Footer.css, src/App.tsx, package.json, .agent/task_list.yaml, .agent/AGENT-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: commit all changes
+
+### Session 0047
+
+- Date: 2026-05-29
+- Goal: Implement `save-star-birthday-to-calendar` task — "Add to Calendar" button below star birthday result
+- Completed:
+  - DailyView.tsx: added `faCalendarPlus` + `faDownload` to FA solid imports
+  - DailyView.tsx: added 6 helper functions — `toICSDateString` (YYYYMMDD), `toISO8601Date` (YYYY-MM-DD), `nextDay`, `buildGoogleCalendarUrl` (calendar.google.com/calendar/render, all-day date range), `buildOutlookUrl` (outlook.live.com/calendar/0/deeplink/compose, allday=true), `downloadICS` (RFC 5545 VCALENDAR blob download)
+  - DailyView.tsx: added `showCalendarOptions` state to SidePanel; reset to false in `compute()` on each new result
+  - DailyView.tsx: wrapped result block in Fragment; added `add-to-calendar` div after result — toggle button opens options row with Google Calendar `<a>`, Outlook `<a>`, and Download .ics `<button>`; event title `{name}'s Nakshatra Birthday`
+  - DailyView.css: added `.add-to-calendar`, `.add-to-calendar__btn`, `.add-to-calendar__options`, `.add-to-calendar__option` styles
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml `save-star-birthday-to-calendar` status set to ready_for_review
+- Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit
+
+### Session 0048
+
+- Date: 2026-05-29
+- Goal: Rework `save-star-birthday-to-calendar` — replace toggle button+list with split dropdown button per updated spec
+- Completed:
+  - DailyView.tsx: added `faChevronDown` import
+  - DailyView.tsx: added `calendarRef` (HTMLDivElement) and click-outside `useEffect` — registers `mousedown` listener only while dropdown is open, closes on click outside container
+  - DailyView.tsx: replaced single toggle button + options list with split button structure: left `<a>` (add-to-calendar__primary) directly opens Google Calendar as default action; right `<button>` (add-to-calendar__chevron) toggles the dropdown; each dropdown option closes dropdown on click
+  - DailyView.tsx: dropdown label strings updated to "Add to Google Calendar", "Add to Outlook", "Download .ics" per spec
+  - DailyView.css: removed .add-to-calendar__btn + .add-to-calendar__options; added .add-to-calendar__split-btn (flex, overflow hidden), .add-to-calendar__primary (left half link), .add-to-calendar__chevron (right half button with border-left separator), .add-to-calendar__dropdown (position absolute, z-index 10, shadow, centered below button)
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review
+- Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit
