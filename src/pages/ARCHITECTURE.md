@@ -68,12 +68,14 @@ This panel gives the basic Panchang information for today.
   requirements:
     - based on Panchangam derived above
     - width should be 50% in desktop and tablet and 100% in mobile
+    - if the value has `endTime` and if current time exceeds `endTime` then strikethrough the value and subvalue
 - label: infinity icon (fontawesome) followed by the word YOGA. Ensure that the text is closer to value and has adequate gap with the next value below.
   value: iterate over yogas and display the name
   subvalue: `upto endTime` if it exists for the item. Ensure that the text is closer to value and has adequate gap with the next value below.
   requirements:
     - based on Panchangam derived above
     - width should be 50% in desktop and tablet and 100% in mobile
+    - if the value has `endTime` and if current time exceeds `endTime` then strikethrough the value and subvalue
 - label: scale-balanced icon (fontawesome) followed by the word KARANA
   value: iterate over karanas and display the name
   subvalue: `upto endTime` if it exists for the item
@@ -81,6 +83,7 @@ This panel gives the basic Panchang information for today.
     - based on Panchangam derived above.
     - Ensure that the text is closer to value and has adequate gap with the next value below.
     - width should be 50% in desktop and tablet and 100% in mobile
+    - if the value has `endTime` and if current time exceeds `endTime` then strikethrough the value and subvalue
 - label: icon based on requirements followed by the word RITU
   value: current ritu
   requirements:

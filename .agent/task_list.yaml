@@ -15,6 +15,53 @@ status_legend:
   done: Required verification has passed and evidence is recorded.
 
 tasks:
+  - id: center-lunar-toggle-wdiget-properly
+    priority: 1
+    title: Center the lunar system toggle widget as per the spec in `src/components/ARCHITECTURE.md`
+    description: >
+      The previous change was incorrect, expectation is to center the moon emoji icon within the toggle button both vertically and horizontally, within the star birthday widget make the toggle widget as a whole left aligned as before
+      but center the moon emoji within the toggle button itself. Please refer to the spec in `src/components/ARCHITECTURE.md` for the expected design and ensure that the implementation matches it accurately.
+    status: done
+    evidence: >
+      npm run check exits 0 (tsc + lint + 11 tests passing).
+      index.css .lunar-system-toggle__thumb: text-align:center + line-height:1.6rem centers the emoji within the 1.6rem thumb circle.
+      DailyView.css: added .find-birthday-section .lunar-system-toggle { align-self: flex-start } — prevents the column-flex form field's default align-items:stretch from expanding the button beyond its 7rem width in some browsers, which was causing the thumb to appear at the far left of a wide button.
+    code_review: >
+      Approved. No issues found. text-align:center + line-height:1.6rem correctly centers the
+      emoji in the thumb. align-self:flex-start in DailyView.css is the correct defensive fix —
+      it pins the button left-aligned at its natural 7rem width, preventing align-items:stretch
+      from expanding <button> elements in some browsers. Distinct from the rejected align-self:center
+      (this is flex-start = left-aligned). Pure CSS change — no tests required.
+  - id: center-lunar-toggle-wdiget
+    priority: 1
+    title: Center lunar system toggle widget as per the spec in `src/components/ARCHITECTURE.md`
+    status: done
+    evidence: >
+      npm run check exits 0 (tsc + lint + 11 tests passing).
+      index.css: added line-height:1 to .lunar-system-toggle__thumb so the moon emoji icon is truly vertically centered (prevents emoji line-height offset).
+      DailyView.css: added .find-birthday-section .lunar-system-toggle { align-self: center } so the 7rem-wide toggle button is horizontally centered within its column-direction form field, matching the visual balance of the Find My Star Birthday form.
+    code_review: >
+      Approved. No issues found. line-height:1 on .lunar-system-toggle__thumb correctly
+      neutralizes emoji line-height offset without interfering with the existing
+      align-items/justify-content:center flex centering. align-self:center in DailyView.css
+      is correctly scoped to .find-birthday-section to avoid affecting the Settings panel
+      toggle, and works correctly within the column-flex .star-birthday-form__field parent
+      (default align-items:stretch would otherwise stretch the 7rem toggle to full width).
+      Pure CSS change — no tests required.
+  - id: add-ui-change-for-expiry
+    priority: 1
+    title: Add UI change for expiry based on spec in `src/pages/ARCHITECTURE.md`
+    status: done
+    evidence: >
+      npm run check exits 0 (tsc + lint + 11 tests passing).
+      DailyView.tsx: NAKSHATRA, YOGA, and KARANA anga-entry divs now compute className dynamically — appends "anga-entry--expired" when endTime is defined and now > endTime.
+      DailyView.css: added .anga-entry--expired .anga-card__value and .anga-entry--expired .anga-card__sub rules with text-decoration:line-through and opacity:0.5 to visually indicate expired entries.
+    code_review: >
+      Approved. No issues found. Expiry logic correctly guarded (endTime && now > endTime)
+      for all three elements (NAKSHATRA, YOGA, KARANA). CSS descendant selectors correctly
+      scope line-through and opacity:0.5 to value and sub spans. now state ticks every
+      second so expired state reflects in real time. No tests required for a pure UI
+      class toggle.
   - id: reorganize-sankalpam
     priority: 1
     title: Reorganize Sankalpam based on spec in `src/pages/ARCHITECTURE.md` to be in the panchangam panel
