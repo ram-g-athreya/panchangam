@@ -596,7 +596,10 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
                 NAKSHATRA
               </span>
               {p.nakshatras.map((n, i) => (
-                <div key={i} className="anga-entry">
+                <div
+                  key={i}
+                  className={`anga-entry${n.endTime && now > n.endTime ? " anga-entry--expired" : ""}`}
+                >
                   <span className="anga-card__value">{n.name}</span>
                   {n.endTime && (
                     <span className="anga-card__sub">upto {formatTime(n.endTime, timeFormat)}</span>
@@ -610,7 +613,10 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
                 YOGA
               </span>
               {p.yogas.map((y, i) => (
-                <div key={i} className="anga-entry">
+                <div
+                  key={i}
+                  className={`anga-entry${y.endTime && now > y.endTime ? " anga-entry--expired" : ""}`}
+                >
                   <span className="anga-card__value">{y.name}</span>
                   {y.endTime && (
                     <span className="anga-card__sub">upto {formatTime(y.endTime, timeFormat)}</span>
@@ -626,7 +632,10 @@ export function DailyView({ timeFormat, lunarSystem }: DailyViewProps) {
                 KARANA
               </span>
               {p.karanas.map((k, i) => (
-                <div key={i} className="anga-entry">
+                <div
+                  key={i}
+                  className={`anga-entry${k.endTime && now > k.endTime ? " anga-entry--expired" : ""}`}
+                >
                   <span className="anga-card__value">{k.name}</span>
                   {k.endTime && (
                     <span className="anga-card__sub">upto {formatTime(k.endTime, timeFormat)}</span>

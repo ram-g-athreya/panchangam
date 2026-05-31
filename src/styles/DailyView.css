@@ -75,6 +75,10 @@
   margin-bottom: 0.75rem;
 }
 
+.find-birthday-section .lunar-system-toggle__thumb {
+  line-height: 1.8rem;
+}
+
 .star-birthday-pills {
   display: flex;
   flex-wrap: wrap;
@@ -191,6 +195,10 @@
   width: 100%;
   max-width: 100%;
   margin-left: 0;
+}
+
+.find-birthday-section .lunar-system-toggle {
+  align-self: flex-start;
 }
 
 .star-birthday-form__btn {
@@ -402,6 +410,12 @@
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
+}
+
+.anga-entry--expired .anga-card__value,
+.anga-entry--expired .anga-card__sub {
+  text-decoration: line-through;
+  opacity: 0.5;
 }
 
 .rashi-card__header {

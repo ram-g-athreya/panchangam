@@ -337,3 +337,67 @@
 - Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
 - Known risk or unresolved issue: none
 - Next best step: reviewer approves, then commit
+
+### Session 0055
+
+- Date: 2026-05-31
+- Goal: Implement `add-ui-change-for-expiry` — strikethrough expired Nakshatra/Yoga/Karana entries
+- Completed:
+  - DailyView.tsx: NAKSHATRA, YOGA, and KARANA `anga-entry` divs now use a dynamic className — adds `anga-entry--expired` when `endTime` is defined and `now > endTime`
+  - DailyView.css: added `.anga-entry--expired .anga-card__value` and `.anga-entry--expired .anga-card__sub` with `text-decoration: line-through` and `opacity: 0.5`
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review
+- Files updated: src/pages/DailyView.tsx, src/styles/DailyView.css, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit
+
+### Session 0056
+
+- Date: 2026-05-31
+- Goal: Implement `center-lunar-toggle-wdiget` — center the lunar system toggle widget per spec
+- Completed:
+  - index.css: added `line-height: 1` to `.lunar-system-toggle__thumb` to prevent emoji line-height offset and ensure the moon icon is truly vertically centered
+  - DailyView.css: added `.find-birthday-section .lunar-system-toggle { align-self: center }` so the 7rem-wide toggle is horizontally centered within the column-direction form field
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review
+- Files updated: src/styles/index.css, src/styles/DailyView.css, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit
+
+### Session 0057
+
+- Date: 2026-05-31
+- Goal: Implement `center-lunar-toggle-wdiget-properly` — revert incorrect widget centering; keep correct emoji centering
+- Completed:
+  - DailyView.css: removed `.find-birthday-section .lunar-system-toggle { align-self: center }` — toggle widget is now left-aligned in the star birthday form as expected
+  - index.css `.lunar-system-toggle__thumb`: retains `display:flex + align-items:center + justify-content:center + line-height:1` which correctly centers the moon emoji both vertically and horizontally within the circular thumb
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review
+- Files updated: src/styles/DailyView.css, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit
+
+### Session 0058
+
+- Date: 2026-05-31
+- Goal: Fix `center-lunar-toggle-wdiget-properly` — emoji was still top-left; flex approach unreliable for emoji in absolute span
+- Completed:
+  - index.css `.lunar-system-toggle__thumb`: removed `display:flex + align-items:center + justify-content:center + line-height:1`; replaced with `text-align:center + line-height:1.6rem` (equal to height) — reliably centers the emoji both vertically and horizontally across all browsers
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review
+- Files updated: src/styles/index.css, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit
+
+### Session 0059
+
+- Date: 2026-05-31
+- Goal: Fix `center-lunar-toggle-wdiget-properly` — emoji still off-center in Find Star Birthday form
+- Root cause: The form field is a column-flex container with default `align-items: stretch`. In some browsers this stretches the button beyond `width: 7rem`, causing the 1.6rem thumb to sit at the far-left edge of a wide button.
+- Completed:
+  - DailyView.css: added `.find-birthday-section .lunar-system-toggle { align-self: flex-start }` — keeps the button at its natural 7rem width and prevents stretch
+- Verification run: `npm run check` exits 0; 11 tests passing
+- Evidence captured: task_list.yaml status set to ready_for_review
+- Files updated: src/styles/DailyView.css, .agent/task_list.yaml, .agent/logs/CODING-PROGRESS.md
+- Known risk or unresolved issue: none
+- Next best step: reviewer approves, then commit
