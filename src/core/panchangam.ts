@@ -665,7 +665,17 @@ export function computePanchangam(
   let rahuKalam: TimeRange | undefined;
   let yamaKandam: TimeRange | undefined;
   if (sunRise && sunSet) {
-    const totalMs = sunSet.getTime() - sunRise.getTime();
+    // Force both times onto the exact same calendar date baseline
+    // using the sunrise day, month, and year.
+    const normalizedSunrise = new Date(sunRise);
+
+    const normalizedSunset = new Date(sunRise);
+    normalizedSunset.setHours(sunSet.getHours());
+    normalizedSunset.setMinutes(sunSet.getMinutes());
+    normalizedSunset.setSeconds(sunSet.getSeconds());
+    normalizedSunset.setMilliseconds(sunSet.getMilliseconds());
+
+    const totalMs = normalizedSunset.getTime() - normalizedSunrise.getTime();
     const partMs = totalMs / 8;
     const dayOfWeek = sunRise.getUTCDay();
 
